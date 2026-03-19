@@ -352,7 +352,7 @@ function gerarBotoesDeVariacao(nomeDoTom) {
     });
 }
 
-// 2. Desenha o diagrama em SVG
+// 2. Desenha o diagrama em SVG (Com estilos embutidos para garantir a renderização)
 function desenharDiagramaAcorde(nomeAcorde) {
     const container = document.getElementById('chord-diagram-container');
     const nomeDiv = document.getElementById('nomeAcordeDestaque');
@@ -384,16 +384,21 @@ function desenharDiagramaAcorde(nomeAcorde) {
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("width", width);
     svg.setAttribute("height", height);
-    svg.setAttribute("class", "chord-svg");
+    // Aplicando estilo direto na tag SVG
+    svg.style.display = "block";
+    svg.style.margin = "0 auto";
 
+    // Desenhar Pestana (Nut)
     const nut = document.createElementNS("http://www.w3.org/2000/svg", "line");
     nut.setAttribute("x1", marginLeft);
     nut.setAttribute("y1", marginTop);
     nut.setAttribute("x2", width - marginLeft);
     nut.setAttribute("y2", marginTop);
-    nut.setAttribute("class", "chord-nut");
+    nut.setAttribute("stroke", "#ffffff"); // Cor da pestana
+    nut.setAttribute("stroke-width", "4");
     svg.appendChild(nut);
 
+    // Desenhar Trastes (Linhas Horizontais)
     for (let i = 1; i <= frets; i++) {
         const y = marginTop + i * fretSpacing;
         const fretLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -401,10 +406,12 @@ function desenharDiagramaAcorde(nomeAcorde) {
         fretLine.setAttribute("y1", y);
         fretLine.setAttribute("x2", width - marginLeft);
         fretLine.setAttribute("y2", y);
-        fretLine.setAttribute("class", "chord-fret");
+        fretLine.setAttribute("stroke", "#666666"); // Cor do traste
+        fretLine.setAttribute("stroke-width", "1");
         svg.appendChild(fretLine);
     }
 
+    // Desenhar Cordas (Linhas Verticais)
     for (let i = 0; i < strings; i++) {
         const x = marginLeft + i * stringSpacing;
         const stringLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -412,7 +419,8 @@ function desenharDiagramaAcorde(nomeAcorde) {
         stringLine.setAttribute("y1", marginTop);
         stringLine.setAttribute("x2", x);
         stringLine.setAttribute("y2", height - 10);
-        stringLine.setAttribute("class", "chord-string");
+        stringLine.setAttribute("stroke", "#666666"); // Cor da corda
+        stringLine.setAttribute("stroke-width", "1");
         svg.appendChild(stringLine);
     }
 
@@ -422,25 +430,31 @@ function desenharDiagramaAcorde(nomeAcorde) {
         const casa = shape[i];
         const x = marginLeft + i * stringSpacing;
 
+        // Corda Abafada (X) ou Solta (O)
         if (casa === null || casa === 0) {
             const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
             text.setAttribute("x", x);
             text.setAttribute("y", marginTop - 8);
-            text.setAttribute("class", "chord-top-text");
+            text.setAttribute("fill", "#888888"); // Cor do texto superior
+            text.setAttribute("font-size", "12px");
+            text.setAttribute("font-weight", "bold");
+            text.setAttribute("text-anchor", "middle");
             text.textContent = casa === null ? "X" : "O";
             svg.appendChild(text);
         }
+        // Nota Pressionada (Bolinha)
         else if (casa > 0) {
             const y = marginTop + (casa - 0.5) * fretSpacing; 
             
             const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
             dot.setAttribute("cx", x);
             dot.setAttribute("cy", y);
-            dot.setAttribute("r", 9); 
-            dot.setAttribute("class", "chord-dot");
+            dot.setAttribute("r", "9"); 
+            dot.setAttribute("fill", "#f1c40f"); // O amarelo do vídeo
+            dot.setAttribute("stroke", "#d4a017"); // Borda da bolinha
+            dot.setAttribute("stroke-width", "1");
             svg.appendChild(dot);
 
-            // Lógica simples para os números dos dedos (apenas para efeito visual no momento)
             let numeroDedo = "";
             if (casa === 1 && !dedosUsados[1]) { numeroDedo = "1"; dedosUsados[1] = true; }
             else if (casa === 2 && !dedosUsados[2]) { numeroDedo = "2"; dedosUsados[2] = true; }
@@ -450,10 +464,25 @@ function desenharDiagramaAcorde(nomeAcorde) {
             const fingerText = document.createElementNS("http://www.w3.org/2000/svg", "text");
             fingerText.setAttribute("x", x);
             fingerText.setAttribute("y", y);
-            fingerText.setAttribute("class", "chord-dot-text");
+            fingerText.setAttribute("fill", "#000000"); // Número preto dentro da bolinha
+            fingerText.setAttribute("font-size", "11px");
+            fingerText.setAttribute("font-weight", "bold");
+            fingerText.setAttribute("text-anchor", "middle");
+            fingerText.setAttribute("dominant-baseline", "central");
             fingerText.textContent = numeroDedo;
             svg.appendChild(fingerText);
         }
+    }
+
+    // Adiciona o background escuro para o "Card" do acorde, caso não esteja pegando o CSS
+    const cardDiv = document.querySelector('.chord-card');
+    if(cardDiv) {
+        cardDiv.style.backgroundColor = "#1a1a1a";
+        cardDiv.style.border = "2px solid #444";
+        cardDiv.style.borderRadius = "12px";
+        cardDiv.style.padding = "20px";
+        cardDiv.style.display = "inline-block";
+        cardDiv.style.boxShadow = "0 8px 25px rgba(0,0,0,0.6)";
     }
 
     svgArea.appendChild(svg);

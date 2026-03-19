@@ -190,50 +190,38 @@ button:hover { background-color: #0056b3; }
 
 /* --- ESTILO DAS VARIAÇÕES (BOTÕES QUADRADOS IGUAL AO VÍDEO) --- */
 .grade-botoes {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-    gap: 10px;
+    display: flex; /* Mudando para Flexbox para alinhar lado a lado */
+    flex-wrap: wrap; /* Permite quebrar linha se faltar espaço */
+    gap: 8px; /* Espaço entre os botões */
     margin-top: 10px;
+    justify-content: center; /* Centraliza os botões */
 }
 
-.botao-variacao {
-    background-color: #3d3d3d;
+/* Forçamos a especificidade para sobrescrever a regra de 'button' genérica */
+button.botao-variacao {
+    width: auto; /* Tira o width 100% da regra antiga */
+    background-color: #333; /* Fundo escuro */
     border: 1px solid #555;
     color: #fff;
-    padding: 10px 5px;
+    padding: 10px 15px; /* Mais espaçamento interno */
     border-radius: 6px;
     cursor: pointer;
     font-size: 14px;
     font-weight: bold;
     text-align: center;
     transition: all 0.2s ease;
+    margin: 0; /* Remove margens indesejadas */
 }
 
-.botao-variacao:hover {
-    background-color: #555;
-    border-color: #f1c40f; /* Brilho dourado ao passar o mouse */
+button.botao-variacao:hover {
+    background-color: #444;
+    border-color: #f1c40f; 
 }
 
-.botao-variacao.ativo {
-    background-color: #f1c40f;
+button.botao-variacao.ativo {
+    background-color: #f1c40f; /* O Dourado/Laranja do vídeo */
     color: #1a1a1a;
     border-color: #f1c40f;
-}
-
-/* --- ESTILO DO CARD DO DIAGRAMA (SVG) --- */
-.chord-card {
-    background-color: #1a1a1a; /* Fundo bem escuro para o diagrama se destacar */
-    border: 2px solid #444;
-    border-radius: 12px;
-    padding: 20px;
-    display: inline-block;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-    margin-bottom: 20px;
-}
-
-.chord-svg {
-    display: block;
-    margin: 0 auto;
 }
 
 /* Linhas do braço e cordas no diagrama */
