@@ -67,24 +67,23 @@ function identificarTom() {
             </div>
         `;
         
-        // Salva as notas na memória e desenha o braço
         notasEscalaAtual = tomEncontrado.notasPenta;
         desenharBraco(); 
 
     } else {
         resultadoDiv.innerHTML = "Tom não identificado com precisão. Verifique se digitou corretamente.";
         document.getElementById('fretboard-container').style.display = 'none';
-        notasEscalaAtual = []; // Limpa a memória
+        notasEscalaAtual = []; 
     }
 }
 
-// Função chamada automaticamente quando você muda a opção no "select"
 function atualizarBraco() {
     if (notasEscalaAtual.length > 0) {
         desenharBraco();
     }
 }
 
+// === ALTERAÇÃO: Lógica do braço repensada para Casas e Pestanas ===
 function desenharBraco() {
     const fretboard = document.getElementById('fretboard');
     const instrumento = document.getElementById('seletorInstrumento').value;
@@ -92,29 +91,45 @@ function desenharBraco() {
     
     const notasCromaticas = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
     
-    // Define a afinação e a quantidade de cordas com base na sua escolha
     let afinacaoCordas = [];
     if (instrumento === 'guitarra') {
-        afinacaoCordas = ['E', 'B', 'G', 'D', 'A', 'E']; // 6 Cordas
+        afinacaoCordas = ['E', 'B', 'G', 'D', 'A', 'E']; 
     } else if (instrumento === 'baixo') {
-        afinacaoCordas = ['G', 'D', 'A', 'E']; // 4 Cordas (Afinação padrão do baixo)
+        afinacaoCordas = ['G', 'D', 'A', 'E']; 
     }
 
-    // O código agora é inteligente para montar o braço do tamanho exato do array acima
     for (let c = 0; c < afinacaoCordas.length; c++) {
         const cordaDiv = document.createElement('div');
         cordaDiv.className = 'corda';
         
         let notaAtualIndex = notasCromaticas.indexOf(afinacaoCordas[c]);
         
+        // Loop até casa 12 (0 é a corda solta)
         for (let t = 0; t <= 12; t++) {
             const trasteDiv = document.createElement('div');
             trasteDiv.className = 'traste';
             
+            // Adiciona classes específicas para a corda solta e a pestana
+            if (t === 0) trasteDiv.classList.add('corda-solta');
+            if (t === 1) trasteDiv.classList.add('pestana');
+
+            // Adiciona marcação (inlay/bolinha do braço) no fundo das casas 3, 5, 7, 9, 12
+            if (t > 0 && [3, 5, 7, 9, 12].includes(t)) {
+                // Posiciona a bolinha aproximadamente na corda do meio
+                const cordaMeio = Math.floor((afinacaoCordas.length - 1) / 2);
+                if (c === cordaMeio) {
+                    const marcador = document.createElement('div');
+                    marcador.className = 'marcador-fundo';
+                    trasteDiv.appendChild(marcador);
+                }
+            }
+            
             const notaDoTraste = notasCromaticas[(notaAtualIndex + t) % 12];
             
             if (notasEscalaAtual.includes(notaDoTraste)) {
-                trasteDiv.innerHTML = `<div class="bolinha-nota">${notaDoTraste}</div>`;
+                // Cordas soltas ganham um visual levemente diferente (opcional via CSS)
+                const classeNota = t === 0 ? 'bolinha-nota nota-solta-destaque' : 'bolinha-nota';
+                trasteDiv.innerHTML += `<div class="${classeNota}">${notaDoTraste}</div>`;
             }
             
             cordaDiv.appendChild(trasteDiv);
@@ -122,13 +137,27 @@ function desenharBraco() {
         fretboard.appendChild(cordaDiv);
     }
     
+    // === Adicionando a Régua de Números das Casas ===
+    const reguaDiv = document.createElement('div');
+    reguaDiv.className = 'regua-casas';
+    for (let t = 0; t <= 12; t++) {
+        const numDiv = document.createElement('div');
+        numDiv.className = 'numero-casa';
+        if (t === 0) {
+            numDiv.classList.add('corda-solta-num'); // Espaço vazio antes do braço
+        } else {
+            numDiv.innerText = t; // Imprime o número da casa
+        }
+        reguaDiv.appendChild(numDiv);
+    }
+    fretboard.appendChild(reguaDiv);
+    
     document.getElementById('fretboard-container').style.display = 'block';
 }
 
 // ==========================================
-// MÓDULO HARD: DETECTOR DE PITCH (VOZ/VIOLÃO)
+// MÓDULO HARD: DETECTOR DE PITCH (VOZ/VIOLÃO) (MANTIDO INTACTO)
 // ==========================================
-
 let audioContext;
 let analyser;
 let microphone;
@@ -142,7 +171,6 @@ async function iniciarAfinador() {
     const displayNota = document.getElementById('notaDetectada');
     const displayFreq = document.getElementById('frequenciaDetectada');
 
-    // Se já estiver ouvindo, o botão serve para desligar
     if (isListening) {
         isListening = false;
         audioContext.close();
@@ -155,22 +183,19 @@ async function iniciarAfinador() {
     }
 
     try {
-        // Pede permissão para usar o microfone
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         
-        // Cria o contexto de áudio do navegador
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
         analyser = audioContext.createAnalyser();
-        analyser.fftSize = 2048; // Tamanho da amostra de áudio
+        analyser.fftSize = 2048; 
         
         microphone = audioContext.createMediaStreamSource(stream);
         microphone.connect(analyser);
 
         isListening = true;
         btn.innerText = "Desligar Microfone";
-        btn.style.backgroundColor = "#e74c3c"; // Fica vermelho para indicar que está gravando
+        btn.style.backgroundColor = "#e74c3c"; 
         
-        // Inicia o loop de detecção
         detectarPitch();
     } catch (err) {
         alert("Erro ao acessar o microfone. O navegador pode ter bloqueado a permissão.");
@@ -178,18 +203,16 @@ async function iniciarAfinador() {
     }
 }
 
-// O algoritmo de Autocorrelação (A Matemática que entende o som)
 function autoCorrelate(buf, sampleRate) {
     let SIZE = buf.length;
     let rms = 0;
     
-    // Calcula o volume (se estiver muito baixo, ignora)
     for (let i = 0; i < SIZE; i++) {
         let val = buf[i];
         rms += val * val;
     }
     rms = Math.sqrt(rms / SIZE);
-    if (rms < 0.01) return -1; // Som muito baixo
+    if (rms < 0.01) return -1; 
 
     let r1 = 0, r2 = SIZE - 1, thres = 0.2;
     for (let i = 0; i < SIZE / 2; i++)
@@ -222,23 +245,19 @@ function autoCorrelate(buf, sampleRate) {
     return sampleRate / T0;
 }
 
-// Transforma Hertz (Hz) na nota musical correspondente
 function notaDeFrequencia(frequencia) {
     const notaNum = 12 * (Math.log(frequencia / 440) / Math.log(2));
     return Math.round(notaNum) + 69;
 }
 
-// Fica rodando em loop infinito enquanto o microfone estiver ligado
 function detectarPitch() {
     if (!isListening) return;
 
     const buffer = new Float32Array(analyser.fftSize);
     analyser.getFloatTimeDomainData(buffer);
     
-    // Descobre a frequência
     const frequencia = autoCorrelate(buffer, audioContext.sampleRate);
 
-    // Se achou uma frequência válida, atualiza a tela
     if (frequencia !== -1) {
         const notaIndex = notaDeFrequencia(frequencia);
         const notaNome = notasStrings[notaIndex % 12];
@@ -247,6 +266,5 @@ function detectarPitch() {
         document.getElementById('frequenciaDetectada').innerText = Math.round(frequencia) + " Hz";
     }
 
-    // Chama a função de novo no próximo quadro de animação da tela
     animationId = requestAnimationFrame(detectarPitch);
 }

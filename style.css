@@ -18,8 +18,31 @@ body {
     box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     text-align: center;
     width: 100%;
-    max-width: 550px; /* Espaço suficiente para o braço */
+    max-width: 900px; /* Aumentado para acomodar 2 colunas no desktop */
 }
+
+/* --- NOVO: Layout em Grid para telas maiores (Desktop) --- */
+.layout-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+@media (min-width: 768px) {
+    .layout-grid {
+        flex-direction: row;
+        align-items: start;
+        text-align: left;
+    }
+    .painel-esquerdo, .painel-direito {
+        flex: 1;
+        min-width: 0;
+    }
+    .painel-esquerdo {
+        max-width: 350px;
+    }
+}
+/* -------------------------------------------------------- */
 
 h1 { font-size: 24px; margin-bottom: 10px; }
 
@@ -50,15 +73,14 @@ button {
 button:hover { background-color: #0056b3; }
 
 .resultado-box {
-    margin-top: 20px;
     padding: 15px;
     background-color: #3d3d3d;
     border-radius: 5px;
     font-weight: bold;
     min-height: 20px;
+    text-align: center;
 }
 
-/* Evita que o braço quebre o layout */
 .fretboard-wrapper {
     width: 100%;
     overflow-x: auto;
@@ -68,20 +90,19 @@ button:hover { background-color: #0056b3; }
 .fretboard {
     display: flex;
     flex-direction: column;
-    background-color: #4a2f1d;
-    border: 2px solid #222;
-    border-radius: 4px;
-    padding: 5px 0;
-    min-width: 450px; /* Impede os trastes de ficarem espremidos */
+    /* Removemos as bordas gerais e o fundo daqui e movemos para as trastes */
+    min-width: 550px; 
 }
 
 .corda {
     display: flex;
-    height: 25px;
+    height: 30px; /* Um pouco mais de espaço vertical para as notas */
     align-items: center;
     position: relative;
+    border-right: 2px solid #222; /* Final do braço */
 }
 
+/* A corda de metal visual */
 .corda::before {
     content: '';
     position: absolute;
@@ -100,7 +121,31 @@ button:hover { background-color: #0056b3; }
     justify-content: center;
     align-items: center;
     position: relative;
+    background-color: #4a2f1d; /* Fundo de madeira aplicado individualmente */
 }
+
+/* --- NOVO: Estilos da Corda Solta e Pestana --- */
+.corda-solta {
+    width: 35px; /* Largura fixa */
+    flex: none; /* Impede de esticar */
+    border-right: none; /* Tira o ferro do traste */
+    background-color: transparent; /* Remove a madeira, mostrando o fundo */
+}
+
+.pestana {
+    border-left: 6px solid #d4c4b7; /* O 'Osso/Nut' grosso separando a corda solta do braço */
+}
+
+/* Bolinha visual no fundo do braço (casas 3, 5, 7, 9...) */
+.marcador-fundo {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background-color: rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    z-index: 0; 
+}
+/* ---------------------------------------------- */
 
 .bolinha-nota {
     width: 20px;
@@ -115,4 +160,30 @@ button:hover { background-color: #0056b3; }
     color: white;
     font-size: 10px;
     font-weight: bold;
+}
+
+.nota-solta-destaque {
+    background-color: #e67e22; /* Notas soltas ficam laranja para bater o olho e saber */
+    border-radius: 4px; /* Formato levemente quadrado */
+}
+
+/* --- NOVO: Régua de Casas --- */
+.regua-casas {
+    display: flex;
+    height: 25px;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.numero-casa {
+    flex: 1;
+    text-align: center;
+    color: #888;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.corda-solta-num {
+    width: 35px; /* Mesmo tamanho da corda solta para empurrar os números pro lugar certo */
+    flex: none;
 }
