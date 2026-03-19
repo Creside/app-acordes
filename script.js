@@ -367,13 +367,11 @@ const bancoDeAcordes = {
 };
 
 // Banco de Shapes super completo!
-// g_frets: [Corda6, Corda5, Corda4, Corda3, Corda2, Corda1] (null = X, 0 = Solta)
-// g_fingers: Dedos correspondentes [6, 5, 4, 3, 2, 1]
-// piano: Posições das teclas a partir do primeiro Dó (0 a 23)
 const dicionarioShapes = {
     "C":   { g_frets: [null, 3, 2, 0, 1, 0], g_fingers: [null, 3, 2, null, 1, null], piano: [0, 4, 7] },
     "C7M": { g_frets: [null, 3, 2, 0, 0, 0], g_fingers: [null, 3, 2, null, null, null], piano: [0, 4, 7, 11] },
     "C9":  { g_frets: [null, 3, 2, 3, 3, null], g_fingers: [null, 2, 1, 3, 4, null], piano: [0, 4, 7, 10, 14] },
+    "C7":  { g_frets: [null, 3, 2, 3, 1, 0], g_fingers: [null, 3, 2, 4, 1, null], piano: [0, 4, 7, 10] }, // NOVO
     
     "D":   { g_frets: [null, null, 0, 2, 3, 2], g_fingers: [null, null, null, 1, 3, 2], piano: [2, 6, 9] },
     "D7M": { g_frets: [null, null, 0, 2, 2, 2], g_fingers: [null, null, null, 1, 2, 3], piano: [2, 6, 9, 13] },
@@ -384,14 +382,17 @@ const dicionarioShapes = {
     "E7M": { g_frets: [0, 2, 1, 1, 0, 0], g_fingers: [null, 3, 1, 2, null, null], piano: [4, 8, 11, 15] },
     "E9":  { g_frets: [0, 2, 0, 1, 0, 2], g_fingers: [null, 2, null, 1, null, 4], piano: [4, 8, 11, 14, 18] },
     "E7":  { g_frets: [0, 2, 0, 1, 0, 0], g_fingers: [null, 2, null, 1, null, null], piano: [4, 8, 11, 14] },
+    "Edim":{ g_frets: [null, null, 2, 3, 2, 3], g_fingers: [null, null, 1, 3, 2, 4], piano: [4, 7, 10] }, // NOVO
     
     "F":   { g_frets: [1, 3, 3, 2, 1, 1], g_fingers: [1, 3, 4, 2, 1, 1], piano: [5, 9, 12] },
     "F7M": { g_frets: [null, null, 3, 2, 1, 0], g_fingers: [null, null, 3, 2, 1, null], piano: [5, 9, 12, 16] },
+    "F#7": { g_frets: [2, 4, 2, 3, 2, 2], g_fingers: [1, 3, 1, 2, 1, 1], piano: [6, 10, 13, 16] }, // NOVO
     
     "G":   { g_frets: [3, 2, 0, 0, 0, 3], g_fingers: [2, 1, null, null, null, 3], piano: [7, 11, 14] },
     "G7M": { g_frets: [3, null, 0, 0, 0, 2], g_fingers: [2, null, null, null, null, 1], piano: [7, 11, 14, 18] },
     "G9":  { g_frets: [3, null, 0, 2, 0, 3], g_fingers: [2, null, null, 1, null, 3], piano: [7, 11, 14, 17, 21] },
     "G7":  { g_frets: [3, 2, 0, 0, 0, 1], g_fingers: [3, 2, null, null, null, 1], piano: [7, 11, 14, 17] },
+    "Gm7": { g_frets: [3, 5, 3, 3, 3, 3], g_fingers: [1, 3, 1, 1, 1, 1], piano: [7, 10, 14, 17] }, // NOVO
     
     "A":   { g_frets: [null, 0, 2, 2, 2, 0], g_fingers: [null, null, 1, 2, 3, null], piano: [9, 13, 16] },
     "A7M": { g_frets: [null, 0, 2, 1, 2, 0], g_fingers: [null, null, 3, 1, 2, null], piano: [9, 13, 16, 20] },
@@ -735,12 +736,10 @@ function adicionarRotaVisual(nomeDaRegra, listaDeAcordes) {
 // NOVA FUNÇÃO: Gera um SVG reduzido para caber nos cartões da rota
 function criarMiniSVG(nomeAcorde) {
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    // O viewBox permite desenhar em tamanho normal e escalar dinamicamente!
     svg.setAttribute("viewBox", "0 0 140 160");
-    svg.setAttribute("width", "70");  // Metade do tamanho do diagrama principal
-    svg.setAttribute("height", "80"); // Metade do tamanho
+    svg.setAttribute("width", "70");  // Escala para metade
+    svg.setAttribute("height", "80"); // Escala para metade
     svg.style.display = "block";
-    svg.style.margin = "0 auto";
 
     const data = dicionarioShapes[nomeAcorde];
     
@@ -787,9 +786,10 @@ function criarMiniSVG(nomeAcorde) {
         svg.appendChild(stringLine);
     }
 
-    // Bolinhas e Notas Soltas
+    // Bolinhas, Notas Soltas e Dedos
     for (let i = 0; i < 6; i++) {
         const casa = data.g_frets[i];
+        const dedo = data.g_fingers[i];
         const x = marginLeft + i * stringSpacing;
 
         if (casa === null || casa === 0) {
@@ -801,11 +801,24 @@ function criarMiniSVG(nomeAcorde) {
             svg.appendChild(text);
         } else if (casa > 0) {
             const y = marginTop + (casa - 0.5) * fretSpacing; 
+            
+            // Desenha a bolinha (raio 9 igual ao grande, a viewBox escala sozinha)
             const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
             dot.setAttribute("cx", x); dot.setAttribute("cy", y);
-            dot.setAttribute("r", "12"); // Bolinha ligeiramente maior na miniatura para ser visível
+            dot.setAttribute("r", "9"); 
             dot.setAttribute("fill", "#f1c40f");
             svg.appendChild(dot);
+
+            // Adiciona o número do dedo se existir
+            if (dedo !== null) {
+                const fingerText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                fingerText.setAttribute("x", x); fingerText.setAttribute("y", y);
+                fingerText.setAttribute("fill", "#000000"); fingerText.setAttribute("font-size", "11px");
+                fingerText.setAttribute("font-weight", "bold"); fingerText.setAttribute("text-anchor", "middle");
+                fingerText.setAttribute("dominant-baseline", "central");
+                fingerText.textContent = dedo;
+                svg.appendChild(fingerText);
+            }
         }
     }
 

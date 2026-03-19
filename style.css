@@ -416,3 +416,20 @@ button.tab-btn.ativo {
     font-size: 20px;
     font-weight: bold;
 }
+
+.mini-chord-box {
+    background-color: #2a2a35;
+    border: 2px solid #444;
+    border-radius: 8px;
+    padding: 10px;
+    
+    /* --- AS TRÊS LINHAS NOVAS PARA ALINHAMENTO --- */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* ------------------------------------------- */
+    
+    min-width: 75px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
