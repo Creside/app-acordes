@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mestre dos Acordes - App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Identificador de Tom</h1>
+        <p>Digite os acordes separados por vírgula:</p>
+        
+        <input type="text" id="inputAcordes" placeholder="Ex: C, F, G">
+        <button onclick="identificarTom()">Descobrir Tom</button>
+
+        <div id="afinador-container" style="margin-top: 20px; padding: 15px; background: #3d3d3d; border-radius: 5px; border: 1px solid #555;">
+            <h3 style="margin-top: 0; margin-bottom: 5px; color: #fff; font-size: 16px;">🎤 Afinador / Voz</h3>
+            <p style="font-size: 12px; color: #ccc; margin-top: 0;">Cante uma nota ou toque uma corda.</p>
+            
+            <button id="btnAfinador" onclick="iniciarAfinador()" style="background-color: #e67e22; margin-bottom: 10px; font-size: 14px; padding: 8px;">Ligar Microfone</button>
+            
+            <div id="notaDetectada" style="font-size: 32px; font-weight: bold; color: #f1c40f;">--</div>
+            <div id="frequenciaDetectada" style="font-size: 14px; color: #aaa;">-- Hz</div>
+        </div>
+        
+        <div id="resultado" class="resultado-box">
+            Aguardando acordes...
+        </div>
+
+        <div id="fretboard-container" style="display: none; margin-top: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h3 style="font-size: 16px; margin: 0; color: #fff;">Escala no Braço</h3>
+                <select id="seletorInstrumento" onchange="atualizarBraco()" style="padding: 5px; border-radius: 5px; background: #444; color: white; border: 1px solid #555; cursor: pointer;">
+                    <option value="guitarra">Guitarra/Violão (6 Cordas)</option>
+                    <option value="baixo">Contrabaixo (4 Cordas)</option>
+                </select>
+            </div>
+            
+            <div class="fretboard-wrapper">
+                <div class="fretboard" id="fretboard"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
