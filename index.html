@@ -42,8 +42,14 @@
 
                 <div id="chord-diagram-container" style="display: none; margin-top: 20px; text-align: center;">
                     <h3 id="nomeAcordeDestaque" style="color: #f1c40f; font-size: 20px; margin-bottom: 10px;">--</h3>
-                    <div class="chord-card">
-                        <div id="chord-svg-area"></div>
+                    
+                    <div class="diagrama-tabs">
+                        <button id="tab-guitarra" class="tab-btn ativo" onclick="mudarVisaoDiagrama('guitarra')">🎸 Violão</button>
+                        <button id="tab-teclado" class="tab-btn" onclick="mudarVisaoDiagrama('teclado')">🎹 Teclado</button>
+                    </div>
+
+                    <div class="chord-card" id="chord-card-box">
+                        <div id="chord-visual-area"></div>
                     </div>
                 </div>
 
@@ -61,7 +67,9 @@
                     </div>
                 </div>
 
-            </div> </div> </div>
+            </div> 
+        </div> 
+    </div>
 
     <script src="script.js"></script>
 </body>

@@ -259,3 +259,101 @@ button.botao-variacao.ativo {
     font-weight: bold;
     text-anchor: middle;
 }
+
+/* --- ESTILO DO CARD DO DIAGRAMA (O FUNDO ESCURO DO SVG) --- */
+.chord-card {
+    background-color: #1a1a1a;
+    border: 2px solid #444;
+    border-radius: 12px;
+    padding: 20px;
+    display: inline-block;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+    margin-bottom: 20px;
+    min-width: 180px; /* Garante um tamanho mínimo pro card não ficar espremido */
+}
+
+/* --- TABS (VIOLÃO / TECLADO) --- */
+.diagrama-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+/* Forçamos a especificidade para sobrescrever o botão azul padrão */
+button.tab-btn {
+    width: auto;
+    background-color: #333;
+    border: 1px solid #555;
+    color: #888;
+    padding: 8px 15px;
+    border-radius: 20px; /* Bordas bem arredondadas, estilo pílula */
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: 0.2s;
+    margin: 0;
+}
+
+button.tab-btn:hover {
+    background-color: #444;
+    color: #fff;
+}
+
+button.tab-btn.ativo {
+    background-color: #444;
+    color: #fff;
+    border-color: #f1c40f; /* Borda dourada para mostrar qual está selecionado */
+}
+
+/* --- ESTILOS DO TECLADO (PIANO) --- */
+.teclado-container {
+    display: flex;
+    position: relative;
+    height: 120px;
+    background: #111;
+    border: 2px solid #333;
+    border-radius: 4px;
+    padding: 2px;
+    margin: 0 auto; /* Centraliza o teclado dentro do card */
+    width: fit-content;
+}
+
+.tecla-branca {
+    width: 26px;
+    height: 100%;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 0 0 3px 3px;
+    margin: 0 1px;
+    position: relative;
+    z-index: 1;
+}
+
+.tecla-preta {
+    width: 16px;
+    height: 60%;
+    background-color: #222;
+    border-radius: 0 0 3px 3px;
+    position: absolute;
+    z-index: 2;
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* Sombras para dar volume 3D */
+}
+
+/* Bolinha amarela na tecla quando ela faz parte do acorde */
+.marca-tecla {
+    width: 14px;
+    height: 14px;
+    background-color: #f1c40f;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 10px; /* Nas teclas brancas fica embaixo */
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.8);
+    z-index: 3;
+}
+
+.tecla-preta .marca-tecla {
+    bottom: 8px; /* Nas pretas a bolinha sobe um pouco */
+}
