@@ -680,7 +680,7 @@ function gerarRotas() {
     adicionarRotaVisual("Aproximação Diminuta", [origemT, acordeDim, destinoT]);
 }
 
-// Função que desenha o bloquinho da rota na tela
+// Função que desenha o bloquinho da rota na tela com os Mini-Diagramas
 function adicionarRotaVisual(nomeDaRegra, listaDeAcordes) {
     const resultadoRotas = document.getElementById('resultado-rotas');
     
@@ -696,28 +696,30 @@ function adicionarRotaVisual(nomeDaRegra, listaDeAcordes) {
     caminhoDiv.className = 'rota-caminho';
 
     listaDeAcordes.forEach((acorde, index) => {
-        const acordeDiv = document.createElement('div');
-        acordeDiv.className = 'rota-acorde';
-        acordeDiv.innerText = acorde;
+        const acordeBox = document.createElement('div');
+        acordeBox.className = 'mini-chord-box';
         
-        // --- NOVA LÓGICA DE CLIQUE AQUI ---
-        acordeDiv.onclick = () => {
-            acordeAtualSelecionado = acorde; // Define o acorde globalmente
-            
-            // Garante que a área do diagrama está visível
+        // Título do Acorde no topo da miniatura
+        const nomeLabel = document.createElement('div');
+        nomeLabel.className = 'mini-chord-name';
+        nomeLabel.innerText = acorde;
+        acordeBox.appendChild(nomeLabel);
+        
+        // Gera e adiciona o SVG em miniatura
+        const svgElement = criarMiniSVG(acorde);
+        acordeBox.appendChild(svgElement);
+
+        // Ação de clique: abre o diagrama grande lá em baixo
+        acordeBox.onclick = () => {
+            acordeAtualSelecionado = acorde;
             document.getElementById('chord-diagram-container').style.display = 'block';
-            
-            // Renderiza o diagrama (Violão ou Teclado)
             renderizarVisualizacao();
-            
-            // Faz o ecrã rolar suavemente até ao diagrama para o utilizador ver
             document.getElementById('chord-diagram-container').scrollIntoView({ behavior: 'smooth', block: 'center' });
         };
-        // ----------------------------------
 
-        caminhoDiv.appendChild(acordeDiv);
+        caminhoDiv.appendChild(acordeBox);
 
-        // Adiciona a setinha entre os acordes (exceto no último)
+        // Adiciona a seta entre os acordes
         if (index < listaDeAcordes.length - 1) {
             const seta = document.createElement('div');
             seta.className = 'rota-seta';
@@ -728,4 +730,84 @@ function adicionarRotaVisual(nomeDaRegra, listaDeAcordes) {
 
     card.appendChild(caminhoDiv);
     resultadoRotas.appendChild(card);
+}
+
+// NOVA FUNÇÃO: Gera um SVG reduzido para caber nos cartões da rota
+function criarMiniSVG(nomeAcorde) {
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    // O viewBox permite desenhar em tamanho normal e escalar dinamicamente!
+    svg.setAttribute("viewBox", "0 0 140 160");
+    svg.setAttribute("width", "70");  // Metade do tamanho do diagrama principal
+    svg.setAttribute("height", "80"); // Metade do tamanho
+    svg.style.display = "block";
+    svg.style.margin = "0 auto";
+
+    const data = dicionarioShapes[nomeAcorde];
+    
+    // Se o acorde não existir no banco, mostra um ponto de interrogação
+    if (!data) {
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("x", "70"); text.setAttribute("y", "80");
+        text.setAttribute("fill", "#888"); text.setAttribute("font-size", "40px");
+        text.setAttribute("text-anchor", "middle"); text.setAttribute("dominant-baseline", "central");
+        text.textContent = "?";
+        svg.appendChild(text);
+        return svg;
+    }
+
+    const width = 140; const height = 160; const frets = 5;     
+    const marginTop = 25; const marginLeft = 20;
+    const stringSpacing = (width - 2 * marginLeft) / 5;
+    const fretSpacing = (height - marginTop - 10) / frets;
+
+    // Pestana
+    const nut = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    nut.setAttribute("x1", marginLeft); nut.setAttribute("y1", marginTop);
+    nut.setAttribute("x2", width - marginLeft); nut.setAttribute("y2", marginTop);
+    nut.setAttribute("stroke", "#ffffff"); nut.setAttribute("stroke-width", "4");
+    svg.appendChild(nut);
+
+    // Trastes
+    for (let i = 1; i <= frets; i++) {
+        const y = marginTop + i * fretSpacing;
+        const fretLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        fretLine.setAttribute("x1", marginLeft); fretLine.setAttribute("y1", y);
+        fretLine.setAttribute("x2", width - marginLeft); fretLine.setAttribute("y2", y);
+        fretLine.setAttribute("stroke", "#666"); fretLine.setAttribute("stroke-width", "2");
+        svg.appendChild(fretLine);
+    }
+
+    // Cordas
+    for (let i = 0; i < 6; i++) {
+        const x = marginLeft + i * stringSpacing;
+        const stringLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        stringLine.setAttribute("x1", x); stringLine.setAttribute("y1", marginTop);
+        stringLine.setAttribute("x2", x); stringLine.setAttribute("y2", height - 10);
+        stringLine.setAttribute("stroke", "#666"); stringLine.setAttribute("stroke-width", "2");
+        svg.appendChild(stringLine);
+    }
+
+    // Bolinhas e Notas Soltas
+    for (let i = 0; i < 6; i++) {
+        const casa = data.g_frets[i];
+        const x = marginLeft + i * stringSpacing;
+
+        if (casa === null || casa === 0) {
+            const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            text.setAttribute("x", x); text.setAttribute("y", marginTop - 8);
+            text.setAttribute("fill", "#aaa"); text.setAttribute("font-size", "14px");
+            text.setAttribute("font-weight", "bold"); text.setAttribute("text-anchor", "middle");
+            text.textContent = casa === null ? "X" : "O";
+            svg.appendChild(text);
+        } else if (casa > 0) {
+            const y = marginTop + (casa - 0.5) * fretSpacing; 
+            const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            dot.setAttribute("cx", x); dot.setAttribute("cy", y);
+            dot.setAttribute("r", "12"); // Bolinha ligeiramente maior na miniatura para ser visível
+            dot.setAttribute("fill", "#f1c40f");
+            svg.appendChild(dot);
+        }
+    }
+
+    return svg;
 }
