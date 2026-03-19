@@ -469,8 +469,15 @@ function desenharDiagramaAcorde(nomeAcorde) {
     const area = document.getElementById('chord-visual-area');
     area.innerHTML = '';
     
+    nomeDiv.innerText = nomeAcorde;
+    container.style.display = 'block';
+
     const data = dicionarioShapes[nomeAcorde];
-    if (!data) return; 
+    if (!data) {
+        // Se o acorde não existir no banco, mostra esta mensagem amigável
+        area.innerHTML = `<p style="color:#aaa; padding: 20px; font-size: 14px;">O diagrama para <b>${nomeAcorde}</b> ainda não foi adicionado ao banco de dados.</p>`;
+        return; 
+    }
     
     nomeDiv.innerText = nomeAcorde;
     container.style.display = 'block';
@@ -561,7 +568,10 @@ function desenharTeclado(nomeAcorde) {
     area.innerHTML = '';
 
     const data = dicionarioShapes[nomeAcorde];
-    if (!data || !data.piano) return;
+    if (!data || !data.piano) {
+        area.innerHTML = `<p style="color:#aaa; padding: 20px; font-size: 14px;">O teclado para <b>${nomeAcorde}</b> ainda não foi adicionado ao banco de dados.</p>`;
+        return;
+    }
 
     const notasAtivas = data.piano; // Ex: [0, 4, 7]
     const totalTeclasBrancas = 14; // Duas oitavas (C até B)
@@ -689,9 +699,25 @@ function adicionarRotaVisual(nomeDaRegra, listaDeAcordes) {
         const acordeDiv = document.createElement('div');
         acordeDiv.className = 'rota-acorde';
         acordeDiv.innerText = acorde;
+        
+        // --- NOVA LÓGICA DE CLIQUE AQUI ---
+        acordeDiv.onclick = () => {
+            acordeAtualSelecionado = acorde; // Define o acorde globalmente
+            
+            // Garante que a área do diagrama está visível
+            document.getElementById('chord-diagram-container').style.display = 'block';
+            
+            // Renderiza o diagrama (Violão ou Teclado)
+            renderizarVisualizacao();
+            
+            // Faz o ecrã rolar suavemente até ao diagrama para o utilizador ver
+            document.getElementById('chord-diagram-container').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        };
+        // ----------------------------------
+
         caminhoDiv.appendChild(acordeDiv);
 
-        // Adiciona a setinha entre os acordes (excepto no último)
+        // Adiciona a setinha entre os acordes (exceto no último)
         if (index < listaDeAcordes.length - 1) {
             const seta = document.createElement('div');
             seta.className = 'rota-seta';
