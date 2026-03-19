@@ -1,5 +1,79 @@
+// ==========================================
+// FASE 1: O MOTOR HARMÔNICO (O CÉREBRO DO APP)
+// ==========================================
+
+// 1. A Escala Cromática (O DNA de toda a música ocidental)
+// Usamos sustenidos (#) por padrão para facilitar os cálculos iniciais.
+const notasCromaticas = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+
+// 2. Fórmulas de Escalas (Em semitons a partir da Tônica)
+// Maior: Tom-Tom-Semintom-Tom-Tom-Tom-Semitom (2, 2, 1, 2, 2, 2, 1)
+const formulaEscalaMaior = [0, 2, 4, 5, 7, 9, 11];
+const formulaEscalaMenor = [0, 2, 3, 5, 7, 8, 10]; // Menor Natural
+
+// 3. Fórmulas de Acordes (Em semitons a partir da Tônica)
+// C (Dó Maior) = Tônica(0) + Terça Maior(4) + Quinta Justa(7) = C, E, G
+const formulasAcordes = {
+    "": [0, 4, 7],           // Tríade Maior (Ex: C)
+    "m": [0, 3, 7],          // Tríade Menor (Ex: Cm)
+    "dim": [0, 3, 6],        // Tríade Diminuta (Ex: Cdim)
+    "aug": [0, 4, 8],        // Tríade Aumentada (Ex: Caug)
+    "7": [0, 4, 7, 10],      // Tétrade Dominante (Ex: C7)
+    "7M": [0, 4, 7, 11],     // Tétrade Maior com 7ª Maior (Ex: C7M)
+    "m7": [0, 3, 7, 10],     // Tétrade Menor com 7ª Menor (Ex: Cm7)
+    "m7b5": [0, 3, 6, 10]    // Meio Diminuto (Ex: Cm7b5)
+};
+
+// 4. Padrão do Campo Harmônico Maior (Os "Graus")
+// I, ii, iii, IV, V, vi, vii°
+const qualidadesCampoMaior = ["", "m", "m", "", "", "m", "dim"];
+
+// ==========================================
+// FUNÇÕES INTELIGENTES (MATEMÁTICA MUSICAL)
+// ==========================================
+
+// Função A: Encontra o índice de uma nota (Ex: "E" -> 4)
+function getNotaIndex(notaStr) {
+    // Tratamento simples para "Db" virar "C#", etc., se o usuário digitar bemol
+    const equivalenciasBemol = {"Db":"C#", "Eb":"D#", "Gb":"F#", "Ab":"G#", "Bb":"A#"};
+    const nota = equivalenciasBemol[notaStr] || notaStr;
+    return notasCromaticas.indexOf(nota);
+}
+
+// Função B: Calcula uma nota X semitons acima de outra
+function somarSemitons(notaBaseIndex, semitons) {
+    // O módulo (%) garante que se passar do "B" (11), ele volta pro "C" (0)
+    return (notaBaseIndex + semitons) % 12;
+}
+
+// Função C: Gera o Campo Harmônico completo de qualquer Tom Maior!
+// Exemplo: gerarCampoHarmonicoMaior("C") -> ["C", "Dm", "Em", "F", "G", "Am", "Bdim"]
+function gerarCampoHarmonicoMaior(tonicaStr) {
+    const tonicaIndex = getNotaIndex(tonicaStr);
+    if (tonicaIndex === -1) return null; // Nota inválida
+
+    let campoHarmonico = [];
+    
+    // Itera pelos 7 graus da escala maior
+    for (let i = 0; i < 7; i++) {
+        // Encontra a nota raiz do grau atual usando a fórmula da escala
+        const grauIndex = somarSemitons(tonicaIndex, formulaEscalaMaior[i]);
+        const nomeNota = notasCromaticas[grauIndex];
+        
+        // Junta a nota com a qualidade do grau (ex: D + m = Dm)
+        const acordeDoGrau = nomeNota + qualidadesCampoMaior[i];
+        campoHarmonico.push(acordeDoGrau);
+    }
+    
+    return campoHarmonico;
+}
+
 // Memória do app para guardar as notas atuais quando trocarmos de instrumento
 let notasEscalaAtual = []; 
+
+// ==========================================
+// FUNÇÃO: IDENTIFICADOR DE TOM (INTELIGENTE)
+// ==========================================
 
 function identificarTom() {
     const input = document.getElementById('inputAcordes').value;
@@ -11,75 +85,80 @@ function identificarTom() {
         return;
     }
 
-    const dicionarioMusical = {
-        "Dó Maior (C)": {
-            campo: ["C", "DM", "EM", "F", "G", "AM", "BDIM"],
-            penta: "C, D, E, G, A (Penta Maior) <br> A, C, D, E, G (Penta Menor)",
-            passagem: "E7 (para cair no Am), A7 (para cair no Dm)",
-            notasPenta: ["C", "D", "E", "G", "A"]
-        },
-        "Ré Maior (D)": {
-            campo: ["D", "EM", "F#M", "G", "A", "BM", "C#DIM"],
-            penta: "D, E, F#, A, B (Penta Maior) <br> B, D, E, F#, A (Penta Menor)",
-            passagem: "F#7 (para cair no Bm), B7 (para cair no Em)",
-            notasPenta: ["D", "E", "F#", "A", "B"]
-        },
-        "Mi Maior (E)": {
-            campo: ["E", "F#M", "G#M", "A", "B", "C#M", "D#DIM"],
-            penta: "E, F#, G#, B, C# (Penta Maior) <br> C#, E, F#, G#, B (Penta Menor)",
-            passagem: "G#7 (para cair no C#m), C#7 (para cair no F#m)",
-            notasPenta: ["E", "F#", "G#", "B", "C#"]
-        },
-        "Sol Maior (G)": {
-            campo: ["G", "AM", "BM", "C", "D", "EM", "F#DIM"],
-            penta: "G, A, B, D, E (Penta Maior) <br> E, G, A, B, D (Penta Menor)",
-            passagem: "B7 (para cair no Em), E7 (para cair no Am)",
-            notasPenta: ["G", "A", "B", "D", "E"]
-        },
-        "Lá Maior (A)": {
-            campo: ["A", "BM", "C#M", "D", "E", "F#M", "G#DIM"],
-            penta: "A, B, C#, E, F# (Penta Maior) <br> F#, A, B, C#, E (Penta Menor)",
-            passagem: "C#7 (para cair no F#m), F#7 (para cair no Bm)",
-            notasPenta: ["A", "B", "C#", "E", "F#"]
-        }
-    };
+    let tomEncontradoStr = null;
+    let campoEncontrado = [];
 
-    let tomEncontrado = null;
-
-    for (const [tom, dados] of Object.entries(dicionarioMusical)) {
-        const pertenceAoTom = acordesDigitados.every(acorde => dados.campo.includes(acorde));
+    // Testa os acordes digitados contra os 12 tons maiores possíveis
+    for (let i = 0; i < 12; i++) {
+        const notaTonica = notasCromaticas[i];
+        const campoTeste = gerarCampoHarmonicoMaior(notaTonica);
+        
+        // Verifica se TODOS os acordes digitados pertencem a este campo de teste
+        // Convertendo para uppercase para garantir a comparação ("dm" == "DM")
+        const pertenceAoTom = acordesDigitados.every(acorde => 
+            campoTeste.map(c => c.toUpperCase()).includes(acorde)
+        );
         
         if (pertenceAoTom) {
-            tomEncontrado = { nome: tom, ...dados };
-            break; 
+            tomEncontradoStr = notaTonica;
+            campoEncontrado = campoTeste;
+            break; // Achou o tom, para de procurar
         }
     }
 
-    if (tomEncontrado) {
+    if (tomEncontradoStr) {
+        // Se achou o tom (ex: "C"), vamos calcular a Pentatônica na hora
+        // Penta Maior (1, 2, 3, 5, 6) = Índices 0, 1, 2, 4, 5 do Campo Harmônico (sem as qualidades m/dim)
+        const notasPentaMaior = [
+            notasCromaticas[somarSemitons(getNotaIndex(tomEncontradoStr), 0)], // 1ª (Tônica)
+            notasCromaticas[somarSemitons(getNotaIndex(tomEncontradoStr), 2)], // 2ª
+            notasCromaticas[somarSemitons(getNotaIndex(tomEncontradoStr), 4)], // 3ª Maior
+            notasCromaticas[somarSemitons(getNotaIndex(tomEncontradoStr), 7)], // 5ª Justa
+            notasCromaticas[somarSemitons(getNotaIndex(tomEncontradoStr), 9)]  // 6ª Maior
+        ];
+
+        // Penta Menor Relativa (A partir do 6º grau, usando as mesmas notas)
+        const tonicaMenor = notasPentaMaior[4]; // A 6ª Maior é a tônica da menor relativa
+        const notasPentaMenorStr = `${tonicaMenor}, ${notasPentaMaior[0]}, ${notasPentaMaior[1]}, ${notasPentaMaior[2]}, ${notasPentaMaior[3]}`;
+
         resultadoDiv.innerHTML = `
             <div style="color: #4CAF50; font-size: 18px; margin-bottom: 15px;">
-                🎵 A música está em: <br><b>${tomEncontrado.nome}</b>
+                🎵 A música está em: <br><b>${tomEncontradoStr} Maior</b>
             </div>
             <div style="font-size: 14px; text-align: left; background: #444; padding: 12px; border-radius: 5px; color: #ddd;">
-                <p style="margin-top: 0;"><b>🎸 Escalas Pentatônicas:</b><br> ${tomEncontrado.penta}</p>
+                <p style="margin-top: 0;"><b>🎸 Escala Pentatônica Maior:</b><br> ${notasPentaMaior.join(", ")}</p>
                 <hr style="border: 0; border-top: 1px solid #555; margin: 10px 0;">
-                <p style="margin-bottom: 0;"><b>🛤️ Acordes de Passagem:</b><br> ${tomEncontrado.passagem}</p>
+                <p style="margin-bottom: 0;"><b>🎸 Escala Pentatônica Menor Relativa (${tonicaMenor}m):</b><br> ${notasPentaMenorStr}</p>
+                <hr style="border: 0; border-top: 1px solid #555; margin: 10px 0;">
+                <p style="margin-bottom: 0;"><b>🛤️ Campo Harmônico (${tomEncontradoStr}):</b><br> ${campoEncontrado.join(" - ")}</p>
             </div>
         `;
         
-        notasEscalaAtual = tomEncontrado.notasPenta;
+        // Atualiza a memória global para desenhar o braço
+        notasEscalaAtual = notasPentaMaior;
         desenharBraco(); 
 
-        // Chama a geração de variações para o tom encontrado
-        gerarBotoesDeVariacao(tomEncontrado.nome);
+        // IMPORTANTE: Adaptamos a chamada dos botões para o formato "C" em vez de "Dó Maior (C)"
+        // Por enquanto, usamos um mapeamento de volta para o teu banco de shapes antigo para não quebrar a UI
+        const nomeAntigoParaOBanco = mapearNomeParaBanco(tomEncontradoStr);
+        gerarBotoesDeVariacao(nomeAntigoParaOBanco);
 
     } else {
-        resultadoDiv.innerHTML = "Tom não identificado com precisão. Verifique se digitou corretamente.";
+        resultadoDiv.innerHTML = "Tom não identificado. Tente digitar outros acordes da música (ex: Am, F, C).";
         document.getElementById('fretboard-container').style.display = 'none';
         document.getElementById('variacoes-container').style.display = 'none';
         document.getElementById('chord-diagram-container').style.display = 'none';
         notasEscalaAtual = []; 
     }
+}
+
+// Função temporária de transição (Mantém teus botões antigos a funcionar enquanto evoluímos)
+function mapearNomeParaBanco(tonicaSigla) {
+    const mapa = {
+        "C": "Dó Maior (C)", "D": "Ré Maior (D)", "E": "Mi Maior (E)", 
+        "F": "Fá Maior (F)", "G": "Sol Maior (G)", "A": "Lá Maior (A)", "B": "Si Maior (B)"
+    };
+    return mapa[tonicaSigla] || tonicaSigla; // Se não achar (ex: F#), devolve a sigla crua
 }
 
 function atualizarBraco() {
@@ -529,4 +608,98 @@ function desenharTeclado(nomeAcorde) {
     }
 
     area.appendChild(tecladoDiv);
+}
+
+// ==========================================
+// FASE 2: CALCULADORA DE ROTAS HARMÓNICAS
+// ==========================================
+
+// Função auxiliar para extrair apenas a nota raiz de um acorde complexo (ex: "C#m7b5" -> "C#")
+function extrairTonica(acordeStr) {
+    const match = acordeStr.match(/^[A-G][#b]?/);
+    return match ? match[0] : null;
+}
+
+function gerarRotas() {
+    const origemInput = document.getElementById('acordeOrigem').value.trim();
+    const destinoInput = document.getElementById('acordeDestino').value.trim();
+    const resultadoRotas = document.getElementById('resultado-rotas');
+
+    if (!origemInput || !destinoInput) {
+        resultadoRotas.innerHTML = "<p style='color: #ff6b6b; font-size: 14px;'>Digite o acorde de origem e o destino!</p>";
+        return;
+    }
+
+    // Normaliza (Primeira letra maiúscula)
+    const origemT = origemInput.charAt(0).toUpperCase() + origemInput.slice(1);
+    const destinoT = destinoInput.charAt(0).toUpperCase() + destinoInput.slice(1);
+
+    const raizDestino = extrairTonica(destinoT);
+    const indexDestino = getNotaIndex(raizDestino);
+    
+    if (indexDestino === -1) {
+        resultadoRotas.innerHTML = "<p style='color: #ff6b6b; font-size: 14px;'>Acorde de destino não reconhecido. Use C, C#, Db, etc.</p>";
+        return;
+    }
+
+    resultadoRotas.innerHTML = ""; // Limpa resultados anteriores
+
+    // --- A MATEMÁTICA DA HARMONIA ---
+    
+    // 1. Dominante Secundário (V7 do alvo). Fica 7 semitons acima do destino.
+    const indexV7 = somarSemitons(indexDestino, 7);
+    const acordeV7 = notasCromaticas[indexV7] + "7";
+
+    // 2. Substituto Trítono (SubV7). Fica 1 semitom acima do destino.
+    const indexSubV7 = somarSemitons(indexDestino, 1);
+    const acordeSubV7 = notasCromaticas[indexSubV7] + "7";
+
+    // 3. Preparação II-V (IIm7 -> V7 -> I). O IIm7 fica 2 semitons acima do destino.
+    const indexIIm7 = somarSemitons(indexDestino, 2);
+    const acordeIIm7 = notasCromaticas[indexIIm7] + "m7";
+
+    // 4. Acorde Diminuto de Passagem (Fica 1 semitom abaixo do destino).
+    // Usamos +11 em vez de -1 para a função módulo (%) funcionar perfeitamente em JavaScript
+    const indexDim = somarSemitons(indexDestino, 11); 
+    const acordeDim = notasCromaticas[indexDim] + "dim";
+
+    // Renderiza os "Cards" visuais das rotas
+    adicionarRotaVisual("Dominante Secundário (V7)", [origemT, acordeV7, destinoT]);
+    adicionarRotaVisual("Substituto Trítono (SubV7)", [origemT, acordeSubV7, destinoT]);
+    adicionarRotaVisual("Preparação II-V", [origemT, acordeIIm7, acordeV7, destinoT]);
+    adicionarRotaVisual("Aproximação Diminuta", [origemT, acordeDim, destinoT]);
+}
+
+// Função que desenha o bloquinho da rota na tela
+function adicionarRotaVisual(nomeDaRegra, listaDeAcordes) {
+    const resultadoRotas = document.getElementById('resultado-rotas');
+    
+    const card = document.createElement('div');
+    card.className = 'rota-card';
+    
+    const titulo = document.createElement('h3');
+    titulo.className = 'rota-titulo';
+    titulo.innerText = nomeDaRegra;
+    card.appendChild(titulo);
+
+    const caminhoDiv = document.createElement('div');
+    caminhoDiv.className = 'rota-caminho';
+
+    listaDeAcordes.forEach((acorde, index) => {
+        const acordeDiv = document.createElement('div');
+        acordeDiv.className = 'rota-acorde';
+        acordeDiv.innerText = acorde;
+        caminhoDiv.appendChild(acordeDiv);
+
+        // Adiciona a setinha entre os acordes (excepto no último)
+        if (index < listaDeAcordes.length - 1) {
+            const seta = document.createElement('div');
+            seta.className = 'rota-seta';
+            seta.innerText = "➔";
+            caminhoDiv.appendChild(seta);
+        }
+    });
+
+    card.appendChild(caminhoDiv);
+    resultadoRotas.appendChild(card);
 }

@@ -34,6 +34,21 @@
                     Aguardando acordes...
                 </div>
 
+                <div id="rotas-container" style="margin-top: 20px; padding: 15px; background: #2d2d2d; border-radius: 8px; border: 1px solid #444; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                    <h3 style="margin-top: 0; margin-bottom: 5px; color: #f1c40f; font-size: 18px;">🗺️ Rotas Harmónicas</h3>
+                    <p style="font-size: 13px; color: #ccc; margin-top: 0; margin-bottom: 15px;">Descubra acordes de passagem para conectar dois acordes.</p>
+                    
+                    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px;">
+                        <input type="text" id="acordeOrigem" placeholder="De: (ex: C)" style="width: 40%; margin: 0; text-align: center;">
+                        <span style="color: #888; align-self: center; font-weight: bold;">➔</span>
+                        <input type="text" id="acordeDestino" placeholder="Para: (ex: F)" style="width: 40%; margin: 0; text-align: center;">
+                    </div>
+                    <button onclick="gerarRotas()" style="background-color: #f1c40f; color: #1a1a1a; padding: 10px;">Calcular Caminhos</button>
+                    
+                    <div id="resultado-rotas" style="margin-top: 15px; display: flex; flex-direction: column; gap: 10px;">
+                        </div>
+                </div>
+
                 <div id="variacoes-container" style="display: none; margin-top: 20px;">
                     <h3 style="font-size: 16px; color: #fff; margin-bottom: 10px;">Variações de Acordes</h3>
                     <div id="gradeVariacoes" class="grade-botoes">

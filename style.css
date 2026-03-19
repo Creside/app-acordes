@@ -357,3 +357,41 @@ button.tab-btn.ativo {
 .tecla-preta .marca-tecla {
     bottom: 8px; /* Nas pretas a bolinha sobe um pouco */
 }
+
+/* --- ESTILOS DAS ROTAS HARMÓNICAS --- */
+.rota-card {
+    background-color: #1a1a1a;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: left;
+    transition: 0.3s;
+}
+.rota-card:hover {
+    border-color: #f1c40f;
+}
+.rota-titulo {
+    color: #4CAF50;
+    font-size: 14px;
+    margin: 0 0 10px 0;
+    font-weight: bold;
+}
+.rota-caminho {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.rota-acorde {
+    background-color: #333;
+    color: #f1c40f;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 14px;
+    border: 1px solid #444;
+}
+.rota-seta {
+    color: #888;
+    font-size: 12px;
+}
