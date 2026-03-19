@@ -81,6 +81,7 @@ function identificarTom() {
     const resultadoDiv = document.getElementById('resultado');
 
     if (acordesDigitados.length === 0) {
+        resultadoDiv.style.display = 'block';
         resultadoDiv.innerHTML = "Por favor, digite os acordes.";
         return;
     }
@@ -88,13 +89,10 @@ function identificarTom() {
     let tomEncontradoStr = null;
     let campoEncontrado = [];
 
-    // Testa os acordes digitados contra os 12 tons maiores possíveis
     for (let i = 0; i < 12; i++) {
         const notaTonica = notasCromaticas[i];
         const campoTeste = gerarCampoHarmonicoMaior(notaTonica);
         
-        // Verifica se TODOS os acordes digitados pertencem a este campo de teste
-        // Convertendo para uppercase para garantir a comparação ("dm" == "DM")
         const pertenceAoTom = acordesDigitados.every(acorde => 
             campoTeste.map(c => c.toUpperCase()).includes(acorde)
         );
@@ -102,35 +100,26 @@ function identificarTom() {
         if (pertenceAoTom) {
             tomEncontradoStr = notaTonica;
             campoEncontrado = campoTeste;
-            break; // Achou o tom, para de procurar
+            break; 
         }
-
-        if (tomEncontrado) {
-        resultadoDiv.style.display = 'block'; // <-- ADICIONE ESTA LINHA AQUI
-        resultadoDiv.innerHTML = `...` // (mantém o resto igual)
-    } else {
-        resultadoDiv.style.display = 'block'; // <-- ADICIONE ESTA LINHA AQUI TAMBÉM
-        resultadoDiv.innerHTML = "Tom não identificado...";
-        // (mantém o resto igual)
-    }
-        
     }
 
+    // AQUI ESTAVA O ERRO! Agora usamos a variável correta: tomEncontradoStr
     if (tomEncontradoStr) {
-        // Se achou o tom (ex: "C"), vamos calcular a Pentatônica na hora
-        // Penta Maior (1, 2, 3, 5, 6) = Índices 0, 1, 2, 4, 5 do Campo Harmônico (sem as qualidades m/dim)
+        
         const notasPentaMaior = [
-            notasCromaticas[somarSemitons(getNotaIndex(tomEncontradoStr), 0)], // 1ª (Tônica)
-            notasCromaticas[somarSemitons(getNotaIndex(tomEncontradoStr), 2)], // 2ª
-            notasCromaticas[somarSemitons(getNotaIndex(tomEncontradoStr), 4)], // 3ª Maior
-            notasCromaticas[somarSemitons(getNotaIndex(tomEncontradoStr), 7)], // 5ª Justa
-            notasCromaticas[somarSemitons(getNotaIndex(tomEncontradoStr), 9)]  // 6ª Maior
+            notasCromaticas[somarSemitons(getNotaIndex(tomEncontradoStr), 0)], 
+            notasCromaticas[somarSemitons(getNotaIndex(tomEncontradoStr), 2)], 
+            notasCromaticas[somarSemitons(getNotaIndex(tomEncontradoStr), 4)], 
+            notasCromaticas[somarSemitons(getNotaIndex(tomEncontradoStr), 7)], 
+            notasCromaticas[somarSemitons(getNotaIndex(tomEncontradoStr), 9)]  
         ];
 
-        // Penta Menor Relativa (A partir do 6º grau, usando as mesmas notas)
-        const tonicaMenor = notasPentaMaior[4]; // A 6ª Maior é a tônica da menor relativa
+        const tonicaMenor = notasPentaMaior[4]; 
         const notasPentaMenorStr = `${tonicaMenor}, ${notasPentaMaior[0]}, ${notasPentaMaior[1]}, ${notasPentaMaior[2]}, ${notasPentaMaior[3]}`;
 
+        // Mostra a caixa de resultado que estava escondida
+        resultadoDiv.style.display = 'block'; 
         resultadoDiv.innerHTML = `
             <div style="color: #4CAF50; font-size: 18px; margin-bottom: 15px;">
                 🎵 A música está em: <br><b>${tomEncontradoStr} Maior</b>
@@ -144,16 +133,14 @@ function identificarTom() {
             </div>
         `;
         
-        // Atualiza a memória global para desenhar o braço
         notasEscalaAtual = notasPentaMaior;
         desenharBraco(); 
 
-        // IMPORTANTE: Adaptamos a chamada dos botões para o formato "C" em vez de "Dó Maior (C)"
-        // Por enquanto, usamos um mapeamento de volta para o teu banco de shapes antigo para não quebrar a UI
         const nomeAntigoParaOBanco = mapearNomeParaBanco(tomEncontradoStr);
         gerarBotoesDeVariacao(nomeAntigoParaOBanco);
 
     } else {
+        resultadoDiv.style.display = 'block'; 
         resultadoDiv.innerHTML = "Tom não identificado. Tente digitar outros acordes da música (ex: Am, F, C).";
         document.getElementById('fretboard-container').style.display = 'none';
         document.getElementById('variacoes-container').style.display = 'none';
