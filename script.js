@@ -104,6 +104,16 @@ function identificarTom() {
             campoEncontrado = campoTeste;
             break; // Achou o tom, para de procurar
         }
+
+        if (tomEncontrado) {
+        resultadoDiv.style.display = 'block'; // <-- ADICIONE ESTA LINHA AQUI
+        resultadoDiv.innerHTML = `...` // (mantém o resto igual)
+    } else {
+        resultadoDiv.style.display = 'block'; // <-- ADICIONE ESTA LINHA AQUI TAMBÉM
+        resultadoDiv.innerHTML = "Tom não identificado...";
+        // (mantém o resto igual)
+    }
+        
     }
 
     if (tomEncontradoStr) {

@@ -381,9 +381,13 @@ button.tab-btn.ativo {
     display: flex;
     align-items: center;
     gap: 15px;
-    flex-wrap: nowrap;
-    overflow-x: auto; /* Permite arrastar para o lado se a rota for muito longa */
+    
+    /* AS DUAS LINHAS MÁGICAS: */
+    flex-wrap: wrap; /* Faz os acordes descerem para a próxima linha se não couberem */
+    overflow-x: hidden; /* Remove a barra de rolagem horizontal */
+    
     padding-bottom: 10px;
+    justify-content: flex-start; /* Mantém alinhado à esquerda */
 }
 
 /* O cartão em miniatura para cada acorde da rota */
