@@ -70,9 +70,14 @@ function identificarTom() {
         notasEscalaAtual = tomEncontrado.notasPenta;
         desenharBraco(); 
 
+        // NOVO: Chama a geração de variações para o tom encontrado
+        gerarBotoesDeVariacao(tomEncontrado.nome);
+
     } else {
         resultadoDiv.innerHTML = "Tom não identificado com precisão. Verifique se digitou corretamente.";
         document.getElementById('fretboard-container').style.display = 'none';
+        document.getElementById('variacoes-container').style.display = 'none';
+        document.getElementById('chord-diagram-container').style.display = 'none';
         notasEscalaAtual = []; 
     }
 }
@@ -267,4 +272,189 @@ function detectarPitch() {
     }
 
     animationId = requestAnimationFrame(detectarPitch);
+}
+
+
+// ==========================================
+// NOVO MÓDULO: VARIAÇÕES E DIAGRAMAS DE ACORDE
+// ==========================================
+
+// Banco de Acordes: Contém os acordes disponíveis para cada tom e seus shapes
+const bancoDeAcordes = {
+    "Dó Maior (C)": ["C", "C7M", "C9", "F", "F7M", "G", "G7"],
+    "Ré Maior (D)": ["D", "D7M", "D9", "G", "G7M", "A", "A7"],
+    "Mi Maior (E)": ["E", "E7M", "E9", "A", "A7M", "B", "B7"],
+    "Sol Maior (G)": ["G", "G7M", "G9", "C", "C7M", "D", "D7"],
+    "Lá Maior (A)": ["A", "A7M", "A9", "D", "D7M", "E", "E7"]
+};
+
+// Banco de Shapes: [Corda 6, Corda 5, Corda 4, Corda 3, Corda 2, Corda 1]
+// null = Corda Abafada (X), 0 = Corda Solta (O), número = Casa
+const shapesGuitarra = {
+    // Acordes Básicos
+    "C": [null, 3, 2, 0, 1, 0],
+    "D": [null, null, 0, 2, 3, 2],
+    "E": [0, 2, 2, 1, 0, 0],
+    "F": [1, 3, 3, 2, 1, 1], // Pestana básica
+    "G": [3, 2, 0, 0, 0, 3],
+    "A": [null, 0, 2, 2, 2, 0],
+    "B": [null, 2, 4, 4, 4, 2],
+
+    // Algumas variações de C (Dó)
+    "C7M": [null, 3, 2, 0, 0, 0],
+    "C9": [null, 3, 2, 0, 3, 0], // C add9 comum
+    
+    // Algumas variações de G (Sol)
+    "G7": [3, 2, 0, 0, 0, 1],
+    "G7M": [3, null, 0, 0, 0, 2],
+    "G9": [3, null, 0, 2, 0, 3],
+
+    // Adicione mais shapes conforme necessário!
+};
+
+// 1. Gera os botões de variação baseados no tom encontrado
+function gerarBotoesDeVariacao(nomeDoTom) {
+    const container = document.getElementById('variacoes-container');
+    const grade = document.getElementById('gradeVariacoes');
+    
+    grade.innerHTML = ''; // Limpa botões antigos
+
+    const acordesParaMostrar = bancoDeAcordes[nomeDoTom];
+
+    if (!acordesParaMostrar) {
+        container.style.display = 'none';
+        return;
+    }
+
+    container.style.display = 'block';
+
+    acordesParaMostrar.forEach((acorde, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'botao-variacao';
+        btn.innerText = acorde;
+        
+        btn.onclick = () => {
+            // Remove a classe 'ativo' de todos os botões e adiciona neste
+            document.querySelectorAll('.botao-variacao').forEach(b => b.classList.remove('ativo'));
+            btn.classList.add('ativo');
+            
+            // Desenha o diagrama
+            desenharDiagramaAcorde(acorde);
+        };
+
+        grade.appendChild(btn);
+
+        // Desenha o primeiro acorde da lista por padrão
+        if (index === 0) {
+            btn.classList.add('ativo');
+            desenharDiagramaAcorde(acorde);
+        }
+    });
+}
+
+// 2. Desenha o diagrama em SVG
+function desenharDiagramaAcorde(nomeAcorde) {
+    const container = document.getElementById('chord-diagram-container');
+    const nomeDiv = document.getElementById('nomeAcordeDestaque');
+    const svgArea = document.getElementById('chord-svg-area');
+    
+    svgArea.innerHTML = '';
+    
+    const shape = shapesGuitarra[nomeAcorde];
+    
+    if (!shape) {
+        container.style.display = 'none';
+        console.log(`Shape para ${nomeAcorde} não cadastrado no banco.`);
+        return; 
+    }
+    
+    nomeDiv.innerText = nomeAcorde;
+    container.style.display = 'block';
+
+    const width = 140;   
+    const height = 160;  
+    const strings = 6;   
+    const frets = 5;     
+    
+    const marginTop = 25;
+    const marginLeft = 20;
+    const stringSpacing = (width - 2 * marginLeft) / (strings - 1);
+    const fretSpacing = (height - marginTop - 10) / frets;
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("width", width);
+    svg.setAttribute("height", height);
+    svg.setAttribute("class", "chord-svg");
+
+    const nut = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    nut.setAttribute("x1", marginLeft);
+    nut.setAttribute("y1", marginTop);
+    nut.setAttribute("x2", width - marginLeft);
+    nut.setAttribute("y2", marginTop);
+    nut.setAttribute("class", "chord-nut");
+    svg.appendChild(nut);
+
+    for (let i = 1; i <= frets; i++) {
+        const y = marginTop + i * fretSpacing;
+        const fretLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        fretLine.setAttribute("x1", marginLeft);
+        fretLine.setAttribute("y1", y);
+        fretLine.setAttribute("x2", width - marginLeft);
+        fretLine.setAttribute("y2", y);
+        fretLine.setAttribute("class", "chord-fret");
+        svg.appendChild(fretLine);
+    }
+
+    for (let i = 0; i < strings; i++) {
+        const x = marginLeft + i * stringSpacing;
+        const stringLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        stringLine.setAttribute("x1", x);
+        stringLine.setAttribute("y1", marginTop);
+        stringLine.setAttribute("x2", x);
+        stringLine.setAttribute("y2", height - 10);
+        stringLine.setAttribute("class", "chord-string");
+        svg.appendChild(stringLine);
+    }
+
+    const dedosUsados = { 1: false, 2: false, 3: false, 4: false };
+
+    for (let i = 0; i < strings; i++) {
+        const casa = shape[i];
+        const x = marginLeft + i * stringSpacing;
+
+        if (casa === null || casa === 0) {
+            const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            text.setAttribute("x", x);
+            text.setAttribute("y", marginTop - 8);
+            text.setAttribute("class", "chord-top-text");
+            text.textContent = casa === null ? "X" : "O";
+            svg.appendChild(text);
+        }
+        else if (casa > 0) {
+            const y = marginTop + (casa - 0.5) * fretSpacing; 
+            
+            const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            dot.setAttribute("cx", x);
+            dot.setAttribute("cy", y);
+            dot.setAttribute("r", 9); 
+            dot.setAttribute("class", "chord-dot");
+            svg.appendChild(dot);
+
+            // Lógica simples para os números dos dedos (apenas para efeito visual no momento)
+            let numeroDedo = "";
+            if (casa === 1 && !dedosUsados[1]) { numeroDedo = "1"; dedosUsados[1] = true; }
+            else if (casa === 2 && !dedosUsados[2]) { numeroDedo = "2"; dedosUsados[2] = true; }
+            else if (casa === 3 && !dedosUsados[3]) { numeroDedo = "3"; dedosUsados[3] = true; }
+            else if (casa > 3) { numeroDedo = "4"; }
+            
+            const fingerText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            fingerText.setAttribute("x", x);
+            fingerText.setAttribute("y", y);
+            fingerText.setAttribute("class", "chord-dot-text");
+            fingerText.textContent = numeroDedo;
+            svg.appendChild(fingerText);
+        }
+    }
+
+    svgArea.appendChild(svg);
 }

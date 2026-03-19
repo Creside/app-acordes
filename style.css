@@ -187,3 +187,87 @@ button:hover { background-color: #0056b3; }
     width: 35px; /* Mesmo tamanho da corda solta para empurrar os números pro lugar certo */
     flex: none;
 }
+
+/* --- ESTILO DAS VARIAÇÕES (BOTÕES QUADRADOS IGUAL AO VÍDEO) --- */
+.grade-botoes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.botao-variacao {
+    background-color: #3d3d3d;
+    border: 1px solid #555;
+    color: #fff;
+    padding: 10px 5px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.botao-variacao:hover {
+    background-color: #555;
+    border-color: #f1c40f; /* Brilho dourado ao passar o mouse */
+}
+
+.botao-variacao.ativo {
+    background-color: #f1c40f;
+    color: #1a1a1a;
+    border-color: #f1c40f;
+}
+
+/* --- ESTILO DO CARD DO DIAGRAMA (SVG) --- */
+.chord-card {
+    background-color: #1a1a1a; /* Fundo bem escuro para o diagrama se destacar */
+    border: 2px solid #444;
+    border-radius: 12px;
+    padding: 20px;
+    display: inline-block;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+    margin-bottom: 20px;
+}
+
+.chord-svg {
+    display: block;
+    margin: 0 auto;
+}
+
+/* Linhas do braço e cordas no diagrama */
+.chord-fret, .chord-string {
+    stroke: #666;
+    stroke-width: 1;
+}
+
+/* A pestana (nut) no topo do diagrama */
+.chord-nut {
+    stroke: #fff;
+    stroke-width: 4;
+}
+
+/* As bolinhas dos dedos no diagrama */
+.chord-dot {
+    fill: #f1c40f; /* Amarelo ouro do vídeo */
+    stroke: #d4a017;
+    stroke-width: 1;
+}
+
+/* Número do dedo dentro da bolinha */
+.chord-dot-text {
+    fill: #000;
+    font-size: 11px;
+    font-weight: bold;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+/* Marcações X e O no topo */
+.chord-top-text {
+    fill: #888;
+    font-size: 12px;
+    font-weight: bold;
+    text-anchor: middle;
+}

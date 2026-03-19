@@ -29,8 +29,22 @@
             </div>
             
             <div class="painel-direito">
+                
                 <div id="resultado" class="resultado-box">
                     Aguardando acordes...
+                </div>
+
+                <div id="variacoes-container" style="display: none; margin-top: 20px;">
+                    <h3 style="font-size: 16px; color: #fff; margin-bottom: 10px;">Variações de Acordes</h3>
+                    <div id="gradeVariacoes" class="grade-botoes">
+                        </div>
+                </div>
+
+                <div id="chord-diagram-container" style="display: none; margin-top: 20px; text-align: center;">
+                    <h3 id="nomeAcordeDestaque" style="color: #f1c40f; font-size: 20px; margin-bottom: 10px;">--</h3>
+                    <div class="chord-card">
+                        <div id="chord-svg-area"></div>
+                    </div>
                 </div>
 
                 <div id="fretboard-container" style="display: none; margin-top: 20px;">
@@ -46,9 +60,8 @@
                         <div class="fretboard" id="fretboard"></div>
                     </div>
                 </div>
-            </div>
 
-        </div> </div>
+            </div> </div> </div>
 
     <script src="script.js"></script>
 </body>
