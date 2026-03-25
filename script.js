@@ -739,3 +739,151 @@ function fecharPopup() {
     const popup = document.getElementById('cifra-popup');
     if (popup) popup.style.display = 'none';
 }
+
+// ==========================================
+// MÓDULO: CÍRCULO DE QUINTAS
+// ==========================================
+
+const circuloMaior = ["C","G","D","A","E","B","F#","C#","G#","D#","A#","F"];
+const circuloMenor = ["Am","Em","Bm","F#m","C#m","G#m","D#m","A#m","Fm","Cm","Gm","Dm"];
+const circuloNomeMaior = ["Dó","Sol","Ré","Lá","Mi","Si","Fá#","Dó#","Sol#","Ré#","Lá#","Fá"];
+const circuloNomeMenor = ["Lám","Mim","Sim","Fá#m","Dó#m","Sol#m","Ré#m","Lá#m","Fám","Dóm","Solm","Rém"];
+
+let circuloSegmentoAtivo = null;
+
+function desenharCirculoDeQuintas() {
+    const wrapper = document.getElementById('circulo-svg-wrapper');
+    const SIZE = 340;
+    const cx = SIZE / 2, cy = SIZE / 2;
+    const RAIO_EXT = 155, RAIO_MED = 108, RAIO_INT = 62, RAIO_CENTRO = 30;
+    const N = 12;
+    const angInicio = -Math.PI / 2; // começa no topo
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", `0 0 ${SIZE} ${SIZE}`);
+    svg.setAttribute("width", SIZE);
+    svg.setAttribute("height", SIZE);
+
+    function arco(raioOuter, raioInner, i, total) {
+        const a1 = angInicio + (i / total) * 2 * Math.PI;
+        const a2 = angInicio + ((i + 1) / total) * 2 * Math.PI;
+        const gap = 0.018; // espaço entre fatias
+        const a1g = a1 + gap, a2g = a2 - gap;
+        const x1 = cx + raioOuter * Math.cos(a1g), y1 = cy + raioOuter * Math.sin(a1g);
+        const x2 = cx + raioOuter * Math.cos(a2g), y2 = cy + raioOuter * Math.sin(a2g);
+        const x3 = cx + raioInner * Math.cos(a2g), y3 = cy + raioInner * Math.sin(a2g);
+        const x4 = cx + raioInner * Math.cos(a1g), y4 = cy + raioInner * Math.sin(a1g);
+        return `M ${x1} ${y1} A ${raioOuter} ${raioOuter} 0 0 1 ${x2} ${y2} L ${x3} ${y3} A ${raioInner} ${raioInner} 0 0 0 ${x4} ${y4} Z`;
+    }
+
+    function textoPosicao(raio, i, total) {
+        const ang = angInicio + ((i + 0.5) / total) * 2 * Math.PI;
+        return { x: cx + raio * Math.cos(ang), y: cy + raio * Math.sin(ang) };
+    }
+
+    // Paleta de cores para tons maiores (anel externo)
+    const coresMaior = [
+        "#c0392b","#e67e22","#f1c40f","#2ecc71","#1abc9c","#3498db",
+        "#2980b9","#9b59b6","#8e44ad","#d35400","#e74c3c","#27ae60"
+    ];
+
+    for (let i = 0; i < N; i++) {
+        const corBase = coresMaior[i];
+        const corMenor = corBase + "88"; // menor transparência
+
+        // --- Anel externo: tons maiores ---
+        const pathMaior = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        pathMaior.setAttribute("d", arco(RAIO_EXT, RAIO_MED, i, N));
+        pathMaior.setAttribute("fill", corBase);
+        pathMaior.setAttribute("opacity", "0.85");
+        pathMaior.setAttribute("cursor", "pointer");
+        pathMaior.setAttribute("data-idx", i);
+        pathMaior.setAttribute("data-tipo", "maior");
+        pathMaior.style.transition = "opacity 0.2s";
+        pathMaior.addEventListener("mouseenter", () => { pathMaior.setAttribute("opacity","1"); });
+        pathMaior.addEventListener("mouseleave", () => { pathMaior.setAttribute("opacity","0.85"); });
+        pathMaior.addEventListener("click", () => selecionarTomCirculo(i, "maior"));
+        svg.appendChild(pathMaior);
+
+        // Texto tom maior
+        const posMaior = textoPosicao(RAIO_MED + (RAIO_EXT - RAIO_MED) / 2, i, N);
+        const txtMaior = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        txtMaior.setAttribute("x", posMaior.x); txtMaior.setAttribute("y", posMaior.y);
+        txtMaior.setAttribute("fill", "#fff"); txtMaior.setAttribute("font-size", "13px");
+        txtMaior.setAttribute("font-weight", "bold"); txtMaior.setAttribute("text-anchor", "middle");
+        txtMaior.setAttribute("dominant-baseline", "central");
+        txtMaior.setAttribute("pointer-events", "none");
+        txtMaior.textContent = circuloMaior[i];
+        svg.appendChild(txtMaior);
+
+        // --- Anel interno: tons menores ---
+        const pathMenor = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        pathMenor.setAttribute("d", arco(RAIO_MED, RAIO_INT, i, N));
+        pathMenor.setAttribute("fill", corMenor);
+        pathMenor.setAttribute("cursor", "pointer");
+        pathMenor.setAttribute("data-idx", i);
+        pathMenor.setAttribute("data-tipo", "menor");
+        pathMenor.style.transition = "opacity 0.2s";
+        pathMenor.addEventListener("mouseenter", () => { pathMenor.setAttribute("opacity","1.2"); });
+        pathMenor.addEventListener("click", () => selecionarTomCirculo(i, "menor"));
+        svg.appendChild(pathMenor);
+
+        // Texto tom menor
+        const posMenor = textoPosicao(RAIO_INT + (RAIO_MED - RAIO_INT) / 2, i, N);
+        const txtMenor = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        txtMenor.setAttribute("x", posMenor.x); txtMenor.setAttribute("y", posMenor.y);
+        txtMenor.setAttribute("fill", "#fff"); txtMenor.setAttribute("font-size", "10px");
+        txtMenor.setAttribute("font-weight", "bold"); txtMenor.setAttribute("text-anchor", "middle");
+        txtMenor.setAttribute("dominant-baseline", "central");
+        txtMenor.setAttribute("pointer-events", "none");
+        txtMenor.textContent = circuloMenor[i];
+        svg.appendChild(txtMenor);
+    }
+
+    // Centro decorativo
+    const circulo = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circulo.setAttribute("cx", cx); circulo.setAttribute("cy", cy);
+    circulo.setAttribute("r", RAIO_INT - 2);
+    circulo.setAttribute("fill", "#1a1a24"); circulo.setAttribute("stroke", "#333");
+    circulo.setAttribute("stroke-width","2");
+    svg.appendChild(circulo);
+
+    const txtCentro = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    txtCentro.setAttribute("x", cx); txtCentro.setAttribute("y", cy);
+    txtCentro.setAttribute("fill", "#666"); txtCentro.setAttribute("font-size", "9px");
+    txtCentro.setAttribute("text-anchor", "middle"); txtCentro.setAttribute("dominant-baseline", "central");
+    txtCentro.textContent = "♩";
+    svg.appendChild(txtCentro);
+
+    wrapper.innerHTML = '';
+    wrapper.appendChild(svg);
+}
+
+function selecionarTomCirculo(idx, tipo) {
+    const tonica = tipo === "maior" ? circuloMaior[idx] : circuloMenor[idx].replace("m","");
+    const modo = tipo;
+    const nomeDisplay = tipo === "maior" ? circuloMaior[idx] + " Maior" : circuloMenor[idx];
+
+    const campo = tipo === "maior"
+        ? gerarCampoHarmonicoMaior(tonica)
+        : gerarCampoHarmonicoMenor(tonica);
+
+    // Quintas vizinhas
+    const idxAnterior = (idx + N - 1) % 12;
+    const idxProximo  = (idx + 1) % 12;
+    const vizMaior = [circuloMaior[idxAnterior], circuloMaior[idxProximo]];
+
+    const infoDiv = document.getElementById('circulo-info');
+    infoDiv.style.display = 'block';
+    infoDiv.innerHTML = `
+        <div class="circulo-info-tom">🎵 ${nomeDisplay}</div>
+        <b>Campo Harmônico:</b> ${campo.join(" — ")}<br>
+        <b>Quintas vizinhas:</b> ${vizMaior[0]} ◀ ${circuloMaior[idx]} ▶ ${vizMaior[1]}
+    `;
+
+    // Preenche o input do identificador com os acordes do campo para facilitar
+    document.getElementById('inputAcordes').value = campo.slice(0,4).join(", ");
+}
+
+// Inicializa o círculo quando a página carrega
+window.addEventListener('DOMContentLoaded', desenharCirculoDeQuintas);

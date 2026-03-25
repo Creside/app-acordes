@@ -827,3 +827,51 @@ button.tab-btn.ativo {
     line-height: 1;
 }
 .cifra-popup-fechar:hover { color: #fff; background: none; }
+
+/* ==========================================
+   MÓDULO: CÍRCULO DE QUINTAS
+   ========================================== */
+.circulo-container {
+    margin-top: 20px;
+    padding: 20px;
+    background: #1c1c21;
+    border-radius: 10px;
+    border: 1px solid #333;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    text-align: center;
+}
+.circulo-titulo {
+    margin-top: 0;
+    margin-bottom: 5px;
+    color: #9b59b6;
+    font-size: 22px;
+}
+.circulo-subtitulo {
+    font-size: 13px;
+    color: #aaa;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+.circulo-svg-wrapper {
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+}
+.circulo-info {
+    margin-top: 15px;
+    padding: 12px;
+    background: #2a2a35;
+    border-radius: 8px;
+    border: 1px solid #9b59b655;
+    font-size: 14px;
+    color: #ddd;
+    text-align: left;
+    display: none;
+    line-height: 1.8;
+}
+.circulo-info-tom {
+    color: #9b59b6;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
