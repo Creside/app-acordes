@@ -873,11 +873,20 @@ function mostrarDiagramaPopup(nomeAcorde, event) {
     document.getElementById('popup-tab-teclado').classList.remove('ativo');
     _renderPopupConteudo();
 
-    // Posiciona o popup próximo ao clique
-    const x = Math.min(event.clientX, window.innerWidth - 200);
-    const y = Math.min(event.clientY + 15, window.innerHeight - 250);
-    popup.style.left = x + 'px';
-    popup.style.top = (y + window.scrollY) + 'px';
+    // No mobile, centraliza; no desktop posiciona perto do clique
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) {
+        popup.style.left = '50%';
+        popup.style.top = '50%';
+        popup.style.transform = 'translate(-50%, -50%)';
+    } else {
+        popup.style.transform = '';
+        const popupW = 340;
+        const x = Math.min(Math.max(event.clientX, popupW/2), window.innerWidth - popupW/2 - 10);
+        const y = Math.min(event.clientY + 15, window.innerHeight - 300);
+        popup.style.left = (x - popupW/2) + 'px';
+        popup.style.top = (y + window.scrollY) + 'px';
+    }
     popup.style.display = 'block';
 
     event.stopPropagation();
@@ -1520,11 +1529,20 @@ function mostrarDiagramaPopup(nomeAcorde, event) {
     document.getElementById('popup-tab-teclado').classList.remove('ativo');
     _renderPopupConteudo();
 
-    // Posiciona o popup próximo ao clique
-    const x = Math.min(event.clientX, window.innerWidth - 200);
-    const y = Math.min(event.clientY + 15, window.innerHeight - 250);
-    popup.style.left = x + 'px';
-    popup.style.top = (y + window.scrollY) + 'px';
+    // No mobile, centraliza; no desktop posiciona perto do clique
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) {
+        popup.style.left = '50%';
+        popup.style.top = '50%';
+        popup.style.transform = 'translate(-50%, -50%)';
+    } else {
+        popup.style.transform = '';
+        const popupW = 340;
+        const x = Math.min(Math.max(event.clientX, popupW/2), window.innerWidth - popupW/2 - 10);
+        const y = Math.min(event.clientY + 15, window.innerHeight - 300);
+        popup.style.left = (x - popupW/2) + 'px';
+        popup.style.top = (y + window.scrollY) + 'px';
+    }
     popup.style.display = 'block';
 
     event.stopPropagation();
