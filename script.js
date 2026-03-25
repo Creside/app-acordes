@@ -1278,34 +1278,7 @@ function _renderDiagramaComPosicao(nomeAcorde, posIdx) {
 function desenharTeclado(nomeAcorde) {
     const area = document.getElementById('chord-visual-area');
     area.innerHTML = '';
-    const data = dicionarioShapes[nomeAcorde];
-    if (!data || !data.piano) {
-        area.innerHTML = `<p class="diagrama-indisponivel">O teclado para <b>${nomeAcorde}</b> ainda não foi adicionado ao banco.</p>`;
-        return;
-    }
-    const notasAtivas = data.piano, total = 14;
-    const offsetPretas = [1,3,null,6,8,10,null,13,15,null,18,20,22,null];
-    let counter = 0, posX = 0;
-    const largura = 100/total;
-    const teclado = document.createElement('div');
-    teclado.className = 'teclado-container';
-    for (let i=0; i<total; i++) {
-        const branca = document.createElement('div');
-        branca.className = 'tecla-branca';
-        if (notasAtivas.includes(counter)) branca.innerHTML = '<div class="marca-tecla"></div>';
-        teclado.appendChild(branca);
-        if (offsetPretas[i] !== null && offsetPretas[i] !== undefined) {
-            const preta = document.createElement('div');
-            preta.className = 'tecla-preta';
-            preta.style.left = `calc(${posX+largura}% - 8px)`;
-            if (notasAtivas.includes(offsetPretas[i])) preta.innerHTML = '<div class="marca-tecla"></div>';
-            teclado.appendChild(preta);
-            counter += 2;
-        } else { counter += 1; }
-        posX += largura;
-    }
-    wrapper.appendChild(teclado);
-    area.appendChild(wrapper);
+    desenharTecladoEm(nomeAcorde, area);
 }
 
 // ==========================================
@@ -1525,40 +1498,7 @@ function _renderPopupConteudo() {
     }
 }
 
-function desenharTecladoEm(nomeAcorde, targetArea) {
-    const piano = getPiano(nomeAcorde);
-    if (!piano) { targetArea.innerHTML = '<p class="diagrama-indisponivel">Sem dados de teclado.</p>'; return; }
-    const notasAtivas = piano;
-    const nomesTeclasBrancas = ["C","D","E","F","G","A","B","C","D","E","F","G","A","B"];
-    const nomesTeclasPretasIdx = {1:"C#",3:"D#",6:"F#",8:"G#",10:"A#",13:"C#",15:"D#",18:"F#",20:"G#",22:"A#"};
-    const offsetPretas = [1,3,null,6,8,10,null,13,15,null,18,20,22,null];
-    const total = 14;
-    let counter = 0, posX = 0;
-    const largura = 100/total;
-    const wrapperTe = document.createElement('div');
-    wrapperTe.className = 'teclado-wrapper';
-    const teclado = document.createElement('div');
-    teclado.className = 'teclado-container';
-    for (let i=0; i<total; i++) {
-        const branca = document.createElement('div');
-        branca.className = 'tecla-branca';
-        if (notasAtivas.includes(counter)) branca.innerHTML = '<div class="marca-tecla"></div>';
-        const lb = document.createElement('div'); lb.className = 'nota-tecla-label'; lb.textContent = nomesTeclasBrancas[i]||''; branca.appendChild(lb);
-        teclado.appendChild(branca);
-        if (offsetPretas[i] !== null && offsetPretas[i] !== undefined) {
-            const preta = document.createElement('div');
-            preta.className = 'tecla-preta';
-            preta.style.left = `calc(${posX+largura}% - 8px)`;
-            if (notasAtivas.includes(offsetPretas[i])) preta.innerHTML = '<div class="marca-tecla"></div>';
-            const lp = document.createElement('div'); lp.className = 'nota-tecla-label'; lp.textContent = nomesTeclasPretasIdx[offsetPretas[i]]||''; preta.appendChild(lp);
-            teclado.appendChild(preta);
-            counter += 2;
-        } else { counter += 1; }
-        posX += largura;
-    }
-    wrapperTe.appendChild(teclado);
-    targetArea.appendChild(wrapperTe);
-}
+// desenharTecladoEm: definida acima
 
 // ==========================================
 // MÓDULO: CÍRCULO DE QUINTAS

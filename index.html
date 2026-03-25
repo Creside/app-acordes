@@ -54,6 +54,18 @@
                     <div id="resultadoTransposicao" class="resultado-transposicao"></div>
                 </div>
 
+                <!-- Diagrama do Acorde (abaixo do identificador) -->
+                <div id="chord-diagram-container" style="display:none;" class="modulo-container">
+                    <h3 id="nomeAcordeDestaque" class="diagrama-titulo">--</h3>
+                    <div class="diagrama-tabs">
+                        <button id="tab-guitarra" class="tab-btn ativo" onclick="mudarVisaoDiagrama('guitarra')">🎸 Violão</button>
+                        <button id="tab-teclado" class="tab-btn" onclick="mudarVisaoDiagrama('teclado')">🎹 Teclado</button>
+                    </div>
+                    <div class="chord-card" id="chord-card-box">
+                        <div id="chord-visual-area"></div>
+                    </div>
+                </div>
+
                 <!-- Afinador -->
                 <div class="afinador-container modulo-container">
                     <div class="modulo-titulo-row">
@@ -123,18 +135,6 @@
                     <p class="circulo-subtitulo">Clique num tom para ver o campo harmônico.</p>
                     <div class="circulo-svg-wrapper" id="circulo-svg-wrapper"></div>
                     <div id="circulo-info" class="circulo-info"></div>
-                </div>
-
-                <!-- Diagrama do Acorde -->
-                <div id="chord-diagram-container" style="display:none;" class="modulo-container">
-                    <h3 id="nomeAcordeDestaque" class="diagrama-titulo">--</h3>
-                    <div class="diagrama-tabs">
-                        <button id="tab-guitarra" class="tab-btn ativo" onclick="mudarVisaoDiagrama('guitarra')">🎸 Violão</button>
-                        <button id="tab-teclado" class="tab-btn" onclick="mudarVisaoDiagrama('teclado')">🎹 Teclado</button>
-                    </div>
-                    <div class="chord-card" id="chord-card-box">
-                        <div id="chord-visual-area"></div>
-                    </div>
                 </div>
 
                 <!-- Braço do Instrumento -->
