@@ -1281,12 +1281,21 @@ button.genero-btn.ativo { color: #111; border-color: transparent; }
     font-size: 11px;
     color: #2ecc71;
 }
-button#btnDetector {
-    background: #e67e22;
-    font-size: 13px;
-    padding: 7px 14px;
-    width: auto;
-    margin: 0;
+/* Detector de Acorde - separador visual */
+.detector-separador {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 12px 0 10px 0;
 }
-button#btnDetector:hover { background: #ca6f1e; }
-button#btnDetector.ativo { background: #e74c3c; }
+button#btnDetector {
+    background: #e67e22 !important;
+    color: white !important;
+    font-size: 13px;
+    padding: 9px 14px;
+    width: 100%;
+    margin: 0;
+    border-radius: 6px;
+    font-weight: bold;
+}
+button#btnDetector:hover { background: #ca6f1e !important; }
+button#btnDetector.ativo { background: #e74c3c !important; }
