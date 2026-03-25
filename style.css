@@ -138,15 +138,13 @@ body {
 
 .coluna { display: flex; flex-direction: column; gap: 14px; }
 
-/* Ordem mobile: Identificador > Cifra > GPS > Transpositor > Circulo > Afinador */
+/* Mobile: colunas em ordem natural */
 .coluna-1 { order: 1; }
 .coluna-2 { order: 2; }
 .coluna-3 { order: 3; }
 
-/* Reordena módulos individualmente no mobile via classes de ordem */
-.coluna-1 .modulo-container:nth-child(1) { order: 1; } /* Identificador */
-.coluna-1 .modulo-container:nth-child(2) { order: 4; } /* Transpositor */
-.coluna-1 .modulo-container:nth-child(3) { order: 6; } /* Afinador */
+/* Coluna 1 - módulos em ordem natural no mobile (sem reordenação) */
+.coluna-1 .modulo-container { order: unset; }
 
 /* DESKTOP: 3 colunas equilibradas */
 @media (min-width: 1024px) {
@@ -1290,12 +1288,13 @@ button.genero-btn.ativo { color: #111; border-color: transparent; }
 button#btnDetector {
     background: #e67e22 !important;
     color: white !important;
-    font-size: 13px;
-    padding: 9px 14px;
+    font-size: 16px;
+    padding: 12px 20px;
     width: 100%;
     margin: 0;
-    border-radius: 6px;
+    border-radius: 5px;
     font-weight: bold;
+    transition: 0.3s;
 }
 button#btnDetector:hover { background: #ca6f1e !important; }
 button#btnDetector.ativo { background: #e74c3c !important; }
