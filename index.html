@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acordes - App</title>
-    <link rel="stylesheet" href="style.css?v=1774455102">
+    <link rel="stylesheet" href="style.css?v=1774457243">
     <!-- PWA -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#f1c40f">
@@ -42,11 +42,17 @@
                     <button id="btnAfinador" onclick="iniciarAfinador()">Ligar Microfone</button>
                     <div id="notaDetectada">--</div>
                     <div id="frequenciaDetectada">-- Hz</div>
-                    <!-- Detector de Acorde -->
-                    <hr class="detector-separador">
-                    <button id="btnDetector" onclick="toggleDetectorAcorde()">🎸 Detectar Acorde</button>
+                </div>
+
+                <!-- 1b. Detector de Acorde -->
+                <div class="modulo-container" style="border-color:#e67e2255;">
+                    <div class="modulo-titulo-row">
+                        <h3 class="modulo-titulo" style="color:#e67e22;">🎸 Detector de Acorde</h3>
+                        <button class="btn-tooltip" onclick="mostrarTooltip('afinador')">?</button>
+                    </div>
+                    <p class="afinador-subtitulo">Toque um acorde no instrumento para detectar.</p>
+                    <button id="btnDetector" onclick="toggleDetectorAcorde()">Ligar Detector</button>
                     <div class="detector-container" id="detectorContainer">
-                        <p class="detector-titulo">Acorde Detectado</p>
                         <div class="detector-resultado">
                             <div class="detector-acorde" id="detectorAcorde">--</div>
                             <div>
@@ -277,7 +283,7 @@
         </div>
     </div>
 
-    <script src="script.js?v=1774455102"></script>
+    <script src="script.js?v=1774457243"></script>
     <script>
     // Service Worker
     if ('serviceWorker' in navigator) {
