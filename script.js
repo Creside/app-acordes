@@ -202,7 +202,7 @@ async function iniciarAfinador() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        analyser = audioContext.createAnalyser(); analyser.fftSize = 2048;
+        analyser = audioContext.createAnalyser(); analyser.fftSize = 8192; // buffer maior = mais precisão de pitch
         microphone = audioContext.createMediaStreamSource(stream);
         microphone.connect(analyser);
         isListening = true; btn.innerText = "Desligar Microfone"; btn.style.backgroundColor = "#e74c3c";
@@ -211,22 +211,49 @@ async function iniciarAfinador() {
 }
 
 function autoCorrelate(buf, sampleRate) {
-    let SIZE = buf.length, rms = 0;
+    // Buffer maior + threshold mais alto = mais preciso
+    const SIZE = buf.length;
+    let rms = 0;
     for (let i = 0; i < SIZE; i++) rms += buf[i]*buf[i];
     rms = Math.sqrt(rms/SIZE);
-    if (rms < 0.02) return -1;
-    let r1=0, r2=SIZE-1, thres=0.2;
-    for (let i=0; i<SIZE/2; i++) if (Math.abs(buf[i])<thres){r1=i;break;}
-    for (let i=1; i<SIZE/2; i++) if (Math.abs(buf[SIZE-i])<thres){r2=SIZE-i;break;}
-    buf=buf.slice(r1,r2); SIZE=buf.length;
-    let c=new Array(SIZE).fill(0);
-    for (let i=0;i<SIZE;i++) for (let j=0;j<SIZE-i;j++) c[i]+=buf[j]*buf[j+i];
-    let d=0; while(c[d]>c[d+1])d++;
-    let maxval=-1,maxpos=-1;
-    for (let i=d;i<SIZE;i++) if(c[i]>maxval){maxval=c[i];maxpos=i;}
-    let T0=maxpos, x1=c[T0-1],x2=c[T0],x3=c[T0+1];
-    let a=(x1+x3-2*x2)/2,b=(x3-x1)/2;
-    if(a) T0=T0-b/(2*a);
+    if (rms < 0.015) return -1; // silêncio
+
+    // Trim silêncio nas bordas
+    let r1=0, r2=SIZE-1;
+    for (let i=0; i<SIZE/2; i++) if (Math.abs(buf[i])>0.1){r1=i;break;}
+    for (let i=1; i<SIZE/2; i++) if (Math.abs(buf[SIZE-i])>0.1){r2=SIZE-i;break;}
+    const trimmed = buf.slice(r1, r2);
+    const N = trimmed.length;
+    if (N < 32) return -1;
+
+    // Autocorrelação normalizada (mais precisa que a simples)
+    const corr = new Float32Array(N);
+    for (let lag=0; lag<N; lag++) {
+        let sum=0, norm1=0, norm2=0;
+        for (let j=0; j<N-lag; j++) {
+            sum   += trimmed[j] * trimmed[j+lag];
+            norm1 += trimmed[j] * trimmed[j];
+            norm2 += trimmed[j+lag] * trimmed[j+lag];
+        }
+        corr[lag] = sum / (Math.sqrt(norm1*norm2) + 1e-10);
+    }
+
+    // Pula o primeiro pico (lag=0) e acha o maior pico depois
+    let d=1;
+    while(d<N-1 && corr[d]>corr[d+1]) d++;
+    let maxVal=-1, maxPos=-1;
+    // Busca apenas na faixa de frequências musicais (60Hz–1200Hz)
+    const lagMin = Math.floor(sampleRate/1200);
+    const lagMax = Math.floor(sampleRate/60);
+    for (let i=Math.max(d,lagMin); i<Math.min(N-1,lagMax); i++) {
+        if (corr[i]>maxVal) { maxVal=corr[i]; maxPos=i; }
+    }
+    if (maxPos < 1 || maxVal < 0.6) return -1; // confiança baixa
+
+    // Interpolação parabólica para maior precisão
+    const y1=corr[maxPos-1], y2=corr[maxPos], y3=corr[maxPos+1];
+    const a=(y1+y3-2*y2)/2, b=(y3-y1)/2;
+    const T0 = a ? maxPos - b/(2*a) : maxPos;
     return sampleRate/T0;
 }
 function notaDeFrequencia(f) { return Math.round(12*(Math.log(f/440)/Math.log(2)))+69; }
@@ -1137,14 +1164,15 @@ function criarSVGAcorde(nomeAcorde, escala, posicaoIdx) {
             if (casaRel < 1 || casaRel > FRETS) continue; // fora da janela
             const y = MT + (casaRel - 0.5) * fretSp;
             // Não desenha bolinha onde já tem a barra (dedo 1)
-            const ehBarra = data.barra && dedo === 1 && casaRel === 1;
-            if (!ehBarra) {
+            // Só oculta bolinhas que estão cobertas pela barra (dedo 1 na 1ª casa relativa)
+            const cobertaPelaBarra = data.barra && dedo === 1 && casaRel === 1;
+            if (!cobertaPelaBarra) {
                 const dot = document.createElementNS("http://www.w3.org/2000/svg","circle");
                 dot.setAttribute("cx",x); dot.setAttribute("cy",y);
                 dot.setAttribute("r","9"); dot.setAttribute("fill","#f1c40f");
                 if (escala>=1) { dot.setAttribute("stroke","#d4a017"); dot.setAttribute("stroke-width","1"); }
                 svg.appendChild(dot);
-                if (dedo !== null && dedo !== 1) {
+                if (dedo !== null) {
                     const t = document.createElementNS("http://www.w3.org/2000/svg","text");
                     t.setAttribute("x",x); t.setAttribute("y",y);
                     t.setAttribute("fill","#000"); t.setAttribute("font-size","11px");
