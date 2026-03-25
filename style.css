@@ -18,7 +18,7 @@ body {
     box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     text-align: center;
     width: 100%;
-    max-width: 900px; /* Aumentado para acomodar 2 colunas no desktop */
+    max-width: 1200px;
 }
 
 /* --- NOVO: Layout em Grid para telas maiores (Desktop) --- */
@@ -39,7 +39,7 @@ body {
         min-width: 0;
     }
     .painel-esquerdo {
-        max-width: 350px;
+        max-width: 480px;
     }
 }
 /* -------------------------------------------------------- */
