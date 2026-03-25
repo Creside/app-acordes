@@ -594,3 +594,236 @@ button.tab-btn.ativo {
     margin: 0;
     font-size: 14px;
 }
+
+/* ==========================================
+   MÓDULO: TRANSPOSITOR DE TOM
+   ========================================== */
+.transpositor-container {
+    margin-top: 20px;
+    padding: 20px;
+    background: #1c1c21;
+    border-radius: 10px;
+    border: 1px solid #333;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+.transpositor-titulo {
+    margin-top: 0;
+    margin-bottom: 5px;
+    color: #3498db;
+    font-size: 22px;
+}
+.transpositor-subtitulo {
+    font-size: 13px;
+    color: #aaa;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+.transpositor-inputs {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+.transpositor-inputs input {
+    flex: 1;
+    min-width: 150px;
+    margin: 0;
+}
+.transpositor-label {
+    color: #aaa;
+    font-size: 13px;
+    white-space: nowrap;
+}
+.transpor-controles {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+.btn-semitons {
+    background: #2a2a35;
+    border: 1px solid #555;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    width: auto;
+    transition: 0.2s;
+    margin: 0;
+}
+.btn-semitons:hover { background: #3a3a50; border-color: #3498db; }
+.semitons-display {
+    font-size: 16px;
+    font-weight: bold;
+    color: #3498db;
+    min-width: 80px;
+    text-align: center;
+}
+#btnTranspor {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 15px;
+    width: auto;
+    margin: 0;
+}
+#btnTranspor:hover { background-color: #2176ae; }
+.resultado-transposicao {
+    margin-top: 15px;
+    padding: 15px;
+    background: #2a2a35;
+    border-radius: 8px;
+    border: 1px solid #3498db;
+    font-size: 16px;
+    color: #fff;
+    letter-spacing: 2px;
+    word-spacing: 8px;
+    line-height: 2;
+    display: none;
+}
+.acorde-transposto {
+    display: inline-block;
+    background: #3498db22;
+    border: 1px solid #3498db55;
+    border-radius: 4px;
+    padding: 2px 6px;
+    margin: 2px;
+    color: #3498db;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.15s;
+}
+.acorde-transposto:hover {
+    background: #3498db44;
+}
+
+/* ==========================================
+   MÓDULO: CIFRA COMPLETA
+   ========================================== */
+.cifra-container {
+    margin-top: 20px;
+    padding: 20px;
+    background: #1c1c21;
+    border-radius: 10px;
+    border: 1px solid #333;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+.cifra-titulo {
+    margin-top: 0;
+    margin-bottom: 5px;
+    color: #e67e22;
+    font-size: 22px;
+}
+.cifra-subtitulo {
+    font-size: 13px;
+    color: #aaa;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+.cifra-textarea {
+    width: 100%;
+    min-height: 140px;
+    background: #2a2a35;
+    border: 1px solid #444;
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    padding: 12px;
+    box-sizing: border-box;
+    resize: vertical;
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+.cifra-textarea:focus {
+    outline: none;
+    border-color: #e67e22;
+}
+#btnRenderCifra {
+    background-color: #e67e22;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 15px;
+    width: auto;
+    margin: 0 0 15px 0;
+}
+#btnRenderCifra:hover { background-color: #ca6f1e; }
+.cifra-renderizada {
+    margin-top: 10px;
+    padding: 20px;
+    background: #111;
+    border-radius: 8px;
+    border: 1px solid #333;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 2.2;
+    white-space: pre-wrap;
+    display: none;
+    text-align: left;
+}
+.cifra-linha-acordes {
+    display: block;
+    color: #f1c40f;
+    font-weight: bold;
+    line-height: 1.4;
+    margin-bottom: 2px;
+}
+.cifra-acorde-inline {
+    display: inline-block;
+    color: #f1c40f;
+    font-weight: bold;
+    cursor: pointer;
+    border-bottom: 1px dashed #f1c40f55;
+    transition: 0.15s;
+    padding: 0 2px;
+}
+.cifra-acorde-inline:hover {
+    color: #fff;
+    border-bottom-color: #f1c40f;
+    background: #f1c40f22;
+    border-radius: 3px;
+}
+.cifra-linha-letra {
+    display: block;
+    color: #ddd;
+    line-height: 1.8;
+}
+.cifra-linha-vazia {
+    display: block;
+    height: 10px;
+}
+.cifra-popup {
+    position: fixed;
+    z-index: 1000;
+    background: #1a1a1a;
+    border: 2px solid #f1c40f;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.8);
+    display: none;
+    text-align: center;
+    min-width: 180px;
+}
+.cifra-popup-nome {
+    color: #f1c40f;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+.cifra-popup-fechar {
+    position: absolute;
+    top: 6px; right: 10px;
+    color: #888;
+    cursor: pointer;
+    font-size: 16px;
+    background: none;
+    border: none;
+    padding: 0;
+    width: auto;
+    line-height: 1;
+}
+.cifra-popup-fechar:hover { color: #fff; background: none; }

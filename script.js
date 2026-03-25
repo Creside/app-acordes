@@ -590,3 +590,152 @@ function adicionarRotaVisual(nome, lista) {
     card.appendChild(caminho);
     resultDiv.appendChild(card);
 }
+
+// ==========================================
+// MÓDULO: TRANSPOSITOR DE TOM
+// ==========================================
+
+let semitonsTransposicao = 0;
+
+function alterarSemitons(delta) {
+    semitonsTransposicao += delta;
+    const display = document.getElementById('semitonsDisplay');
+    if (semitonsTransposicao === 0) display.innerText = "0 semitons";
+    else if (semitonsTransposicao > 0) display.innerText = `+${semitonsTransposicao} semitom${Math.abs(semitonsTransposicao) > 1 ? 's' : ''}`;
+    else display.innerText = `${semitonsTransposicao} semitom${Math.abs(semitonsTransposicao) > 1 ? 's' : ''}`;
+}
+
+/**
+ * Transpõe um único acorde N semitons.
+ * Ex: transpor("Am7", 2) → "Bm7"
+ */
+function transporAcorde(acorde, semitons) {
+    // Extrai a tônica (ex: "C#", "Bb", "G")
+    const match = acorde.match(/^([A-G][#b]?)(.*)/);
+    if (!match) return acorde; // não é um acorde reconhecível, devolve igual
+    const tonica = match[1];
+    const sufixo = match[2]; // "m7", "dim", "7M", etc.
+
+    const equivalencias = {"Db":"C#","Eb":"D#","Gb":"F#","Ab":"G#","Bb":"A#"};
+    const tonicaNorm = equivalencias[tonica] || tonica;
+    const idx = notasCromaticas.indexOf(tonicaNorm);
+    if (idx === -1) return acorde;
+
+    const novoIdx = ((idx + semitons) % 12 + 12) % 12;
+    return notasCromaticas[novoIdx] + sufixo;
+}
+
+function transpor() {
+    const input = document.getElementById('inputTranspor').value.trim();
+    if (!input) {
+        alert("Digite os acordes para transpor.");
+        return;
+    }
+    if (semitonsTransposicao === 0) {
+        alert("Ajuste o número de semitons antes de transpor.");
+        return;
+    }
+
+    // Separa por vírgula ou espaço
+    const acordes = input.split(/[\s,]+/).filter(a => a.trim() !== "");
+    const transpostos = acordes.map(a => transporAcorde(a.trim(), semitonsTransposicao));
+
+    const container = document.getElementById('resultadoTransposicao');
+    container.style.display = 'block';
+    container.innerHTML = transpostos.map(a =>
+        `<span class="acorde-transposto" onclick="mostrarDiagramaPopup('${a}', event)">${a}</span>`
+    ).join(' ');
+}
+
+// ==========================================
+// MÓDULO: CIFRA COMPLETA (LETRA + ACORDES)
+// ==========================================
+
+/**
+ * Detecta se uma linha é de acordes (maioria das palavras são acordes válidos)
+ */
+function linhaEhAcordes(linha) {
+    const tokens = linha.trim().split(/\s+/).filter(t => t !== "");
+    if (tokens.length === 0) return false;
+    const acordesValidos = tokens.filter(t => /^[A-G][#b]?(m|dim|aug|7M|7|m7|m7b5|maj7|sus2|sus4|add9)?$/.test(t));
+    return acordesValidos.length / tokens.length >= 0.6;
+}
+
+function renderizarCifra() {
+    const texto = document.getElementById('inputCifra').value;
+    const linhas = texto.split('\n');
+    const container = document.getElementById('cifraRenderizada');
+    container.style.display = 'block';
+    container.innerHTML = '';
+
+    linhas.forEach(linha => {
+        const span = document.createElement('span');
+
+        if (linha.trim() === '') {
+            span.className = 'cifra-linha-vazia';
+        } else if (linhaEhAcordes(linha)) {
+            span.className = 'cifra-linha-acordes';
+            // Cada token que for acorde vira clicável
+            const tokens = linha.split(/(\s+)/);
+            tokens.forEach(token => {
+                if (/^[A-G][#b]?(m|dim|aug|7M|7|m7|m7b5|maj7|sus2|sus4|add9)?$/.test(token.trim()) && token.trim() !== '') {
+                    const a = document.createElement('span');
+                    a.className = 'cifra-acorde-inline';
+                    a.innerText = token;
+                    a.onclick = (e) => mostrarDiagramaPopup(token.trim(), e);
+                    span.appendChild(a);
+                } else {
+                    span.appendChild(document.createTextNode(token));
+                }
+            });
+        } else {
+            span.className = 'cifra-linha-letra';
+            span.innerText = linha;
+        }
+
+        container.appendChild(span);
+    });
+}
+
+// ==========================================
+// POPUP FLUTUANTE DE DIAGRAMA
+// ==========================================
+function mostrarDiagramaPopup(nomeAcorde, event) {
+    let popup = document.getElementById('cifra-popup');
+    if (!popup) {
+        popup = document.createElement('div');
+        popup.id = 'cifra-popup';
+        popup.className = 'cifra-popup';
+        popup.innerHTML = `
+            <button class="cifra-popup-fechar" onclick="fecharPopup()">✕</button>
+            <div class="cifra-popup-nome" id="popup-nome"></div>
+            <div id="popup-svg"></div>
+        `;
+        document.body.appendChild(popup);
+        // Fecha ao clicar fora
+        document.addEventListener('click', (e) => {
+            if (!popup.contains(e.target) && !e.target.classList.contains('cifra-acorde-inline') && !e.target.classList.contains('acorde-transposto')) {
+                fecharPopup();
+            }
+        });
+    }
+
+    document.getElementById('popup-nome').innerText = nomeAcorde;
+    const svgArea = document.getElementById('popup-svg');
+    svgArea.innerHTML = '';
+    svgArea.appendChild(criarSVGAcorde(nomeAcorde, 1));
+
+    // Posiciona o popup próximo ao clique
+    const x = Math.min(event.clientX, window.innerWidth - 200);
+    const y = Math.min(event.clientY + 15, window.innerHeight - 250);
+    popup.style.left = x + 'px';
+    popup.style.top = (y + window.scrollY) + 'px';
+    popup.style.display = 'block';
+
+    event.stopPropagation();
+}
+
+function fecharPopup() {
+    const popup = document.getElementById('cifra-popup');
+    if (popup) popup.style.display = 'none';
+}

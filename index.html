@@ -26,6 +26,34 @@
                 </div>
             </div>
 
+            <!-- TRANSPOSITOR DE TOM -->
+                <div class="transpositor-container">
+                    <h3 class="transpositor-titulo">🔀 Transpositor de Tom</h3>
+                    <p class="transpositor-subtitulo">Digite os acordes e escolha quantos semitons transpor.</p>
+                    <div class="transpositor-inputs">
+                        <input type="text" id="inputTranspor" placeholder="Ex: Am, Dm, G7, C">
+                    </div>
+                    <div class="transpor-controles">
+                        <button class="btn-semitons" onclick="alterarSemitons(-1)">−</button>
+                        <span class="semitons-display" id="semitonsDisplay">0 semitons</span>
+                        <button class="btn-semitons" onclick="alterarSemitons(1)">+</button>
+                        <button id="btnTranspor" onclick="transpor()">Transpor</button>
+                    </div>
+                    <div id="resultadoTransposicao" class="resultado-transposicao"></div>
+                </div>
+
+                <!-- CIFRA COMPLETA -->
+                <div class="cifra-container">
+                    <h3 class="cifra-titulo">📄 Cifra Completa</h3>
+                    <p class="cifra-subtitulo">Cole sua cifra abaixo. Clique em qualquer acorde para ver o diagrama.</p>
+                    <textarea id="inputCifra" class="cifra-textarea" placeholder="Am          Dm       E7
+Hoje eu quero te dizer
+      Am       G        C
+Que o amor que sinto é real"></textarea>
+                    <button id="btnRenderCifra" onclick="renderizarCifra()">Renderizar Cifra</button>
+                    <div id="cifraRenderizada" class="cifra-renderizada"></div>
+                </div>
+
             <!-- PAINEL DIREITO -->
             <div class="painel-direito">
 
