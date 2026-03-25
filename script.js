@@ -625,40 +625,7 @@ function desenharDiagramaAcorde(nomeAcorde) {
 // ==========================================
 // DESENHO DO TECLADO
 // ==========================================
-function desenharTeclado(nomeAcorde) {
-    const area = document.getElementById('chord-visual-area');
-    area.innerHTML = '';
-    const data = dicionarioShapes[nomeAcorde];
-    if (!data || !data.piano) {
-        area.innerHTML = `<p class="diagrama-indisponivel">O teclado para <b>${nomeAcorde}</b> ainda não foi adicionado ao banco.</p>`;
-        return;
-    }
-    const notasAtivas = data.piano, total = 14;
-    const offsetPretas = [1,3,null,6,8,10,null,13,15,null,18,20,22,null];
-    let counter = 0, posX = 0;
-    const largura = 100/total;
-    const wrapper = document.createElement('div');
-    wrapper.className = 'teclado-wrapper';
-    const teclado = document.createElement('div');
-    teclado.className = 'teclado-container';
-    for (let i=0; i<total; i++) {
-        const branca = document.createElement('div');
-        branca.className = 'tecla-branca';
-        if (notasAtivas.includes(counter)) branca.innerHTML = '<div class="marca-tecla"></div>';
-        teclado.appendChild(branca);
-        if (offsetPretas[i] !== null && offsetPretas[i] !== undefined) {
-            const preta = document.createElement('div');
-            preta.className = 'tecla-preta';
-            preta.style.left = `calc(${posX+largura}% - 8px)`;
-            if (notasAtivas.includes(offsetPretas[i])) preta.innerHTML = '<div class="marca-tecla"></div>';
-            teclado.appendChild(preta);
-            counter += 2;
-        } else { counter += 1; }
-        posX += largura;
-    }
-    wrapper.appendChild(teclado);
-    area.appendChild(wrapper);
-}
+// desenharTeclado: ver versão completa abaixo
 
 // ==========================================
 // GPS HARMÔNICO
