@@ -150,15 +150,24 @@ body {
 
 /* DESKTOP: 3 colunas equilibradas */
 @media (min-width: 1024px) {
-    .layout-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        align-items: start;
-        gap: 18px;
+    .container {
+        max-width: 1600px;
+        padding: 16px 24px;
     }
+    .layout-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr 1fr !important;
+        align-items: start;
+        gap: 20px;
+    }
+    .coluna { order: unset !important; }
     .coluna-1 { grid-column: 1; }
     .coluna-2 { grid-column: 2; }
     .coluna-3 { grid-column: 3; }
+    /* Remove mobile order overrides */
+    .coluna-1 .modulo-container:nth-child(1),
+    .coluna-1 .modulo-container:nth-child(2),
+    .coluna-1 .modulo-container:nth-child(3) { order: unset !important; }
 }
 
 /* TABLET: 2 colunas */
