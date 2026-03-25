@@ -637,6 +637,8 @@ function desenharTeclado(nomeAcorde) {
     const offsetPretas = [1,3,null,6,8,10,null,13,15,null,18,20,22,null];
     let counter = 0, posX = 0;
     const largura = 100/total;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'teclado-wrapper';
     const teclado = document.createElement('div');
     teclado.className = 'teclado-container';
     for (let i=0; i<total; i++) {
@@ -654,7 +656,8 @@ function desenharTeclado(nomeAcorde) {
         } else { counter += 1; }
         posX += largura;
     }
-    area.appendChild(teclado);
+    wrapper.appendChild(teclado);
+    area.appendChild(wrapper);
 }
 
 // ==========================================
@@ -922,6 +925,8 @@ function desenharTecladoEm(nomeAcorde, targetArea) {
     const total = 14;
     let counter = 0, posX = 0;
     const largura = 100/total;
+    const wrapperTe = document.createElement('div');
+    wrapperTe.className = 'teclado-wrapper';
     const teclado = document.createElement('div');
     teclado.className = 'teclado-container';
     for (let i=0; i<total; i++) {
@@ -941,7 +946,8 @@ function desenharTecladoEm(nomeAcorde, targetArea) {
         } else { counter += 1; }
         posX += largura;
     }
-    targetArea.appendChild(teclado);
+    wrapperTe.appendChild(teclado);
+    targetArea.appendChild(wrapperTe);
 }
 
 // ==========================================
@@ -1333,7 +1339,8 @@ function desenharTeclado(nomeAcorde) {
         } else { counter += 1; }
         posX += largura;
     }
-    area.appendChild(teclado);
+    wrapper.appendChild(teclado);
+    area.appendChild(wrapper);
 }
 
 // ==========================================
@@ -1565,6 +1572,8 @@ function desenharTecladoEm(nomeAcorde, targetArea) {
     const total = 14;
     let counter = 0, posX = 0;
     const largura = 100/total;
+    const wrapperTe = document.createElement('div');
+    wrapperTe.className = 'teclado-wrapper';
     const teclado = document.createElement('div');
     teclado.className = 'teclado-container';
     for (let i=0; i<total; i++) {
@@ -1584,7 +1593,8 @@ function desenharTecladoEm(nomeAcorde, targetArea) {
         } else { counter += 1; }
         posX += largura;
     }
-    targetArea.appendChild(teclado);
+    wrapperTe.appendChild(teclado);
+    targetArea.appendChild(wrapperTe);
 }
 
 // ==========================================

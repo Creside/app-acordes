@@ -493,7 +493,23 @@ button.posicao-btn.ativo { background: var(--accent); color: #1a1a1a; border-col
 /* ==========================================
    TECLADO (PIANO)
    ========================================== */
-.teclado-container { display:flex; position:relative; height:110px; background:#111; border:2px solid #333; border-radius:4px; padding:2px; margin:0 auto; width:fit-content; }
+.teclado-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+}
+.teclado-container {
+    display: flex;
+    position: relative;
+    height: 110px;
+    background: #111;
+    border: 2px solid #333;
+    border-radius: 4px;
+    padding: 2px;
+    /* Não usa width:fit-content — deixa o wrapper controlar */
+    min-width: max-content;
+}
 .tecla-branca { width:26px; height:100%; background:#f0f0f0; border:1px solid #ccc; border-radius:0 0 3px 3px; margin:0 1px; position:relative; z-index:1; }
 .tecla-preta { width:16px; height:60%; background:#222; border-radius:0 0 3px 3px; position:absolute; z-index:2; box-shadow:1px 1px 2px rgba(0,0,0,0.5); }
 .marca-tecla { width:14px; height:14px; background:var(--accent); border-radius:50%; position:absolute; bottom:10px; left:50%; transform:translateX(-50%); box-shadow:0 0 5px rgba(0,0,0,0.8); z-index:3; }
@@ -597,5 +613,5 @@ button.posicao-btn.ativo { background: var(--accent); color: #1a1a1a; border-col
     .rota-caminho { gap: 8px; }
     .mini-chord-box { min-width: 60px; padding: 6px; }
     .chord-card { padding: 10px; }
-    .teclado-container { transform: scale(0.85); transform-origin: left center; }
+    .teclado-wrapper { border-radius: 6px; }
 }
