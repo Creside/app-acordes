@@ -53,10 +53,14 @@
                 <!-- 3. Visualização dos Acordes -->
                 <div id="chord-diagram-container" style="display:none;" class="modulo-container">
                     <div class="modulo-titulo-row">
-                        <h3 id="nomeAcordeDestaque" class="diagrama-titulo">--</h3>
-                        <div class="diagrama-tabs">
-                            <button id="tab-guitarra" class="tab-btn ativo" onclick="mudarVisaoDiagrama('guitarra')">🎸</button>
-                            <button id="tab-teclado" class="tab-btn" onclick="mudarVisaoDiagrama('teclado')">🎹</button>
+                        <h3 class="modulo-titulo">🎼 Visualização do Acorde</h3>
+                        <button class="btn-tooltip" onclick="mostrarTooltip('cifra')">?</button>
+                    </div>
+                    <div class="modulo-titulo-row" style="margin-bottom:8px;">
+                        <h3 id="nomeAcordeDestaque" class="diagrama-titulo" style="margin:0;font-size:18px;">--</h3>
+                        <div class="diagrama-tabs" style="margin:0;">
+                            <button id="tab-guitarra" class="tab-btn ativo" onclick="mudarVisaoDiagrama('guitarra')">🎸 Violão</button>
+                            <button id="tab-teclado" class="tab-btn" onclick="mudarVisaoDiagrama('teclado')">🎹 Teclado</button>
                         </div>
                     </div>
                     <div id="variacoes-container-inner" style="display:none;margin-bottom:10px;">

@@ -496,7 +496,7 @@ button.botao-variacao:hover { background: #444; border-color: var(--accent); }
 button.botao-variacao.ativo { background: var(--accent); color: #1a1a1a; border-color: var(--accent); }
 
 .diagrama-titulo { color: var(--accent); font-size: 20px; margin-bottom: 10px; }
-.diagrama-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 14px; }
+.diagrama-tabs { display: flex; justify-content: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
 button.tab-btn {
     width: auto; background: var(--bg-input-dark); border: 1px solid var(--border-light);
     color: var(--text-muted); padding: 7px 14px; border-radius: 20px;
@@ -510,10 +510,26 @@ button.tab-btn.ativo { background: #444; color: var(--text); border-color: var(-
     border: 2px solid var(--border-light);
     border-radius: 12px;
     padding: 16px;
-    display: inline-block;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
     box-shadow: 0 8px 25px var(--shadow);
     margin-bottom: 16px;
-    min-width: 180px;
+    overflow: hidden;
+}
+/* SVG do violão centralizado dentro do card */
+#chord-visual-area svg {
+    display: block;
+    margin: 0 auto;
+}
+/* Teclado dentro do card: scroll horizontal, nunca estoura */
+#chord-visual-area .teclado-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+#chord-visual-area .teclado-container {
+    min-width: max-content;
 }
 
 .posicao-tabs { display: flex; justify-content: center; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
