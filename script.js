@@ -744,6 +744,7 @@ function fecharPopup() {
 // MÓDULO: CÍRCULO DE QUINTAS
 // ==========================================
 
+const N_CIRCULO = 12;
 const circuloMaior = ["C","G","D","A","E","B","F#","C#","G#","D#","A#","F"];
 const circuloMenor = ["Am","Em","Bm","F#m","C#m","G#m","D#m","A#m","Fm","Cm","Gm","Dm"];
 const circuloNomeMaior = ["Dó","Sol","Ré","Lá","Mi","Si","Fá#","Dó#","Sol#","Ré#","Lá#","Fá"];
@@ -756,7 +757,7 @@ function desenharCirculoDeQuintas() {
     const SIZE = 340;
     const cx = SIZE / 2, cy = SIZE / 2;
     const RAIO_EXT = 155, RAIO_MED = 108, RAIO_INT = 62, RAIO_CENTRO = 30;
-    const N = 12;
+    const N = N_CIRCULO;
     const angInicio = -Math.PI / 2; // começa no topo
 
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -869,8 +870,8 @@ function selecionarTomCirculo(idx, tipo) {
         : gerarCampoHarmonicoMenor(tonica);
 
     // Quintas vizinhas
-    const idxAnterior = (idx + N - 1) % 12;
-    const idxProximo  = (idx + 1) % 12;
+    const idxAnterior = (idx + N_CIRCULO - 1) % N_CIRCULO;
+    const idxProximo  = (idx + 1) % N_CIRCULO;
     const vizMaior = [circuloMaior[idxAnterior], circuloMaior[idxProximo]];
 
     const infoDiv = document.getElementById('circulo-info');
