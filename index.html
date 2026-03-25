@@ -7,15 +7,13 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <!-- HEADER -->
     <div class="app-header">
         <h1 class="app-titulo">🎸 Identificador de Tom</h1>
         <div class="header-acoes">
-            <!-- Onboarding -->
-            <button class="btn-icone" onclick="abrirAjuda()" title="Ajuda / Glossário">❓</button>
-            <!-- Compartilhar -->
-            <button class="btn-icone" id="btnCompartilhar" onclick="compartilharResultado()" title="Compartilhar resultado" style="display:none">📤</button>
-            <!-- Modo claro/escuro -->
+            <button class="btn-icone" onclick="abrirAjuda()" title="Ajuda">❓</button>
+            <button class="btn-icone" id="btnCompartilhar" onclick="compartilharResultado()" title="Compartilhar" style="display:none">📤</button>
             <button class="btn-icone" id="btnTema" onclick="alternarTema()" title="Modo claro/escuro">🌙</button>
         </div>
     </div>
@@ -23,8 +21,10 @@
     <div class="container">
         <div class="layout-grid">
 
-            <!-- PAINEL ESQUERDO -->
-            <div class="painel-esquerdo">
+            <!-- ========================
+                 COLUNA 1 — FERRAMENTAS
+                 ======================== -->
+            <div class="coluna coluna-1">
 
                 <!-- Identificador de Tom -->
                 <div class="modulo-container">
@@ -34,24 +34,13 @@
                     </div>
                     <input type="text" id="inputAcordes" placeholder="Ex: C, F, G">
                     <button onclick="identificarTom()">Descobrir Tom</button>
-                </div>
-
-                <!-- Afinador -->
-                <div class="afinador-container modulo-container">
-                    <div class="modulo-titulo-row">
-                        <h3 class="afinador-titulo">🎤 Afinador / Voz</h3>
-                        <button class="btn-tooltip" onclick="mostrarTooltip('afinador')">?</button>
-                    </div>
-                    <p class="afinador-subtitulo">Cante uma nota ou toque uma corda.</p>
-                    <button id="btnAfinador" onclick="iniciarAfinador()">Ligar Microfone</button>
-                    <div id="notaDetectada">--</div>
-                    <div id="frequenciaDetectada">-- Hz</div>
+                    <div id="resultado" class="resultado-box" style="display:none;margin-top:12px;"></div>
                 </div>
 
                 <!-- Transpositor -->
                 <div class="transpositor-container modulo-container">
                     <div class="modulo-titulo-row">
-                        <h3 class="transpositor-titulo">🔀 Transpositor de Tom</h3>
+                        <h3 class="transpositor-titulo">🔀 Transpositor</h3>
                         <button class="btn-tooltip" onclick="mostrarTooltip('transpositor')">?</button>
                     </div>
                     <p class="transpositor-subtitulo">Digite os acordes e escolha quantos semitons transpor.</p>
@@ -65,24 +54,24 @@
                     <div id="resultadoTransposicao" class="resultado-transposicao"></div>
                 </div>
 
-                <!-- Círculo de Quintas -->
-                <div class="circulo-container modulo-container">
+                <!-- Afinador -->
+                <div class="afinador-container modulo-container">
                     <div class="modulo-titulo-row">
-                        <h3 class="circulo-titulo">⭕ Círculo de Quintas</h3>
-                        <button class="btn-tooltip" onclick="mostrarTooltip('circulo')">?</button>
+                        <h3 class="afinador-titulo">🎤 Afinador</h3>
+                        <button class="btn-tooltip" onclick="mostrarTooltip('afinador')">?</button>
                     </div>
-                    <p class="circulo-subtitulo">Clique num tom para ver o campo harmônico.</p>
-                    <div class="circulo-svg-wrapper" id="circulo-svg-wrapper"></div>
-                    <div id="circulo-info" class="circulo-info"></div>
+                    <p class="afinador-subtitulo">Cante uma nota ou toque uma corda.</p>
+                    <button id="btnAfinador" onclick="iniciarAfinador()">Ligar Microfone</button>
+                    <div id="notaDetectada">--</div>
+                    <div id="frequenciaDetectada">-- Hz</div>
                 </div>
 
             </div>
 
-            <!-- PAINEL DIREITO -->
-            <div class="painel-direito">
-
-                <!-- Resultado do identificador -->
-                <div id="resultado" class="resultado-box" style="display:none;"></div>
+            <!-- ========================
+                 COLUNA 2 — CONTEÚDO
+                 ======================== -->
+            <div class="coluna coluna-2">
 
                 <!-- Cifra Completa -->
                 <div class="cifra-container modulo-container">
@@ -109,17 +98,35 @@
                         <input type="text" id="acordeDestino" placeholder="Acorde Alvo (ex: F)" class="gps-input">
                     </div>
                     <button id="btnTracaRotas" onclick="gerarRotas()">Traçar Caminhos</button>
-                    <div id="resultado-rotas" style="margin-top:20px;display:flex;flex-direction:column;gap:15px;"></div>
+                    <div id="resultado-rotas" style="margin-top:16px;display:flex;flex-direction:column;gap:14px;"></div>
                 </div>
 
-                <!-- Variações -->
-                <div id="variacoes-container" style="display:none;margin-top:20px;">
-                    <h3 class="variacoes-titulo">Variações de Acordes</h3>
+                <!-- Variações (aparece após identificar tom) -->
+                <div id="variacoes-container" style="display:none;margin-top:0;" class="modulo-container">
+                    <h3 class="variacoes-titulo">🎼 Variações de Acordes</h3>
                     <div id="gradeVariacoes" class="grade-botoes"></div>
                 </div>
 
+            </div>
+
+            <!-- ========================
+                 COLUNA 3 — VISUALIZAÇÕES
+                 ======================== -->
+            <div class="coluna coluna-3">
+
+                <!-- Círculo de Quintas -->
+                <div class="circulo-container modulo-container">
+                    <div class="modulo-titulo-row">
+                        <h3 class="circulo-titulo">⭕ Círculo de Quintas</h3>
+                        <button class="btn-tooltip" onclick="mostrarTooltip('circulo')">?</button>
+                    </div>
+                    <p class="circulo-subtitulo">Clique num tom para ver o campo harmônico.</p>
+                    <div class="circulo-svg-wrapper" id="circulo-svg-wrapper"></div>
+                    <div id="circulo-info" class="circulo-info"></div>
+                </div>
+
                 <!-- Diagrama do Acorde -->
-                <div id="chord-diagram-container" style="display:none;margin-top:20px;text-align:center;">
+                <div id="chord-diagram-container" style="display:none;" class="modulo-container">
                     <h3 id="nomeAcordeDestaque" class="diagrama-titulo">--</h3>
                     <div class="diagrama-tabs">
                         <button id="tab-guitarra" class="tab-btn ativo" onclick="mudarVisaoDiagrama('guitarra')">🎸 Violão</button>
@@ -131,12 +138,12 @@
                 </div>
 
                 <!-- Braço do Instrumento -->
-                <div id="fretboard-container" style="display:none;margin-top:20px;">
+                <div id="fretboard-container" style="display:none;" class="modulo-container">
                     <div class="braco-header">
-                        <h3 class="braco-titulo">Escala no Braço</h3>
+                        <h3 class="braco-titulo">🎸 Escala no Braço</h3>
                         <select id="seletorInstrumento" onchange="atualizarBraco()">
-                            <option value="guitarra">Guitarra/Violão (6 Cordas)</option>
-                            <option value="baixo">Contrabaixo (4 Cordas)</option>
+                            <option value="guitarra">Violão (6 Cordas)</option>
+                            <option value="baixo">Baixo (4 Cordas)</option>
                         </select>
                     </div>
                     <div class="fretboard-wrapper">
@@ -148,7 +155,18 @@
         </div>
     </div>
 
-    <!-- POPUP ONBOARDING/TOOLTIP -->
+    <!-- POPUP DIAGRAMA (cifra/transpositor) -->
+    <div id="cifra-popup" class="cifra-popup">
+        <button class="cifra-popup-fechar" onclick="fecharPopup()">✕</button>
+        <div class="cifra-popup-nome" id="popup-nome"></div>
+        <div class="popup-tabs">
+            <button class="popup-tab-btn ativo" id="popup-tab-violao" onclick="popupMudarTab('violao')">🎸 Violão</button>
+            <button class="popup-tab-btn" id="popup-tab-teclado" onclick="popupMudarTab('teclado')">🎹 Teclado</button>
+        </div>
+        <div id="popup-svg"></div>
+    </div>
+
+    <!-- MODAL ONBOARDING -->
     <div id="tooltip-overlay" class="tooltip-overlay" onclick="fecharTooltip()">
         <div class="tooltip-modal" onclick="event.stopPropagation()">
             <button class="tooltip-fechar" onclick="fecharTooltip()">✕</button>
@@ -156,7 +174,7 @@
         </div>
     </div>
 
-    <!-- POPUP COMPARTILHAR -->
+    <!-- MODAL COMPARTILHAR -->
     <div id="share-overlay" class="tooltip-overlay" onclick="fecharShare()">
         <div class="tooltip-modal" onclick="event.stopPropagation()">
             <button class="tooltip-fechar" onclick="fecharShare()">✕</button>

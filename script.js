@@ -842,29 +842,20 @@ function renderizarCifra() {
 // ==========================================
 // POPUP FLUTUANTE DE DIAGRAMA
 // ==========================================
-function mostrarDiagramaPopup(nomeAcorde, event) {
-    let popup = document.getElementById('cifra-popup');
-    if (!popup) {
-        popup = document.createElement('div');
-        popup.id = 'cifra-popup';
-        popup.className = 'cifra-popup';
-        popup.innerHTML = `
-            <button class="cifra-popup-fechar" onclick="fecharPopup()">✕</button>
-            <div class="cifra-popup-nome" id="popup-nome"></div>
-            <div class="popup-tabs">
-                <button class="popup-tab-btn ativo" id="popup-tab-violao" onclick="popupMudarTab('violao')">🎸 Violão</button>
-                <button class="popup-tab-btn" id="popup-tab-teclado" onclick="popupMudarTab('teclado')">🎹 Teclado</button>
-            </div>
-            <div id="popup-svg"></div>
-        `;
-        document.body.appendChild(popup);
-        // Fecha ao clicar fora
-        document.addEventListener('click', (e) => {
-            if (!popup.contains(e.target) && !e.target.classList.contains('cifra-acorde-inline') && !e.target.classList.contains('acorde-transposto')) {
-                fecharPopup();
-            }
-        });
+// Fecha popup ao clicar fora
+document.addEventListener('click', (e) => {
+    const popup = document.getElementById('cifra-popup');
+    if (!popup) return;
+    if (!popup.contains(e.target) &&
+        !e.target.classList.contains('cifra-acorde-inline') &&
+        !e.target.classList.contains('acorde-transposto')) {
+        fecharPopup();
     }
+});
+
+function mostrarDiagramaPopup(nomeAcorde, event) {
+    const popup = document.getElementById('cifra-popup');
+    if (!popup) return;
 
     document.getElementById('popup-nome').innerText = nomeAcorde;
     popupNomeAtual = nomeAcorde;
@@ -873,7 +864,6 @@ function mostrarDiagramaPopup(nomeAcorde, event) {
     document.getElementById('popup-tab-teclado').classList.remove('ativo');
     _renderPopupConteudo();
 
-    // No mobile, centraliza; no desktop posiciona perto do clique
     const isMobile = window.innerWidth < 768;
     if (isMobile) {
         popup.style.left = '50%';
@@ -888,7 +878,6 @@ function mostrarDiagramaPopup(nomeAcorde, event) {
         popup.style.top = (y + window.scrollY) + 'px';
     }
     popup.style.display = 'block';
-
     event.stopPropagation();
 }
 
@@ -1498,29 +1487,20 @@ function linhaEhAcordes(linha) {
 // ==========================================
 // POPUP FLUTUANTE DE DIAGRAMA
 // ==========================================
-function mostrarDiagramaPopup(nomeAcorde, event) {
-    let popup = document.getElementById('cifra-popup');
-    if (!popup) {
-        popup = document.createElement('div');
-        popup.id = 'cifra-popup';
-        popup.className = 'cifra-popup';
-        popup.innerHTML = `
-            <button class="cifra-popup-fechar" onclick="fecharPopup()">✕</button>
-            <div class="cifra-popup-nome" id="popup-nome"></div>
-            <div class="popup-tabs">
-                <button class="popup-tab-btn ativo" id="popup-tab-violao" onclick="popupMudarTab('violao')">🎸 Violão</button>
-                <button class="popup-tab-btn" id="popup-tab-teclado" onclick="popupMudarTab('teclado')">🎹 Teclado</button>
-            </div>
-            <div id="popup-svg"></div>
-        `;
-        document.body.appendChild(popup);
-        // Fecha ao clicar fora
-        document.addEventListener('click', (e) => {
-            if (!popup.contains(e.target) && !e.target.classList.contains('cifra-acorde-inline') && !e.target.classList.contains('acorde-transposto')) {
-                fecharPopup();
-            }
-        });
+// Fecha popup ao clicar fora
+document.addEventListener('click', (e) => {
+    const popup = document.getElementById('cifra-popup');
+    if (!popup) return;
+    if (!popup.contains(e.target) &&
+        !e.target.classList.contains('cifra-acorde-inline') &&
+        !e.target.classList.contains('acorde-transposto')) {
+        fecharPopup();
     }
+});
+
+function mostrarDiagramaPopup(nomeAcorde, event) {
+    const popup = document.getElementById('cifra-popup');
+    if (!popup) return;
 
     document.getElementById('popup-nome').innerText = nomeAcorde;
     popupNomeAtual = nomeAcorde;
@@ -1529,7 +1509,6 @@ function mostrarDiagramaPopup(nomeAcorde, event) {
     document.getElementById('popup-tab-teclado').classList.remove('ativo');
     _renderPopupConteudo();
 
-    // No mobile, centraliza; no desktop posiciona perto do clique
     const isMobile = window.innerWidth < 768;
     if (isMobile) {
         popup.style.left = '50%';
@@ -1544,7 +1523,6 @@ function mostrarDiagramaPopup(nomeAcorde, event) {
         popup.style.top = (y + window.scrollY) + 'px';
     }
     popup.style.display = 'block';
-
     event.stopPropagation();
 }
 

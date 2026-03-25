@@ -120,34 +120,56 @@ body {
 }
 
 /* ==========================================
-   CONTAINER E GRID
+   CONTAINER E GRID — 3 COLUNAS DESKTOP
    ========================================== */
 .container {
-    padding: 20px;
+    padding: 16px 20px;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
 }
 
+/* MOBILE: coluna única, ordem definida por order */
 .layout-grid {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 14px;
 }
 
-@media (min-width: 768px) {
+.coluna { display: flex; flex-direction: column; gap: 14px; }
+
+/* Ordem mobile: Identificador > Cifra > GPS > Transpositor > Circulo > Afinador */
+.coluna-1 { order: 1; }
+.coluna-2 { order: 2; }
+.coluna-3 { order: 3; }
+
+/* Reordena módulos individualmente no mobile via classes de ordem */
+.coluna-1 .modulo-container:nth-child(1) { order: 1; } /* Identificador */
+.coluna-1 .modulo-container:nth-child(2) { order: 4; } /* Transpositor */
+.coluna-1 .modulo-container:nth-child(3) { order: 6; } /* Afinador */
+
+/* DESKTOP: 3 colunas */
+@media (min-width: 900px) {
     .layout-grid {
         flex-direction: row;
         align-items: flex-start;
     }
-    .painel-esquerdo {
-        width: 420px;
-        flex-shrink: 0;
+    .coluna-1 { width: 300px; flex-shrink: 0; order: 1; }
+    .coluna-2 { flex: 1; min-width: 0; order: 2; }
+    .coluna-3 { width: 320px; flex-shrink: 0; order: 3; }
+}
+
+/* TABLET: 2 colunas */
+@media (min-width: 600px) and (max-width: 899px) {
+    .layout-grid {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
     }
-    .painel-direito {
-        flex: 1;
-        min-width: 0;
-    }
+    .coluna-1 { width: 46%; order: 1; }
+    .coluna-2 { width: 50%; flex: 1; order: 2; }
+    .coluna-3 { width: 100%; order: 3; flex-direction: row; flex-wrap: wrap; gap: 14px; }
+    .coluna-3 .modulo-container { flex: 1; min-width: 280px; }
 }
 
 /* ==========================================
