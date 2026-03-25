@@ -278,74 +278,181 @@ const bancoDeAcordes = {
 
 // MELHORIA 1: Dicionário de shapes expandido
 const dicionarioShapes = {
-    "C":    {g_frets:[null,3,2,0,1,0],   g_fingers:[null,3,2,null,1,null], piano:[0,4,7]},
-    "C#":   {g_frets:[null,4,3,1,2,1],   g_fingers:[null,3,2,1,null,1],   piano:[1,5,8]},
-    "D":    {g_frets:[null,null,0,2,3,2],g_fingers:[null,null,null,1,3,2], piano:[2,6,9]},
-    "D#":   {g_frets:[null,null,1,3,4,3],g_fingers:[null,null,1,2,4,3],   piano:[3,7,10]},
-    "E":    {g_frets:[0,2,2,1,0,0],      g_fingers:[null,2,3,1,null,null], piano:[4,8,11]},
-    "F":    {g_frets:[1,3,3,2,1,1],      g_fingers:[1,3,4,2,1,1],         piano:[5,9,12]},
-    "F#":   {g_frets:[2,4,4,3,2,2],      g_fingers:[1,3,4,2,1,1],         piano:[6,10,13]},
-    "G":    {g_frets:[3,2,0,0,0,3],      g_fingers:[2,1,null,null,null,3], piano:[7,11,14]},
-    "G#":   {g_frets:[4,3,1,1,1,4],      g_fingers:[4,3,1,1,1,4],         piano:[8,12,15]},
-    "A":    {g_frets:[null,0,2,2,2,0],   g_fingers:[null,null,1,2,3,null], piano:[9,13,16]},
-    "A#":   {g_frets:[null,1,3,3,3,1],   g_fingers:[null,1,2,3,4,1],      piano:[10,14,17]},
-    "B":    {g_frets:[null,2,4,4,4,2],   g_fingers:[null,1,2,3,4,1],      piano:[11,15,18]},
-    "Am":   {g_frets:[null,0,2,2,1,0],   g_fingers:[null,null,2,3,1,null], piano:[0,3,7]},
-    "A#m":  {g_frets:[null,1,3,3,2,1],   g_fingers:[null,1,3,4,2,1],      piano:[1,4,8]},
-    "Bm":   {g_frets:[null,2,4,4,3,2],   g_fingers:[null,1,3,4,2,1],      piano:[2,5,9]},
-    "Cm":   {g_frets:[null,3,5,5,4,3],   g_fingers:[null,1,3,4,2,1],      piano:[3,6,10]},
-    "C#m":  {g_frets:[null,4,6,6,5,4],   g_fingers:[null,1,3,4,2,1],      piano:[4,7,11]},
-    "Dm":   {g_frets:[null,null,0,2,3,1],g_fingers:[null,null,null,2,3,1], piano:[5,8,12]},
-    "D#m":  {g_frets:[null,null,1,3,4,2],g_fingers:[null,null,1,3,4,2],   piano:[6,9,13]},
-    "Em":   {g_frets:[0,2,2,0,0,0],      g_fingers:[null,2,3,null,null,null],piano:[7,10,14]},
-    "Fm":   {g_frets:[1,3,3,1,1,1],      g_fingers:[1,3,4,1,1,1],         piano:[8,11,15]},
-    "F#m":  {g_frets:[2,4,4,2,2,2],      g_fingers:[1,3,4,1,1,1],         piano:[9,12,16]},
-    "Gm":   {g_frets:[3,5,5,3,3,3],      g_fingers:[1,3,4,1,1,1],         piano:[10,13,17]},
-    "G#m":  {g_frets:[4,6,6,4,4,4],      g_fingers:[1,3,4,1,1,1],         piano:[11,14,18]},
-    "C7":   {g_frets:[null,3,2,3,1,0],   g_fingers:[null,3,2,4,1,null],   piano:[0,4,7,10]},
-    "C#7":  {g_frets:[null,4,3,4,2,1],   g_fingers:[null,3,2,4,1,null],   piano:[1,5,8,11]},
-    "D7":   {g_frets:[null,null,0,2,1,2],g_fingers:[null,null,null,2,1,3], piano:[2,6,9,12]},
-    "D#7":  {g_frets:[null,null,1,3,2,3],g_fingers:[null,null,1,3,2,4],   piano:[3,7,10,13]},
-    "E7":   {g_frets:[0,2,0,1,0,0],      g_fingers:[null,2,null,1,null,null],piano:[4,8,11,14]},
-    "F7":   {g_frets:[1,3,1,2,1,1],      g_fingers:[1,3,1,2,1,1],         piano:[5,9,12,15]},
-    "F#7":  {g_frets:[2,4,2,3,2,2],      g_fingers:[1,3,1,2,1,1],         piano:[6,10,13,16]},
-    "G7":   {g_frets:[3,2,0,0,0,1],      g_fingers:[3,2,null,null,null,1], piano:[7,11,14,17]},
-    "G#7":  {g_frets:[4,3,1,1,1,2],      g_fingers:[4,3,1,1,1,2],         piano:[8,12,15,18]},
-    "A7":   {g_frets:[null,0,2,0,2,0],   g_fingers:[null,null,2,null,3,null],piano:[9,13,16,19]},
-    "A#7":  {g_frets:[null,1,3,1,3,1],   g_fingers:[null,1,3,1,4,1],      piano:[10,14,17,20]},
-    "B7":   {g_frets:[null,2,1,2,0,2],   g_fingers:[null,2,1,3,null,4],   piano:[11,15,18,21]},
-    "C7M":  {g_frets:[null,3,2,0,0,0],   g_fingers:[null,3,2,null,null,null],piano:[0,4,7,11]},
-    "D7M":  {g_frets:[null,null,0,2,2,2],g_fingers:[null,null,null,1,2,3], piano:[2,6,9,13]},
-    "E7M":  {g_frets:[0,2,1,1,0,0],      g_fingers:[null,3,1,2,null,null], piano:[4,8,11,15]},
-    "F7M":  {g_frets:[null,null,3,2,1,0],g_fingers:[null,null,3,2,1,null], piano:[5,9,12,16]},
-    "G7M":  {g_frets:[3,null,0,0,0,2],   g_fingers:[2,null,null,null,null,1],piano:[7,11,14,18]},
-    "A7M":  {g_frets:[null,0,2,1,2,0],   g_fingers:[null,null,3,1,2,null], piano:[9,13,16,20]},
-    "B7M":  {g_frets:[null,2,4,3,4,null],g_fingers:[null,1,3,2,4,null],   piano:[11,15,18,22]},
-    "F#7M": {g_frets:[2,4,3,3,2,null],   g_fingers:[1,4,2,3,1,null],      piano:[6,10,13,17]},
-    "Am7":  {g_frets:[null,0,2,0,1,0],   g_fingers:[null,null,2,null,1,null],piano:[0,3,7,10]},
-    "Bm7":  {g_frets:[null,2,4,2,3,2],   g_fingers:[null,1,3,1,2,1],      piano:[2,5,9,12]},
-    "Cm7":  {g_frets:[null,3,5,3,4,3],   g_fingers:[null,1,3,1,2,1],      piano:[3,6,10,13]},
-    "C#m7": {g_frets:[null,4,6,4,5,4],   g_fingers:[null,1,3,1,2,1],      piano:[4,7,11,14]},
-    "Dm7":  {g_frets:[null,null,0,2,1,1],g_fingers:[null,null,null,3,1,2], piano:[5,8,12,15]},
-    "D#m7": {g_frets:[null,null,1,3,2,2],g_fingers:[null,null,1,3,1,2],   piano:[6,9,13,16]},
-    "Em7":  {g_frets:[0,2,0,0,0,0],      g_fingers:[null,1,null,null,null,null],piano:[7,10,14,17]},
-    "Fm7":  {g_frets:[1,3,1,1,1,1],      g_fingers:[1,3,1,1,1,1],         piano:[8,11,15,18]},
-    "F#m7": {g_frets:[2,4,2,2,2,2],      g_fingers:[1,3,1,1,1,1],         piano:[9,12,16,19]},
-    "Gm7":  {g_frets:[3,5,3,3,3,3],      g_fingers:[1,3,1,1,1,1],         piano:[10,13,17,20]},
-    "G#m7": {g_frets:[4,6,4,4,4,4],      g_fingers:[1,3,1,1,1,1],         piano:[11,14,18,21]},
-    "A#m7": {g_frets:[null,1,3,1,2,1],   g_fingers:[null,1,3,1,2,1],      piano:[1,4,8,11]},
-    "D#m7": {g_frets:[null,null,1,3,2,2],g_fingers:[null,null,1,3,1,2],   piano:[6,9,13,16]},
-    "C#7M": {g_frets:[null,4,3,1,1,null],g_fingers:[null,3,2,1,1,null],   piano:[1,5,8,12]},
-    "A#7M": {g_frets:[null,1,3,2,3,null],g_fingers:[null,1,3,2,4,null],   piano:[10,14,17,21]},
-    "D#7M": {g_frets:[null,null,1,3,3,3],g_fingers:[null,null,1,2,3,4],   piano:[3,7,10,14]},
-    "C9":   {g_frets:[null,3,2,3,3,null],g_fingers:[null,2,1,3,4,null],   piano:[0,4,7,10,14]},
-    "D9":   {g_frets:[null,5,4,5,5,null],g_fingers:[null,2,1,3,4,null],   piano:[2,6,9,12,16]},
-    "G9":   {g_frets:[3,null,0,2,0,3],   g_fingers:[2,null,null,1,null,3], piano:[7,11,14,17,21]},
-    "A9":   {g_frets:[null,0,2,0,0,0],   g_fingers:[null,null,2,null,null,null],piano:[9,13,16,19,23]},
-    "Edim": {g_frets:[null,null,2,3,2,3],g_fingers:[null,null,1,3,2,4],   piano:[4,7,10]},
-    "Bdim": {g_frets:[null,2,3,4,3,null],g_fingers:[null,1,2,4,3,null],   piano:[11,14,17]},
+    // Formato: { posicoes: [ {label, barra, g_frets, g_fingers}, ... ], piano: [] }
+    // barra: { casa, de, ate } — indica pestana/cejilha
+    "C":    { posicoes: [
+                { label:"Aberta",  g_frets:[null,3,2,0,1,0],    g_fingers:[null,3,2,null,1,null] },
+                { label:"Barra 3ª",barra:{casa:3,de:0,ate:4}, g_frets:[3,5,5,4,3,3],    g_fingers:[1,3,4,2,1,1] },
+                { label:"Barra 8ª",barra:{casa:8,de:0,ate:4}, g_frets:[8,10,10,9,8,8],  g_fingers:[1,3,4,2,1,1] },
+              ], piano:[0,4,7] },
+    "C#":   { posicoes: [
+                { label:"Barra 4ª",barra:{casa:4,de:0,ate:4}, g_frets:[4,6,6,5,4,4],    g_fingers:[1,3,4,2,1,1] },
+                { label:"Barra 9ª",barra:{casa:9,de:0,ate:4}, g_frets:[9,11,11,10,9,9], g_fingers:[1,3,4,2,1,1] },
+              ], piano:[1,5,8] },
+    "D":    { posicoes: [
+                { label:"Aberta",  g_frets:[null,null,0,2,3,2], g_fingers:[null,null,null,1,3,2] },
+                { label:"Barra 5ª",barra:{casa:5,de:0,ate:4}, g_frets:[5,7,7,6,5,5],    g_fingers:[1,3,4,2,1,1] },
+                { label:"Barra 10ª",barra:{casa:10,de:0,ate:4},g_frets:[10,12,12,11,10,10],g_fingers:[1,3,4,2,1,1]},
+              ], piano:[2,6,9] },
+    "D#":   { posicoes: [
+                { label:"Barra 6ª",barra:{casa:6,de:0,ate:4}, g_frets:[6,8,8,7,6,6],    g_fingers:[1,3,4,2,1,1] },
+                { label:"Aberta",  g_frets:[null,null,1,3,4,3],g_fingers:[null,null,1,2,4,3] },
+              ], piano:[3,7,10] },
+    "E":    { posicoes: [
+                { label:"Aberta",  g_frets:[0,2,2,1,0,0],      g_fingers:[null,2,3,1,null,null] },
+                { label:"Barra 7ª",barra:{casa:7,de:0,ate:4}, g_frets:[7,9,9,8,7,7],    g_fingers:[1,3,4,2,1,1] },
+              ], piano:[4,8,11] },
+    "F":    { posicoes: [
+                { label:"Barra 1ª",barra:{casa:1,de:0,ate:4}, g_frets:[1,3,3,2,1,1],    g_fingers:[1,3,4,2,1,1] },
+                { label:"Barra 8ª",barra:{casa:8,de:0,ate:4}, g_frets:[8,10,10,9,8,8],  g_fingers:[1,3,4,2,1,1] },
+                { label:"Simples", g_frets:[null,null,3,2,1,1],g_fingers:[null,null,3,2,1,1] },
+              ], piano:[5,9,12] },
+    "F#":   { posicoes: [
+                { label:"Barra 2ª",barra:{casa:2,de:0,ate:4}, g_frets:[2,4,4,3,2,2],    g_fingers:[1,3,4,2,1,1] },
+                { label:"Barra 9ª",barra:{casa:9,de:0,ate:4}, g_frets:[9,11,11,10,9,9], g_fingers:[1,3,4,2,1,1] },
+              ], piano:[6,10,13] },
+    "G":    { posicoes: [
+                { label:"Aberta",  g_frets:[3,2,0,0,0,3],      g_fingers:[2,1,null,null,null,3] },
+                { label:"Barra 3ª",barra:{casa:3,de:0,ate:4}, g_frets:[3,5,5,4,3,3],    g_fingers:[1,3,4,2,1,1] },
+                { label:"Aberta 2",g_frets:[3,2,0,0,0,3],      g_fingers:[3,2,null,null,null,4] },
+              ], piano:[7,11,14] },
+    "G#":   { posicoes: [
+                { label:"Barra 4ª",barra:{casa:4,de:0,ate:4}, g_frets:[4,6,6,5,4,4],    g_fingers:[1,3,4,2,1,1] },
+                { label:"Barra 11ª",barra:{casa:11,de:0,ate:4},g_frets:[11,13,13,12,11,11],g_fingers:[1,3,4,2,1,1]},
+              ], piano:[8,12,15] },
+    "A":    { posicoes: [
+                { label:"Aberta",  g_frets:[null,0,2,2,2,0],   g_fingers:[null,null,1,2,3,null] },
+                { label:"Barra 5ª",barra:{casa:5,de:0,ate:4}, g_frets:[5,7,7,6,5,5],    g_fingers:[1,3,4,2,1,1] },
+                { label:"Aberta 2",g_frets:[null,0,2,2,2,0],   g_fingers:[null,null,2,3,4,null] },
+              ], piano:[9,13,16] },
+    "A#":   { posicoes: [
+                { label:"Barra 6ª",barra:{casa:6,de:0,ate:4}, g_frets:[6,8,8,7,6,6],    g_fingers:[1,3,4,2,1,1] },
+                { label:"Aberta",  g_frets:[null,1,3,3,3,1],   g_fingers:[null,1,2,3,4,1] },
+              ], piano:[10,14,17] },
+    "B":    { posicoes: [
+                { label:"Barra 2ª",barra:{casa:2,de:0,ate:4}, g_frets:[null,2,4,4,4,2], g_fingers:[null,1,2,3,4,1] },
+                { label:"Barra 7ª",barra:{casa:7,de:0,ate:4}, g_frets:[7,9,9,8,7,7],    g_fingers:[1,3,4,2,1,1] },
+              ], piano:[11,15,18] },
+    "Am":   { posicoes: [
+                { label:"Aberta",  g_frets:[null,0,2,2,1,0],   g_fingers:[null,null,2,3,1,null] },
+                { label:"Barra 5ª",barra:{casa:5,de:0,ate:4}, g_frets:[5,7,7,5,5,5],    g_fingers:[1,3,4,1,1,1] },
+              ], piano:[0,3,7] },
+    "A#m":  { posicoes: [
+                { label:"Barra 1ª",barra:{casa:1,de:0,ate:4}, g_frets:[null,1,3,3,2,1], g_fingers:[null,1,3,4,2,1] },
+                { label:"Barra 6ª",barra:{casa:6,de:0,ate:4}, g_frets:[6,8,8,6,6,6],    g_fingers:[1,3,4,1,1,1] },
+              ], piano:[1,4,8] },
+    "Bm":   { posicoes: [
+                { label:"Barra 2ª",barra:{casa:2,de:0,ate:4}, g_frets:[null,2,4,4,3,2], g_fingers:[null,1,3,4,2,1] },
+                { label:"Barra 7ª",barra:{casa:7,de:0,ate:4}, g_frets:[7,9,9,7,7,7],    g_fingers:[1,3,4,1,1,1] },
+              ], piano:[2,5,9] },
+    "Cm":   { posicoes: [
+                { label:"Barra 3ª",barra:{casa:3,de:0,ate:4}, g_frets:[null,3,5,5,4,3], g_fingers:[null,1,3,4,2,1] },
+                { label:"Barra 8ª",barra:{casa:8,de:0,ate:4}, g_frets:[8,10,10,8,8,8],  g_fingers:[1,3,4,1,1,1] },
+              ], piano:[3,6,10] },
+    "C#m":  { posicoes: [
+                { label:"Barra 4ª",barra:{casa:4,de:0,ate:4}, g_frets:[null,4,6,6,5,4], g_fingers:[null,1,3,4,2,1] },
+                { label:"Barra 9ª",barra:{casa:9,de:0,ate:4}, g_frets:[9,11,11,9,9,9],  g_fingers:[1,3,4,1,1,1] },
+              ], piano:[4,7,11] },
+    "Dm":   { posicoes: [
+                { label:"Aberta",  g_frets:[null,null,0,2,3,1],g_fingers:[null,null,null,2,3,1] },
+                { label:"Barra 5ª",barra:{casa:5,de:0,ate:4}, g_frets:[5,6,7,7,5,5],    g_fingers:[1,2,3,4,1,1] },
+              ], piano:[5,8,12] },
+    "D#m":  { posicoes: [
+                { label:"Barra 6ª",barra:{casa:6,de:0,ate:4}, g_frets:[6,7,8,8,6,6],    g_fingers:[1,2,3,4,1,1] },
+                { label:"Aberta",  g_frets:[null,null,1,3,4,2],g_fingers:[null,null,1,3,4,2] },
+              ], piano:[6,9,13] },
+    "Em":   { posicoes: [
+                { label:"Aberta",  g_frets:[0,2,2,0,0,0],      g_fingers:[null,2,3,null,null,null] },
+                { label:"Barra 7ª",barra:{casa:7,de:0,ate:4}, g_frets:[7,9,9,7,7,7],    g_fingers:[1,3,4,1,1,1] },
+              ], piano:[7,10,14] },
+    "Fm":   { posicoes: [
+                { label:"Barra 1ª",barra:{casa:1,de:0,ate:4}, g_frets:[1,3,3,1,1,1],    g_fingers:[1,3,4,1,1,1] },
+                { label:"Barra 8ª",barra:{casa:8,de:0,ate:4}, g_frets:[8,10,10,8,8,8],  g_fingers:[1,3,4,1,1,1] },
+              ], piano:[8,11,15] },
+    "F#m":  { posicoes: [
+                { label:"Barra 2ª",barra:{casa:2,de:0,ate:4}, g_frets:[2,4,4,2,2,2],    g_fingers:[1,3,4,1,1,1] },
+                { label:"Barra 9ª",barra:{casa:9,de:0,ate:4}, g_frets:[9,11,11,9,9,9],  g_fingers:[1,3,4,1,1,1] },
+              ], piano:[9,12,16] },
+    "Gm":   { posicoes: [
+                { label:"Barra 3ª",barra:{casa:3,de:0,ate:4}, g_frets:[3,5,5,3,3,3],    g_fingers:[1,3,4,1,1,1] },
+                { label:"Barra 10ª",barra:{casa:10,de:0,ate:4},g_frets:[10,12,12,10,10,10],g_fingers:[1,3,4,1,1,1]},
+              ], piano:[10,13,17] },
+    "G#m":  { posicoes: [
+                { label:"Barra 4ª",barra:{casa:4,de:0,ate:4}, g_frets:[4,6,6,4,4,4],    g_fingers:[1,3,4,1,1,1] },
+                { label:"Barra 11ª",barra:{casa:11,de:0,ate:4},g_frets:[11,13,13,11,11,11],g_fingers:[1,3,4,1,1,1]},
+              ], piano:[11,14,18] },
+    "E7":   { posicoes: [
+                { label:"Aberta",  g_frets:[0,2,0,1,0,0],      g_fingers:[null,2,null,1,null,null] },
+                { label:"Barra 7ª",barra:{casa:7,de:0,ate:4}, g_frets:[7,9,7,8,7,7],    g_fingers:[1,3,1,2,1,1] },
+              ], piano:[4,8,11,14] },
+    "A7":   { posicoes: [
+                { label:"Aberta",  g_frets:[null,0,2,0,2,0],   g_fingers:[null,null,2,null,3,null] },
+                { label:"Barra 5ª",barra:{casa:5,de:0,ate:4}, g_frets:[5,7,5,6,5,5],    g_fingers:[1,3,1,2,1,1] },
+              ], piano:[9,13,16,19] },
+    "D7":   { posicoes: [
+                { label:"Aberta",  g_frets:[null,null,0,2,1,2],g_fingers:[null,null,null,2,1,3] },
+                { label:"Barra 5ª",barra:{casa:5,de:0,ate:3}, g_frets:[null,5,7,5,7,5], g_fingers:[null,1,3,1,4,1] },
+              ], piano:[2,6,9,12] },
+    "G7":   { posicoes: [
+                { label:"Aberta",  g_frets:[3,2,0,0,0,1],      g_fingers:[3,2,null,null,null,1] },
+                { label:"Barra 3ª",barra:{casa:3,de:0,ate:4}, g_frets:[3,5,3,4,3,3],    g_fingers:[1,3,1,2,1,1] },
+              ], piano:[7,11,14,17] },
+    "C7":   { posicoes: [
+                { label:"Aberta",  g_frets:[null,3,2,3,1,0],   g_fingers:[null,3,2,4,1,null] },
+                { label:"Barra 8ª",barra:{casa:8,de:0,ate:4}, g_frets:[8,10,8,9,8,8],   g_fingers:[1,3,1,2,1,1] },
+              ], piano:[0,4,7,10] },
+    "B7":   { posicoes: [
+                { label:"Aberta",  g_frets:[null,2,1,2,0,2],   g_fingers:[null,2,1,3,null,4] },
+                { label:"Barra 7ª",barra:{casa:7,de:0,ate:4}, g_frets:[7,9,7,8,7,7],    g_fingers:[1,3,1,2,1,1] },
+              ], piano:[11,15,18,21] },
+    "Am7":  { posicoes: [
+                { label:"Aberta",  g_frets:[null,0,2,0,1,0],   g_fingers:[null,null,2,null,1,null] },
+                { label:"Barra 5ª",barra:{casa:5,de:0,ate:4}, g_frets:[5,7,5,5,5,5],    g_frets:[5,7,5,5,5,5],  g_fingers:[1,3,1,1,1,1] },
+              ], piano:[0,3,7,10] },
+    "Em7":  { posicoes: [
+                { label:"Aberta",  g_frets:[0,2,0,0,0,0],      g_fingers:[null,1,null,null,null,null] },
+                { label:"Barra 7ª",barra:{casa:7,de:0,ate:4}, g_frets:[7,9,7,7,7,7],    g_fingers:[1,3,1,1,1,1] },
+              ], piano:[7,10,14,17] },
+    "Dm7":  { posicoes: [
+                { label:"Aberta",  g_frets:[null,null,0,2,1,1],g_fingers:[null,null,null,3,1,2] },
+                { label:"Barra 5ª",barra:{casa:5,de:0,ate:4}, g_frets:[null,5,7,5,6,5], g_fingers:[null,1,3,1,2,1] },
+              ], piano:[5,8,12,15] },
+    "C7M":  { posicoes: [
+                { label:"Aberta",  g_frets:[null,3,2,0,0,0],   g_fingers:[null,3,2,null,null,null] },
+                { label:"Barra 8ª",barra:{casa:8,de:0,ate:4}, g_frets:[null,8,10,9,8,null],g_fingers:[null,1,3,2,1,null] },
+              ], piano:[0,4,7,11] },
+    "G7M":  { posicoes: [
+                { label:"Aberta",  g_frets:[3,null,0,0,0,2],   g_fingers:[2,null,null,null,null,1] },
+                { label:"Barra 3ª",barra:{casa:3,de:0,ate:4}, g_frets:[null,3,5,4,3,null],g_fingers:[null,1,3,2,1,null] },
+              ], piano:[7,11,14,18] },
+    "F7M":  { posicoes: [
+                { label:"Aberta",  g_frets:[null,null,3,2,1,0],g_fingers:[null,null,3,2,1,null] },
+                { label:"Barra 8ª",barra:{casa:8,de:0,ate:4}, g_frets:[null,8,10,9,8,null],g_fingers:[null,1,3,2,1,null] },
+              ], piano:[5,9,12,16] },
+    "Bm7":  { posicoes: [
+                { label:"Barra 2ª",barra:{casa:2,de:0,ate:4}, g_frets:[null,2,4,2,3,2], g_fingers:[null,1,3,1,2,1] },
+                { label:"Barra 7ª",barra:{casa:7,de:0,ate:4}, g_frets:[7,9,7,7,7,7],    g_fingers:[1,3,1,1,1,1] },
+              ], piano:[2,5,9,12] },
+    "F#m7": { posicoes: [
+                { label:"Barra 2ª",barra:{casa:2,de:0,ate:4}, g_frets:[2,4,2,2,2,2],    g_fingers:[1,3,1,1,1,1] },
+                { label:"Barra 9ª",barra:{casa:9,de:0,ate:4}, g_frets:[9,11,9,9,9,9],   g_fingers:[1,3,1,1,1,1] },
+              ], piano:[9,12,16,19] },
+    "C#7":  { posicoes: [
+                { label:"Barra 4ª",barra:{casa:4,de:0,ate:4}, g_frets:[null,4,6,4,5,4], g_fingers:[null,1,3,1,2,1] },
+              ], piano:[1,5,8,11] },
+    "F#7":  { posicoes: [
+                { label:"Barra 2ª",barra:{casa:2,de:0,ate:4}, g_frets:[2,4,2,3,2,2],    g_fingers:[1,3,1,2,1,1] },
+              ], piano:[6,10,13,16] },
+    "C9":   { posicoes: [
+                { label:"Aberta",  g_frets:[null,3,2,3,3,null],g_fingers:[null,2,1,3,4,null] },
+              ], piano:[0,4,7,10,14] },
+    "Edim": { posicoes: [
+                { label:"Aberta",  g_frets:[null,null,2,3,2,3],g_fingers:[null,null,1,3,2,4] },
+              ], piano:[4,7,10] },
+    "Bdim": { posicoes: [
+                { label:"Aberta",  g_frets:[null,2,3,4,3,null],g_fingers:[null,1,2,4,3,null] },
+              ], piano:[11,14,17] },
 };
-
 let acordeAtualSelecionado = "";
 let visaoDiagramaAtual = "guitarra";
 
@@ -751,6 +858,613 @@ const circuloNomeMaior = ["Dó","Sol","Ré","Lá","Mi","Si","Fá#","Dó#","Sol#"
 const circuloNomeMenor = ["Lám","Mim","Sim","Fá#m","Dó#m","Sol#m","Ré#m","Lá#m","Fám","Dóm","Solm","Rém"];
 
 let circuloSegmentoAtivo = null;
+
+function desenharCirculoDeQuintas() {
+    const wrapper = document.getElementById('circulo-svg-wrapper');
+    const SIZE = 340;
+    const cx = SIZE / 2, cy = SIZE / 2;
+    const RAIO_EXT = 155, RAIO_MED = 108, RAIO_INT = 62, RAIO_CENTRO = 30;
+    const N = N_CIRCULO;
+    const angInicio = -Math.PI / 2; // começa no topo
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", `0 0 ${SIZE} ${SIZE}`);
+    svg.setAttribute("width", SIZE);
+    svg.setAttribute("height", SIZE);
+
+    function arco(raioOuter, raioInner, i, total) {
+        const a1 = angInicio + (i / total) * 2 * Math.PI;
+        const a2 = angInicio + ((i + 1) / total) * 2 * Math.PI;
+        const gap = 0.018; // espaço entre fatias
+        const a1g = a1 + gap, a2g = a2 - gap;
+        const x1 = cx + raioOuter * Math.cos(a1g), y1 = cy + raioOuter * Math.sin(a1g);
+        const x2 = cx + raioOuter * Math.cos(a2g), y2 = cy + raioOuter * Math.sin(a2g);
+        const x3 = cx + raioInner * Math.cos(a2g), y3 = cy + raioInner * Math.sin(a2g);
+        const x4 = cx + raioInner * Math.cos(a1g), y4 = cy + raioInner * Math.sin(a1g);
+        return `M ${x1} ${y1} A ${raioOuter} ${raioOuter} 0 0 1 ${x2} ${y2} L ${x3} ${y3} A ${raioInner} ${raioInner} 0 0 0 ${x4} ${y4} Z`;
+    }
+
+    function textoPosicao(raio, i, total) {
+        const ang = angInicio + ((i + 0.5) / total) * 2 * Math.PI;
+        return { x: cx + raio * Math.cos(ang), y: cy + raio * Math.sin(ang) };
+    }
+
+    // Paleta de cores para tons maiores (anel externo)
+    const coresMaior = [
+        "#c0392b","#e67e22","#f1c40f","#2ecc71","#1abc9c","#3498db",
+        "#2980b9","#9b59b6","#8e44ad","#d35400","#e74c3c","#27ae60"
+    ];
+
+    for (let i = 0; i < N; i++) {
+        const corBase = coresMaior[i];
+        const corMenor = corBase + "88"; // menor transparência
+
+        // --- Anel externo: tons maiores ---
+        const pathMaior = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        pathMaior.setAttribute("d", arco(RAIO_EXT, RAIO_MED, i, N));
+        pathMaior.setAttribute("fill", corBase);
+        pathMaior.setAttribute("opacity", "0.85");
+        pathMaior.setAttribute("cursor", "pointer");
+        pathMaior.setAttribute("data-idx", i);
+        pathMaior.setAttribute("data-tipo", "maior");
+        pathMaior.style.transition = "opacity 0.2s";
+        pathMaior.addEventListener("mouseenter", () => { pathMaior.setAttribute("opacity","1"); });
+        pathMaior.addEventListener("mouseleave", () => { pathMaior.setAttribute("opacity","0.85"); });
+        pathMaior.addEventListener("click", () => selecionarTomCirculo(i, "maior"));
+        svg.appendChild(pathMaior);
+
+        // Texto tom maior
+        const posMaior = textoPosicao(RAIO_MED + (RAIO_EXT - RAIO_MED) / 2, i, N);
+        const txtMaior = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        txtMaior.setAttribute("x", posMaior.x); txtMaior.setAttribute("y", posMaior.y);
+        txtMaior.setAttribute("fill", "#fff"); txtMaior.setAttribute("font-size", "13px");
+        txtMaior.setAttribute("font-weight", "bold"); txtMaior.setAttribute("text-anchor", "middle");
+        txtMaior.setAttribute("dominant-baseline", "central");
+        txtMaior.setAttribute("pointer-events", "none");
+        txtMaior.textContent = circuloMaior[i];
+        svg.appendChild(txtMaior);
+
+        // --- Anel interno: tons menores ---
+        const pathMenor = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        pathMenor.setAttribute("d", arco(RAIO_MED, RAIO_INT, i, N));
+        pathMenor.setAttribute("fill", corMenor);
+        pathMenor.setAttribute("cursor", "pointer");
+        pathMenor.setAttribute("data-idx", i);
+        pathMenor.setAttribute("data-tipo", "menor");
+        pathMenor.style.transition = "opacity 0.2s";
+        pathMenor.addEventListener("mouseenter", () => { pathMenor.setAttribute("opacity","1.2"); });
+        pathMenor.addEventListener("click", () => selecionarTomCirculo(i, "menor"));
+        svg.appendChild(pathMenor);
+
+        // Texto tom menor
+        const posMenor = textoPosicao(RAIO_INT + (RAIO_MED - RAIO_INT) / 2, i, N);
+        const txtMenor = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        txtMenor.setAttribute("x", posMenor.x); txtMenor.setAttribute("y", posMenor.y);
+        txtMenor.setAttribute("fill", "#fff"); txtMenor.setAttribute("font-size", "10px");
+        txtMenor.setAttribute("font-weight", "bold"); txtMenor.setAttribute("text-anchor", "middle");
+        txtMenor.setAttribute("dominant-baseline", "central");
+        txtMenor.setAttribute("pointer-events", "none");
+        txtMenor.textContent = circuloMenor[i];
+        svg.appendChild(txtMenor);
+    }
+
+    // Centro decorativo
+    const circulo = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circulo.setAttribute("cx", cx); circulo.setAttribute("cy", cy);
+    circulo.setAttribute("r", RAIO_INT - 2);
+    circulo.setAttribute("fill", "#1a1a24"); circulo.setAttribute("stroke", "#333");
+    circulo.setAttribute("stroke-width","2");
+    svg.appendChild(circulo);
+
+    const txtCentro = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    txtCentro.setAttribute("x", cx); txtCentro.setAttribute("y", cy);
+    txtCentro.setAttribute("fill", "#666"); txtCentro.setAttribute("font-size", "9px");
+    txtCentro.setAttribute("text-anchor", "middle"); txtCentro.setAttribute("dominant-baseline", "central");
+    txtCentro.textContent = "♩";
+    svg.appendChild(txtCentro);
+
+    wrapper.innerHTML = '';
+    wrapper.appendChild(svg);
+}
+
+function selecionarTomCirculo(idx, tipo) {
+    const tonica = tipo === "maior" ? circuloMaior[idx] : circuloMenor[idx].replace("m","");
+    const modo = tipo;
+    const nomeDisplay = tipo === "maior" ? circuloMaior[idx] + " Maior" : circuloMenor[idx];
+
+    const campo = tipo === "maior"
+        ? gerarCampoHarmonicoMaior(tonica)
+        : gerarCampoHarmonicoMenor(tonica);
+
+    // Quintas vizinhas
+    const idxAnterior = (idx + N_CIRCULO - 1) % N_CIRCULO;
+    const idxProximo  = (idx + 1) % N_CIRCULO;
+    const vizMaior = [circuloMaior[idxAnterior], circuloMaior[idxProximo]];
+
+    const infoDiv = document.getElementById('circulo-info');
+    infoDiv.style.display = 'block';
+    infoDiv.innerHTML = `
+        <div class="circulo-info-tom">🎵 ${nomeDisplay}</div>
+        <b>Campo Harmônico:</b> ${campo.join(" — ")}<br>
+        <b>Quintas vizinhas:</b> ${vizMaior[0]} ◀ ${circuloMaior[idx]} ▶ ${vizMaior[1]}
+    `;
+
+    // Preenche o input do identificador com os acordes do campo para facilitar
+    document.getElementById('inputAcordes').value = campo.slice(0,4).join(", ");
+}
+
+// Inicializa o círculo quando a página carrega
+window.addEventListener('DOMContentLoaded', desenharCirculoDeQuintas);// ==========================================
+// FUNÇÃO SVG UNIFICADA — COM MÚLTIPLAS POSIÇÕES E BARRA
+// ==========================================
+
+/**
+ * Retorna o shape a usar: suporta formato antigo e novo (posicoes[])
+ */
+function getShapeData(nomeAcorde, posicaoIdx) {
+    const entry = dicionarioShapes[nomeAcorde];
+    if (!entry) return null;
+    // Novo formato: { posicoes: [...], piano: [] }
+    if (entry.posicoes) return entry.posicoes[posicaoIdx || 0];
+    // Formato legado: { g_frets, g_fingers, piano }
+    return entry;
+}
+
+function getNumPosicoes(nomeAcorde) {
+    const entry = dicionarioShapes[nomeAcorde];
+    if (!entry) return 0;
+    if (entry.posicoes) return entry.posicoes.length;
+    return 1;
+}
+
+function getPiano(nomeAcorde) {
+    const entry = dicionarioShapes[nomeAcorde];
+    return entry ? entry.piano : null;
+}
+
+/**
+ * Cria um SVG de diagrama de acorde para violão.
+ * @param {string} nomeAcorde
+ * @param {number} escala - 1 normal, 0.5 miniatura
+ * @param {number} posicaoIdx - qual posição do acorde mostrar
+ */
+function criarSVGAcorde(nomeAcorde, escala, posicaoIdx) {
+    escala = escala || 1;
+    posicaoIdx = posicaoIdx || 0;
+    const W=140, H=170, FRETS=5, ML=20, MT=30;
+    const strSp = (W - 2*ML) / 5;
+    const fretSp = (H - MT - 10) / FRETS;
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg","svg");
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    svg.setAttribute("width", W*escala);
+    svg.setAttribute("height", H*escala);
+    svg.style.display = "block";
+    if (escala >= 1) svg.style.margin = "0 auto";
+
+    const data = getShapeData(nomeAcorde, posicaoIdx);
+    if (!data) {
+        const t = document.createElementNS("http://www.w3.org/2000/svg","text");
+        t.setAttribute("x", W/2); t.setAttribute("y", H/2);
+        t.setAttribute("fill","#888"); t.setAttribute("font-size","40px");
+        t.setAttribute("text-anchor","middle"); t.setAttribute("dominant-baseline","central");
+        t.textContent = "?"; svg.appendChild(t); return svg;
+    }
+
+    // Indicador de casa (ex: "5fr") quando há barra em casa > 1
+    if (data.barra && data.barra.casa > 1) {
+        const casaLabel = document.createElementNS("http://www.w3.org/2000/svg","text");
+        casaLabel.setAttribute("x", W - ML + 4);
+        casaLabel.setAttribute("y", MT + fretSp * 0.5);
+        casaLabel.setAttribute("fill","#aaa");
+        casaLabel.setAttribute("font-size","10px");
+        casaLabel.setAttribute("dominant-baseline","central");
+        casaLabel.textContent = `${data.barra.casa}fr`;
+        svg.appendChild(casaLabel);
+    }
+
+    // Pestana (nut) — mais grossa se casa 0, linha fina se barra em casa >1
+    const nut = document.createElementNS("http://www.w3.org/2000/svg","line");
+    nut.setAttribute("x1", ML); nut.setAttribute("y1", MT);
+    nut.setAttribute("x2", W-ML); nut.setAttribute("y2", MT);
+    nut.setAttribute("stroke", data.barra && data.barra.casa > 1 ? "#555" : "#fff");
+    nut.setAttribute("stroke-width", data.barra && data.barra.casa > 1 ? "1" : "4");
+    svg.appendChild(nut);
+
+    // Trastes
+    for (let i=1; i<=FRETS; i++) {
+        const y = MT + i*fretSp;
+        const l = document.createElementNS("http://www.w3.org/2000/svg","line");
+        l.setAttribute("x1",ML); l.setAttribute("y1",y);
+        l.setAttribute("x2",W-ML); l.setAttribute("y2",y);
+        l.setAttribute("stroke","#666"); l.setAttribute("stroke-width", escala<1?"2":"1");
+        svg.appendChild(l);
+    }
+
+    // Cordas
+    for (let i=0; i<6; i++) {
+        const x = ML + i*strSp;
+        const l = document.createElementNS("http://www.w3.org/2000/svg","line");
+        l.setAttribute("x1",x); l.setAttribute("y1",MT);
+        l.setAttribute("x2",x); l.setAttribute("y2",H-10);
+        l.setAttribute("stroke","#666"); l.setAttribute("stroke-width", escala<1?"2":"1");
+        svg.appendChild(l);
+    }
+
+    // BARRA (cejilha) — retângulo arredondado
+    if (data.barra) {
+        const xDe = ML + data.barra.de * strSp;
+        const xAte = ML + data.barra.ate * strSp;
+        const yBarra = MT + (1 - 0.5) * fretSp;
+        const barraRect = document.createElementNS("http://www.w3.org/2000/svg","rect");
+        barraRect.setAttribute("x", xDe - 6);
+        barraRect.setAttribute("y", yBarra - 9);
+        barraRect.setAttribute("width", (xAte - xDe) + 12);
+        barraRect.setAttribute("height", 18);
+        barraRect.setAttribute("rx", 9);
+        barraRect.setAttribute("fill", "#f1c40f");
+        svg.appendChild(barraRect);
+
+        // Número da casa dentro da barra
+        if (escala >= 1) {
+            const barraText = document.createElementNS("http://www.w3.org/2000/svg","text");
+            barraText.setAttribute("x", (xDe + xAte) / 2);
+            barraText.setAttribute("y", yBarra);
+            barraText.setAttribute("fill","#000");
+            barraText.setAttribute("font-size","10px");
+            barraText.setAttribute("font-weight","bold");
+            barraText.setAttribute("text-anchor","middle");
+            barraText.setAttribute("dominant-baseline","central");
+            barraText.textContent = "B";
+            svg.appendChild(barraText);
+        }
+    }
+
+    // Notas e dedos
+    for (let i=0; i<6; i++) {
+        const casa = data.g_frets[i], dedo = data.g_fingers ? data.g_fingers[i] : null;
+        const x = ML + i*strSp;
+        if (casa === null || casa === 0) {
+            const t = document.createElementNS("http://www.w3.org/2000/svg","text");
+            t.setAttribute("x",x); t.setAttribute("y", MT - 10);
+            t.setAttribute("fill", escala<1?"#aaa":"#888");
+            t.setAttribute("font-size", escala<1?"14px":"12px");
+            t.setAttribute("font-weight","bold"); t.setAttribute("text-anchor","middle");
+            t.textContent = casa===null?"X":"O"; svg.appendChild(t);
+        } else if (casa > 0) {
+            // Normaliza casa relativa quando há barra
+            const casaRel = data.barra ? casa - data.barra.casa + 1 : casa;
+            if (casaRel < 1 || casaRel > FRETS) continue; // fora da janela
+            const y = MT + (casaRel - 0.5) * fretSp;
+            // Não desenha bolinha onde já tem a barra (dedo 1)
+            const ehBarra = data.barra && dedo === 1 && casaRel === 1;
+            if (!ehBarra) {
+                const dot = document.createElementNS("http://www.w3.org/2000/svg","circle");
+                dot.setAttribute("cx",x); dot.setAttribute("cy",y);
+                dot.setAttribute("r","9"); dot.setAttribute("fill","#f1c40f");
+                if (escala>=1) { dot.setAttribute("stroke","#d4a017"); dot.setAttribute("stroke-width","1"); }
+                svg.appendChild(dot);
+                if (dedo !== null && dedo !== 1) {
+                    const t = document.createElementNS("http://www.w3.org/2000/svg","text");
+                    t.setAttribute("x",x); t.setAttribute("y",y);
+                    t.setAttribute("fill","#000"); t.setAttribute("font-size","11px");
+                    t.setAttribute("font-weight","bold"); t.setAttribute("text-anchor","middle");
+                    t.setAttribute("dominant-baseline","central");
+                    t.textContent = dedo; svg.appendChild(t);
+                }
+            }
+        }
+    }
+    return svg;
+}
+
+// ==========================================
+// DESENHO DO VIOLÃO — COM SELETOR DE POSIÇÕES
+// ==========================================
+let posicaoAtual = 0;
+
+function desenharDiagramaAcorde(nomeAcorde) {
+    posicaoAtual = 0;
+    _renderDiagramaComPosicao(nomeAcorde, 0);
+}
+
+function _renderDiagramaComPosicao(nomeAcorde, posIdx) {
+    const container = document.getElementById('chord-diagram-container');
+    const area = document.getElementById('chord-visual-area');
+    area.innerHTML = '';
+    document.getElementById('nomeAcordeDestaque').innerText = nomeAcorde;
+    container.style.display = 'block';
+
+    const numPos = getNumPosicoes(nomeAcorde);
+    if (numPos === 0) {
+        area.innerHTML = `<p class="diagrama-indisponivel">Diagrama para <b>${nomeAcorde}</b> não disponível.</p>`;
+        return;
+    }
+
+    // Seletor de posições (tabs de posição)
+    if (numPos > 1) {
+        const tabsDiv = document.createElement('div');
+        tabsDiv.className = 'posicao-tabs';
+        for (let p = 0; p < numPos; p++) {
+            const shape = getShapeData(nomeAcorde, p);
+            const btn = document.createElement('button');
+            btn.className = 'posicao-btn' + (p === posIdx ? ' ativo' : '');
+            btn.innerText = shape.label || `Posição ${p+1}`;
+            btn.onclick = () => {
+                posicaoAtual = p;
+                _renderDiagramaComPosicao(nomeAcorde, p);
+            };
+            tabsDiv.appendChild(btn);
+        }
+        area.appendChild(tabsDiv);
+    }
+
+    area.appendChild(criarSVGAcorde(nomeAcorde, 1, posIdx));
+}
+
+
+// ==========================================
+// DESENHO DO TECLADO
+// ==========================================
+function desenharTeclado(nomeAcorde) {
+    const area = document.getElementById('chord-visual-area');
+    area.innerHTML = '';
+    const data = dicionarioShapes[nomeAcorde];
+    if (!data || !data.piano) {
+        area.innerHTML = `<p class="diagrama-indisponivel">O teclado para <b>${nomeAcorde}</b> ainda não foi adicionado ao banco.</p>`;
+        return;
+    }
+    const notasAtivas = data.piano, total = 14;
+    const offsetPretas = [1,3,null,6,8,10,null,13,15,null,18,20,22,null];
+    let counter = 0, posX = 0;
+    const largura = 100/total;
+    const teclado = document.createElement('div');
+    teclado.className = 'teclado-container';
+    for (let i=0; i<total; i++) {
+        const branca = document.createElement('div');
+        branca.className = 'tecla-branca';
+        if (notasAtivas.includes(counter)) branca.innerHTML = '<div class="marca-tecla"></div>';
+        teclado.appendChild(branca);
+        if (offsetPretas[i] !== null && offsetPretas[i] !== undefined) {
+            const preta = document.createElement('div');
+            preta.className = 'tecla-preta';
+            preta.style.left = `calc(${posX+largura}% - 8px)`;
+            if (notasAtivas.includes(offsetPretas[i])) preta.innerHTML = '<div class="marca-tecla"></div>';
+            teclado.appendChild(preta);
+            counter += 2;
+        } else { counter += 1; }
+        posX += largura;
+    }
+    area.appendChild(teclado);
+}
+
+// ==========================================
+// GPS HARMÔNICO
+// ==========================================
+function extrairTonica(acordeStr) {
+    const m = acordeStr.match(/^[A-G][#b]?/);
+    return m ? m[0] : null;
+}
+
+function gerarRotas() {
+    const origem = document.getElementById('acordeOrigem').value.trim();
+    const destino = document.getElementById('acordeDestino').value.trim();
+    const resultDiv = document.getElementById('resultado-rotas');
+    if (!origem || !destino) {
+        resultDiv.innerHTML = "<p class='erro-rota'>Digite o acorde de origem e o destino!</p>";
+        return;
+    }
+    const origemT = origem[0].toUpperCase() + origem.slice(1);
+    const destinoT = destino[0].toUpperCase() + destino.slice(1);
+    const raiz = extrairTonica(destinoT);
+    const idx = getNotaIndex(raiz);
+    if (idx === -1) {
+        resultDiv.innerHTML = "<p class='erro-rota'>Acorde de destino não reconhecido.</p>";
+        return;
+    }
+    resultDiv.innerHTML = "";
+    const V7   = notasCromaticas[somarSemitons(idx,7)]+"7";
+    const SubV7= notasCromaticas[somarSemitons(idx,1)]+"7";
+    const IIm7 = notasCromaticas[somarSemitons(idx,2)]+"m7";
+    const Dim  = notasCromaticas[somarSemitons(idx,11)]+"dim";
+
+    adicionarRotaVisual("Dominante Secundário (V7)",  [origemT, V7, destinoT]);
+    adicionarRotaVisual("Substituto Trítono (SubV7)", [origemT, SubV7, destinoT]);
+    adicionarRotaVisual("Preparação II-V",            [origemT, IIm7, V7, destinoT]);
+    adicionarRotaVisual("Aproximação Diminuta",       [origemT, Dim, destinoT]);
+}
+
+function adicionarRotaVisual(nome, lista) {
+    const resultDiv = document.getElementById('resultado-rotas');
+    const card = document.createElement('div');
+    card.className = 'rota-card';
+    const titulo = document.createElement('h3');
+    titulo.className = 'rota-titulo';
+    titulo.innerText = nome;
+    card.appendChild(titulo);
+    const caminho = document.createElement('div');
+    caminho.className = 'rota-caminho';
+    lista.forEach((acorde, i) => {
+        const box = document.createElement('div');
+        box.className = 'mini-chord-box';
+        const label = document.createElement('div');
+        label.className = 'mini-chord-name';
+        label.innerText = acorde;
+        box.appendChild(label);
+        // MELHORIA 2: usa a função unificada com escala 0.5
+        box.appendChild(criarSVGAcorde(acorde, 0.5));
+        box.onclick = () => {
+            acordeAtualSelecionado = acorde;
+            document.getElementById('chord-diagram-container').style.display = 'block';
+            renderizarVisualizacao();
+            document.getElementById('chord-diagram-container').scrollIntoView({behavior:'smooth',block:'center'});
+        };
+        caminho.appendChild(box);
+        if (i < lista.length-1) {
+            const seta = document.createElement('div');
+            seta.className = 'rota-seta';
+            seta.innerText = "➔";
+            caminho.appendChild(seta);
+        }
+    });
+    card.appendChild(caminho);
+    resultDiv.appendChild(card);
+}
+
+// ==========================================
+// MÓDULO: TRANSPOSITOR DE TOM
+// ==========================================
+
+
+function alterarSemitons(delta) {
+    semitonsTransposicao += delta;
+    const display = document.getElementById('semitonsDisplay');
+    if (semitonsTransposicao === 0) display.innerText = "0 semitons";
+    else if (semitonsTransposicao > 0) display.innerText = `+${semitonsTransposicao} semitom${Math.abs(semitonsTransposicao) > 1 ? 's' : ''}`;
+    else display.innerText = `${semitonsTransposicao} semitom${Math.abs(semitonsTransposicao) > 1 ? 's' : ''}`;
+}
+
+/**
+ * Transpõe um único acorde N semitons.
+ * Ex: transpor("Am7", 2) → "Bm7"
+ */
+function transporAcorde(acorde, semitons) {
+    // Extrai a tônica (ex: "C#", "Bb", "G")
+    const match = acorde.match(/^([A-G][#b]?)(.*)/);
+    if (!match) return acorde; // não é um acorde reconhecível, devolve igual
+    const tonica = match[1];
+    const sufixo = match[2]; // "m7", "dim", "7M", etc.
+
+    const equivalencias = {"Db":"C#","Eb":"D#","Gb":"F#","Ab":"G#","Bb":"A#"};
+    const tonicaNorm = equivalencias[tonica] || tonica;
+    const idx = notasCromaticas.indexOf(tonicaNorm);
+    if (idx === -1) return acorde;
+
+    const novoIdx = ((idx + semitons) % 12 + 12) % 12;
+    return notasCromaticas[novoIdx] + sufixo;
+}
+
+function transpor() {
+    const input = document.getElementById('inputTranspor').value.trim();
+    if (!input) {
+        alert("Digite os acordes para transpor.");
+        return;
+    }
+    if (semitonsTransposicao === 0) {
+        alert("Ajuste o número de semitons antes de transpor.");
+        return;
+    }
+
+    // Separa por vírgula ou espaço
+    const acordes = input.split(/[\s,]+/).filter(a => a.trim() !== "");
+    const transpostos = acordes.map(a => transporAcorde(a.trim(), semitonsTransposicao));
+
+    const container = document.getElementById('resultadoTransposicao');
+    container.style.display = 'block';
+    container.innerHTML = transpostos.map(a =>
+        `<span class="acorde-transposto" onclick="mostrarDiagramaPopup('${a}', event)">${a}</span>`
+    ).join(' ');
+}
+
+// ==========================================
+// MÓDULO: CIFRA COMPLETA (LETRA + ACORDES)
+// ==========================================
+
+/**
+ * Detecta se uma linha é de acordes (maioria das palavras são acordes válidos)
+ */
+function linhaEhAcordes(linha) {
+    const tokens = linha.trim().split(/\s+/).filter(t => t !== "");
+    if (tokens.length === 0) return false;
+    const acordesValidos = tokens.filter(t => /^[A-G][#b]?(m|dim|aug|7M|7|m7|m7b5|maj7|sus2|sus4|add9)?$/.test(t));
+    return acordesValidos.length / tokens.length >= 0.6;
+}
+
+function renderizarCifra() {
+    const texto = document.getElementById('inputCifra').value;
+    const linhas = texto.split('\n');
+    const container = document.getElementById('cifraRenderizada');
+    container.style.display = 'block';
+    container.innerHTML = '';
+
+    linhas.forEach(linha => {
+        const span = document.createElement('span');
+
+        if (linha.trim() === '') {
+            span.className = 'cifra-linha-vazia';
+        } else if (linhaEhAcordes(linha)) {
+            span.className = 'cifra-linha-acordes';
+            // Cada token que for acorde vira clicável
+            const tokens = linha.split(/(\s+)/);
+            tokens.forEach(token => {
+                if (/^[A-G][#b]?(m|dim|aug|7M|7|m7|m7b5|maj7|sus2|sus4|add9)?$/.test(token.trim()) && token.trim() !== '') {
+                    const a = document.createElement('span');
+                    a.className = 'cifra-acorde-inline';
+                    a.innerText = token;
+                    a.onclick = (e) => mostrarDiagramaPopup(token.trim(), e);
+                    span.appendChild(a);
+                } else {
+                    span.appendChild(document.createTextNode(token));
+                }
+            });
+        } else {
+            span.className = 'cifra-linha-letra';
+            span.innerText = linha;
+        }
+
+        container.appendChild(span);
+    });
+}
+
+// ==========================================
+// POPUP FLUTUANTE DE DIAGRAMA
+// ==========================================
+function mostrarDiagramaPopup(nomeAcorde, event) {
+    let popup = document.getElementById('cifra-popup');
+    if (!popup) {
+        popup = document.createElement('div');
+        popup.id = 'cifra-popup';
+        popup.className = 'cifra-popup';
+        popup.innerHTML = `
+            <button class="cifra-popup-fechar" onclick="fecharPopup()">✕</button>
+            <div class="cifra-popup-nome" id="popup-nome"></div>
+            <div id="popup-svg"></div>
+        `;
+        document.body.appendChild(popup);
+        // Fecha ao clicar fora
+        document.addEventListener('click', (e) => {
+            if (!popup.contains(e.target) && !e.target.classList.contains('cifra-acorde-inline') && !e.target.classList.contains('acorde-transposto')) {
+                fecharPopup();
+            }
+        });
+    }
+
+    document.getElementById('popup-nome').innerText = nomeAcorde;
+    const svgArea = document.getElementById('popup-svg');
+    svgArea.innerHTML = '';
+    svgArea.appendChild(criarSVGAcorde(nomeAcorde, 1));
+
+    // Posiciona o popup próximo ao clique
+    const x = Math.min(event.clientX, window.innerWidth - 200);
+    const y = Math.min(event.clientY + 15, window.innerHeight - 250);
+    popup.style.left = x + 'px';
+    popup.style.top = (y + window.scrollY) + 'px';
+    popup.style.display = 'block';
+
+    event.stopPropagation();
+}
+
+function fecharPopup() {
+    const popup = document.getElementById('cifra-popup');
+    if (popup) popup.style.display = 'none';
+}
+
+// ==========================================
+// MÓDULO: CÍRCULO DE QUINTAS
+// ==========================================
+
+
+// removed duplicate: let circuloSegmentoAtivo = null;
 
 function desenharCirculoDeQuintas() {
     const wrapper = document.getElementById('circulo-svg-wrapper');
