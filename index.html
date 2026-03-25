@@ -13,10 +13,13 @@
 
             <!-- PAINEL ESQUERDO -->
             <div class="painel-esquerdo">
+
+                <!-- Identificador de Tom -->
                 <p>Digite os acordes separados por vírgula:</p>
                 <input type="text" id="inputAcordes" placeholder="Ex: C, F, G">
                 <button onclick="identificarTom()">Descobrir Tom</button>
 
+                <!-- Afinador -->
                 <div class="afinador-container">
                     <h3 class="afinador-titulo">🎤 Afinador / Voz</h3>
                     <p class="afinador-subtitulo">Cante uma nota ou toque uma corda.</p>
@@ -24,15 +27,12 @@
                     <div id="notaDetectada">--</div>
                     <div id="frequenciaDetectada">-- Hz</div>
                 </div>
-            </div>
 
-            <!-- TRANSPOSITOR DE TOM -->
+                <!-- Transpositor -->
                 <div class="transpositor-container">
                     <h3 class="transpositor-titulo">🔀 Transpositor de Tom</h3>
                     <p class="transpositor-subtitulo">Digite os acordes e escolha quantos semitons transpor.</p>
-                    <div class="transpositor-inputs">
-                        <input type="text" id="inputTranspor" placeholder="Ex: Am, Dm, G7, C">
-                    </div>
+                    <input type="text" id="inputTranspor" placeholder="Ex: Am, Dm, G7, C">
                     <div class="transpor-controles">
                         <button class="btn-semitons" onclick="alterarSemitons(-1)">−</button>
                         <span class="semitons-display" id="semitonsDisplay">0 semitons</span>
@@ -42,7 +42,17 @@
                     <div id="resultadoTransposicao" class="resultado-transposicao"></div>
                 </div>
 
-                <!-- CIFRA COMPLETA -->
+            </div>
+
+            <!-- PAINEL DIREITO -->
+            <div class="painel-direito">
+
+                <!-- Resultado do identificador -->
+                <div id="resultado" class="resultado-box" style="display:none;">
+                    Aguardando acordes...
+                </div>
+
+                <!-- Cifra Completa -->
                 <div class="cifra-container">
                     <h3 class="cifra-titulo">📄 Cifra Completa</h3>
                     <p class="cifra-subtitulo">Cole sua cifra abaixo. Clique em qualquer acorde para ver o diagrama.</p>
@@ -54,14 +64,7 @@ Que o amor que sinto é real"></textarea>
                     <div id="cifraRenderizada" class="cifra-renderizada"></div>
                 </div>
 
-            <!-- PAINEL DIREITO -->
-            <div class="painel-direito">
-
-                <div id="resultado" class="resultado-box" style="display:none;">
-                    Aguardando acordes...
-                </div>
-
-                <!-- GPS HARMÔNICO -->
+                <!-- GPS Harmônico -->
                 <div id="rotas-container" class="gps-container">
                     <h3 class="gps-titulo">🧭 GPS Harmônico</h3>
                     <p class="gps-subtitulo">Trace a melhor rota de rearmonização entre dois acordes.</p>
@@ -74,13 +77,13 @@ Que o amor que sinto é real"></textarea>
                     <div id="resultado-rotas" style="margin-top:20px;display:flex;flex-direction:column;gap:15px;"></div>
                 </div>
 
-                <!-- VARIAÇÕES -->
+                <!-- Variações -->
                 <div id="variacoes-container" style="display:none;margin-top:20px;">
                     <h3 class="variacoes-titulo">Variações de Acordes</h3>
                     <div id="gradeVariacoes" class="grade-botoes"></div>
                 </div>
 
-                <!-- DIAGRAMA DO ACORDE -->
+                <!-- Diagrama do Acorde -->
                 <div id="chord-diagram-container" style="display:none;margin-top:20px;text-align:center;">
                     <h3 id="nomeAcordeDestaque" class="diagrama-titulo">--</h3>
                     <div class="diagrama-tabs">
@@ -92,7 +95,7 @@ Que o amor que sinto é real"></textarea>
                     </div>
                 </div>
 
-                <!-- BRAÇO DO INSTRUMENTO -->
+                <!-- Braço do Instrumento -->
                 <div id="fretboard-container" style="display:none;margin-top:20px;">
                     <div class="braco-header">
                         <h3 class="braco-titulo">Escala no Braço</h3>
