@@ -478,6 +478,89 @@ const dicionarioShapes = {
     "C9":   { posicoes: [
                 { label:"Aberta",  g_frets:[null,3,2,3,3,null],g_fingers:[null,2,1,3,4,null] },
               ], piano:[0,4,7,10,14] },
+
+    // --- ACORDES FALTANTES ---
+
+    // DOM7 faltantes
+    "F7":   { posicoes: [
+                { label:"Barra 1ª", barra:{casa:1,de:0,ate:4}, g_frets:[1,3,1,2,1,1], g_fingers:[1,3,1,2,1,1] },
+              ], piano:[5,9,12,15] },
+    "G#7":  { posicoes: [
+                { label:"Barra 4ª", barra:{casa:4,de:0,ate:4}, g_frets:[4,6,4,5,4,4], g_fingers:[1,3,1,2,1,1] },
+              ], piano:[8,12,15,18] },
+    "A#7":  { posicoes: [
+                { label:"Barra 6ª", barra:{casa:6,de:0,ate:4}, g_frets:[6,8,6,7,6,6], g_fingers:[1,3,1,2,1,1] },
+                { label:"Aberta",   g_frets:[null,1,3,1,3,1],  g_fingers:[null,1,3,1,4,1] },
+              ], piano:[10,14,17,20] },
+    "D#7":  { posicoes: [
+                { label:"Barra 6ª", barra:{casa:6,de:0,ate:4}, g_frets:[null,6,8,6,7,6], g_fingers:[null,1,3,1,2,1] },
+              ], piano:[3,7,10,13] },
+
+    // MAJ7 faltantes
+    "A7M":  { posicoes: [
+                { label:"Aberta",   g_frets:[null,0,2,1,2,0],  g_fingers:[null,null,3,1,2,null] },
+              ], piano:[9,13,16,20] },
+    "B7M":  { posicoes: [
+                { label:"Barra 2ª", barra:{casa:2,de:0,ate:4}, g_frets:[null,2,4,3,4,null], g_fingers:[null,1,3,2,4,null] },
+              ], piano:[11,15,18,22] },
+    "D7M":  { posicoes: [
+                { label:"Aberta",   g_frets:[null,null,0,2,2,2], g_fingers:[null,null,null,1,2,3] },
+              ], piano:[2,6,9,13] },
+    "E7M":  { posicoes: [
+                { label:"Aberta",   g_frets:[0,2,1,1,0,0],    g_fingers:[null,3,1,2,null,null] },
+              ], piano:[4,8,11,15] },
+    "G#7M": { posicoes: [
+                { label:"Barra 4ª", barra:{casa:4,de:0,ate:4}, g_frets:[null,4,6,5,4,null], g_fingers:[null,1,3,2,1,null] },
+              ], piano:[8,12,15,19] },
+    "A#7M": { posicoes: [
+                { label:"Barra 1ª", barra:{casa:1,de:0,ate:4}, g_frets:[null,1,3,2,3,null], g_fingers:[null,1,3,2,4,null] },
+              ], piano:[10,14,17,21] },
+    "C#7M": { posicoes: [
+                { label:"Barra 4ª", barra:{casa:4,de:0,ate:4}, g_frets:[null,4,6,5,4,null], g_fingers:[null,1,3,2,1,null] },
+              ], piano:[1,5,8,12] },
+    "D#7M": { posicoes: [
+                { label:"Barra 6ª", barra:{casa:6,de:0,ate:4}, g_frets:[null,6,8,7,6,null], g_fingers:[null,1,3,2,1,null] },
+              ], piano:[3,7,10,14] },
+    "F#7M": { posicoes: [
+                { label:"Barra 2ª", barra:{casa:2,de:0,ate:4}, g_frets:[2,4,3,3,2,null], g_fingers:[1,4,2,3,1,null] },
+              ], piano:[6,10,13,17] },
+
+    // MIN7 faltantes
+    "Gm7":  { posicoes: [
+                { label:"Barra 3ª", barra:{casa:3,de:0,ate:4}, g_frets:[3,5,3,3,3,3], g_fingers:[1,3,1,1,1,1] },
+              ], piano:[7,10,14,17] },
+    "G#m7": { posicoes: [
+                { label:"Barra 4ª", barra:{casa:4,de:0,ate:4}, g_frets:[4,6,4,4,4,4], g_fingers:[1,3,1,1,1,1] },
+              ], piano:[8,11,15,18] },
+    "A#m7": { posicoes: [
+                { label:"Barra 1ª", barra:{casa:1,de:0,ate:4}, g_frets:[null,1,3,1,2,1], g_fingers:[null,1,3,1,2,1] },
+              ], piano:[10,13,17,20] },
+    "Cm7":  { posicoes: [
+                { label:"Barra 3ª", barra:{casa:3,de:0,ate:4}, g_frets:[null,3,5,3,4,3], g_fingers:[null,1,3,1,2,1] },
+              ], piano:[0,3,7,10] },
+    "C#m7": { posicoes: [
+                { label:"Barra 4ª", barra:{casa:4,de:0,ate:4}, g_frets:[null,4,6,4,5,4], g_fingers:[null,1,3,1,2,1] },
+              ], piano:[1,4,8,11] },
+    "D#m7": { posicoes: [
+                { label:"Barra 6ª", barra:{casa:6,de:0,ate:4}, g_frets:[null,6,8,6,7,6], g_fingers:[null,1,3,1,2,1] },
+              ], piano:[3,6,10,13] },
+    "Fm7":  { posicoes: [
+                { label:"Barra 1ª", barra:{casa:1,de:0,ate:4}, g_frets:[1,3,1,1,1,1], g_fingers:[1,3,1,1,1,1] },
+              ], piano:[5,8,12,15] },
+
+    // 9ª faltantes
+    "A9":   { posicoes: [
+                { label:"Aberta",   g_frets:[null,0,2,0,0,0],  g_fingers:[null,null,2,null,null,null] },
+              ], piano:[9,13,16,19,23] },
+    "D9":   { posicoes: [
+                { label:"Barra 5ª", barra:{casa:5,de:0,ate:4}, g_frets:[null,5,4,5,5,null], g_fingers:[null,2,1,3,4,null] },
+              ], piano:[2,6,9,12,16] },
+    "E9":   { posicoes: [
+                { label:"Aberta",   g_frets:[0,2,0,1,0,2],    g_fingers:[null,2,null,1,null,4] },
+              ], piano:[4,8,11,14,18] },
+    "G9":   { posicoes: [
+                { label:"Aberta",   g_frets:[3,null,0,2,0,3], g_fingers:[2,null,null,1,null,3] },
+              ], piano:[7,11,14,17,21] },
     "Edim": { posicoes: [
                 { label:"Aberta",  g_frets:[null,null,2,3,2,3],g_fingers:[null,null,1,3,2,4] },
               ], piano:[4,7,10] },
