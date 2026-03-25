@@ -7,7 +7,7 @@
     <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acordes - App</title>
-    <link rel="stylesheet" href="style.css?v=1774458305">
+    <link rel="stylesheet" href="style.css?v=1774458846">
     <!-- PWA -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#f1c40f">
@@ -105,6 +105,45 @@
                     </div>
                     <div class="genero-tabs" id="generoTabs"></div>
                     <div class="progressoes-lista" id="progressoesLista"></div>
+                </div>
+
+                <!-- Escala no Braço -->
+                <div id="fretboard-container" style="display:none;" class="modulo-container">
+                    <div class="braco-header">
+                        <h3 class="braco-titulo">🎸 Escala no Braço</h3>
+                        <select id="seletorInstrumento" onchange="atualizarBraco()">
+                            <option value="guitarra">Violão (6 Cordas)</option>
+                            <option value="baixo">Baixo (4 Cordas)</option>
+                        </select>
+                    </div>
+                    <!-- Seletor de escala -->
+                    <div class="escala-selector-row">
+                        <button class="escala-btn ativo" onclick="selecionarEscala('penta_maior', this)">Penta Maior</button>
+                        <button class="escala-btn" onclick="selecionarEscala('penta_menor', this)">Penta Menor</button>
+                        <button class="escala-btn" onclick="selecionarEscala('maior', this)">Maior</button>
+                        <button class="escala-btn" onclick="selecionarEscala('menor', this)">Menor</button>
+                        <button class="escala-btn" onclick="selecionarEscala('menor_harm', this)">M. Harm.</button>
+                        <button class="escala-btn" onclick="selecionarEscala('blues', this)">Blues</button>
+                    </div>
+                    <!-- Seletor de posição -->
+                    <div class="posicao-selector-row">
+                        <span class="posicao-label">Posição:</span>
+                        <button class="posicao-braco-btn ativo" onclick="selecionarPosicao(0, this)">Todas</button>
+                        <button class="posicao-braco-btn" onclick="selecionarPosicao(1, this)">1ª</button>
+                        <button class="posicao-braco-btn" onclick="selecionarPosicao(2, this)">2ª</button>
+                        <button class="posicao-braco-btn" onclick="selecionarPosicao(3, this)">3ª</button>
+                        <button class="posicao-braco-btn" onclick="selecionarPosicao(4, this)">4ª</button>
+                        <button class="posicao-braco-btn" onclick="selecionarPosicao(5, this)">5ª</button>
+                    </div>
+                    <div class="fretboard-wrapper">
+                        <div class="fretboard" id="fretboard"></div>
+                    </div>
+                    <!-- Legenda -->
+                    <div class="braco-legenda">
+                        <span class="braco-legenda-item"><span class="braco-legenda-cor" style="background:#e74c3c"></span>Tônica</span>
+                        <span class="braco-legenda-item"><span class="braco-legenda-cor" style="background:#3498db"></span>Escala</span>
+                        <span class="braco-legenda-item"><span class="braco-legenda-cor" style="background:#e67e22;border-radius:3px"></span>Corda Solta</span>
+                    </div>
                 </div>
 
             </div>
@@ -216,19 +255,7 @@
                     <div id="cifraRenderizada" class="cifra-renderizada"></div>
                 </div>
 
-                <!-- Escala no Braço (aparece após identificar tom) -->
-                <div id="fretboard-container" style="display:none;" class="modulo-container">
-                    <div class="braco-header">
-                        <h3 class="braco-titulo">🎸 Escala no Braço</h3>
-                        <select id="seletorInstrumento" onchange="atualizarBraco()">
-                            <option value="guitarra">Violão (6 Cordas)</option>
-                            <option value="baixo">Baixo (4 Cordas)</option>
-                        </select>
-                    </div>
-                    <div class="fretboard-wrapper">
-                        <div class="fretboard" id="fretboard"></div>
-                    </div>
-                </div>
+<!-- fretboard movido para coluna-1 -->
 
             </div>
         </div>
@@ -286,7 +313,7 @@
         </div>
     </div>
 
-    <script src="script.js?v=1774458305"></script>
+    <script src="script.js?v=1774458846"></script>
     <script>
     // Service Worker
     if ('serviceWorker' in navigator) {

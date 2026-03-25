@@ -1302,3 +1302,111 @@ button.genero-btn.ativo { color: #111; border-color: transparent; }
 }
 #btnDetector:hover { background-color: #ca6f1e !important; }
 #btnDetector.ativo { background-color: #e74c3c !important; }
+
+/* ==========================================
+   ESCALA NO BRAÇO — MELHORIAS
+   ========================================== */
+
+/* Seletor de escala */
+.escala-selector-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 10px 0 8px 0;
+}
+button.escala-btn {
+    background: var(--bg-input-dark);
+    border: 1px solid var(--border-light);
+    color: var(--text-muted);
+    padding: 5px 10px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    width: auto;
+    margin: 0;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+button.escala-btn:hover { color: var(--text); border-color: #3498db; }
+button.escala-btn.ativo {
+    background: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
+/* Seletor de posição */
+.posicao-selector-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+.posicao-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+button.posicao-braco-btn {
+    background: var(--bg-input-dark);
+    border: 1px solid var(--border-light);
+    color: var(--text-muted);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    width: auto;
+    margin: 0;
+    transition: 0.2s;
+}
+button.posicao-braco-btn:hover { color: var(--text); border-color: var(--accent); }
+button.posicao-braco-btn.ativo {
+    background: var(--accent);
+    color: #111;
+    border-color: var(--accent);
+}
+
+/* Tônica com cor diferente no braço */
+.bolinha-nota.tonica {
+    background: #e74c3c;
+    box-shadow: 0 2px 8px rgba(231,76,60,0.6), inset 0 1px 2px rgba(255,255,255,0.3);
+    border: 1px solid rgba(255,255,255,0.3);
+}
+.nota-solta-destaque.tonica {
+    background: #c0392b;
+}
+
+/* Nota da posição ativa (highlighted) */
+.bolinha-nota.posicao-ativa {
+    background: #2ecc71;
+    box-shadow: 0 2px 8px rgba(46,204,113,0.6);
+}
+
+/* Posição do braço com fundo destacado */
+.traste.posicao-highlight {
+    background: linear-gradient(to right, #1a3a2a, #1e4a30, #1a3a2a);
+}
+
+/* Legenda do braço */
+.braco-legenda {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.braco-legenda-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: var(--text-muted);
+}
+.braco-legenda-cor {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}

@@ -127,7 +127,12 @@ function identificarTom() {
                 <p style="margin-bottom:0"><b>🛤️ ${labelCampo}:</b><br>${campo.join(" - ")}</p>
             </div>`;
 
-        desenharBraco();
+        tonicaBracoAtual = tonica;
+modoBracoAtual = modo;
+// Seleciona escala padrão baseada no modo
+escalaBracoAtual = modo === "menor" ? "penta_menor" : "penta_maior";
+document.querySelectorAll(".escala-btn").forEach((b,i) => b.classList.toggle("ativo", i === (modo === "menor" ? 1 : 0)));
+desenharBracoMelhorado();
         gerarBotoesDeVariacao(mapearNomeParaBanco(tonica, modo));
     } else {
         resultadoDiv.style.display = 'block';
@@ -155,7 +160,7 @@ function mapearNomeParaBanco(tonicaSigla, modo = "maior") {
 }
 
 function atualizarBraco() {
-    if (notasEscalaAtual.length > 0) desenharBraco();
+    if (notasEscalaAtual.length > 0) desenharBracoMelhorado();
 }
 
 function desenharBraco() {
@@ -721,6 +726,151 @@ function desenharDiagramaAcorde(nomeAcorde) {
 // DESENHO DO TECLADO
 // ==========================================
 // desenharTeclado: ver versão completa abaixo
+
+
+// ==========================================
+// ESCALA NO BRAÇO — MELHORIAS
+// ==========================================
+let escalaBracoAtual = 'penta_maior';
+let posicaoBracoAtual = 0; // 0 = todas
+let tonicaBracoAtual = 'C';
+let modoBracoAtual = 'maior';
+
+const formulasEscalaBraco = {
+    penta_maior:  [0,2,4,7,9],
+    penta_menor:  [0,3,5,7,10],
+    maior:        [0,2,4,5,7,9,11],
+    menor:        [0,2,3,5,7,8,10],
+    menor_harm:   [0,2,3,5,7,8,11],
+    blues:        [0,3,5,6,7,10],
+};
+
+// As 5 posições clássicas da pentatônica (casa inicial de cada posição)
+// Baseadas na tônica relativa no braço
+function getPosicaoRange(posicao, tonicaIdx) {
+    if (posicao === 0) return null; // todas
+    // Posições da pentatônica: cada posição cobre 4-5 casas
+    const casaInicio = ((tonicaIdx + [0, 3, 5, 7, 10, 12][posicao - 1]) % 12);
+    return { inicio: casaInicio, fim: casaInicio + 4 };
+}
+
+function selecionarEscala(escala, btn) {
+    escalaBracoAtual = escala;
+    document.querySelectorAll('.escala-btn').forEach(b => b.classList.remove('ativo'));
+    btn.classList.add('ativo');
+    atualizarBracoComEscala();
+}
+
+function selecionarPosicao(posicao, btn) {
+    posicaoBracoAtual = posicao;
+    document.querySelectorAll('.posicao-braco-btn').forEach(b => b.classList.remove('ativo'));
+    btn.classList.add('ativo');
+    atualizarBracoComEscala();
+}
+
+function atualizarBracoComEscala() {
+    const formula = formulasEscalaBraco[escalaBracoAtual] || formulasEscalaBraco.penta_maior;
+    const tonicaIdx = notasCromaticas.indexOf(tonicaBracoAtual);
+    if (tonicaIdx === -1) return;
+    notasEscalaAtual = formula.map(s => notasCromaticas[(tonicaIdx + s) % 12]);
+    desenharBracoMelhorado();
+}
+
+function desenharBracoMelhorado() {
+    const fretboard = document.getElementById('fretboard');
+    const instrumento = document.getElementById('seletorInstrumento').value;
+    fretboard.innerHTML = '';
+
+    const afinacao = instrumento === 'guitarra'
+        ? ['E','B','G','D','A','E']
+        : ['G','D','A','E'];
+    const espessuras = instrumento === 'guitarra'
+        ? [1,1.5,2,2.5,3,3.5]
+        : [1.5,2,2.5,3];
+
+    const tonicaIdx = notasCromaticas.indexOf(tonicaBracoAtual);
+
+    // Define range de casas se posição específica selecionada
+    let casaMin = 0, casaMax = 12;
+    if (posicaoBracoAtual > 0) {
+        // Posições clássicas: 1=casa0-4, 2=casa2-6, 3=casa4-8, 4=casa6-10, 5=casa9-12
+        const posRanges = [[0,4],[2,6],[4,8],[6,10],[9,12]];
+        const range = posRanges[posicaoBracoAtual - 1];
+        // Ajusta baseado na tônica
+        const offset = tonicaIdx;
+        casaMin = range[0];
+        casaMax = range[1];
+    }
+
+    for (let c = 0; c < afinacao.length; c++) {
+        const cordaDiv = document.createElement('div');
+        cordaDiv.className = 'corda';
+        cordaDiv.style.setProperty('--corda-espessura', espessuras[c] + 'px');
+        let ni = notasCromaticas.indexOf(afinacao[c]);
+
+        for (let t = 0; t <= 12; t++) {
+            const trasteDiv = document.createElement('div');
+            trasteDiv.className = 'traste';
+
+            if (t === 0) {
+                trasteDiv.classList.add('corda-solta');
+                const nomeCorda = document.createElement('div');
+                nomeCorda.className = 'nome-corda-solta';
+                nomeCorda.textContent = afinacao[c];
+                trasteDiv.appendChild(nomeCorda);
+            }
+            if (t === 1) trasteDiv.classList.add('pestana');
+
+            // Inlays
+            if (t > 0 && [3,5,7,9,12].includes(t)) {
+                const cordaMeio = Math.floor((afinacao.length - 1) / 2);
+                if (c === cordaMeio) {
+                    const m = document.createElement('div');
+                    m.className = 'marcador-fundo';
+                    trasteDiv.appendChild(m);
+                }
+            }
+
+            // Highlight de posição
+            if (posicaoBracoAtual > 0 && t >= casaMin && t <= casaMax && t > 0) {
+                trasteDiv.classList.add('posicao-highlight');
+            }
+
+            const nota = notasCromaticas[(ni + t) % 12];
+            const ehTonica = nota === tonicaBracoAtual;
+            const ehDaEscala = notasEscalaAtual.includes(nota);
+            // Na posição específica, só mostra notas dentro do range
+            const dentroDoRange = posicaoBracoAtual === 0 || (t >= casaMin && t <= casaMax);
+
+            if (ehDaEscala && dentroDoRange) {
+                const bolinha = document.createElement('div');
+                let cls = t === 0 ? 'bolinha-nota nota-solta-destaque' : 'bolinha-nota';
+                if (ehTonica) cls += ' tonica';
+                bolinha.className = cls;
+                bolinha.textContent = nota;
+                trasteDiv.appendChild(bolinha);
+            }
+            cordaDiv.appendChild(trasteDiv);
+        }
+        fretboard.appendChild(cordaDiv);
+    }
+
+    // Régua
+    const regua = document.createElement('div');
+    regua.className = 'regua-casas';
+    for (let t = 0; t <= 12; t++) {
+        const n = document.createElement('div');
+        n.className = 'numero-casa';
+        if (t === 0) n.classList.add('corda-solta-num');
+        else {
+            n.textContent = t;
+            if ([3,5,7,9,12].includes(t)) n.style.color = '#c8a850';
+        }
+        regua.appendChild(n);
+    }
+    fretboard.appendChild(regua);
+    document.getElementById('fretboard-container').style.display = 'block';
+}
 
 // ==========================================
 // GPS HARMÔNICO
@@ -1409,6 +1559,144 @@ function desenharTeclado(nomeAcorde) {
     const area = document.getElementById('chord-visual-area');
     area.innerHTML = '';
     desenharTecladoEm(nomeAcorde, area);
+}
+
+
+// ==========================================
+// ESCALA NO BRAÇO — MELHORIAS
+// ==========================================
+// dup: let escalaBracoAtual = 'penta_maior';
+// dup: let posicaoBracoAtual = 0; // 0 = todas
+// dup: let tonicaBracoAtual = 'C';
+// dup: let modoBracoAtual = 'maior';
+
+// formulasEscalaBraco já declarada acima
+
+// As 5 posições clássicas da pentatônica (casa inicial de cada posição)
+// Baseadas na tônica relativa no braço
+function getPosicaoRange(posicao, tonicaIdx) {
+    if (posicao === 0) return null; // todas
+    // Posições da pentatônica: cada posição cobre 4-5 casas
+    const casaInicio = ((tonicaIdx + [0, 3, 5, 7, 10, 12][posicao - 1]) % 12);
+    return { inicio: casaInicio, fim: casaInicio + 4 };
+}
+
+function selecionarEscala(escala, btn) {
+    escalaBracoAtual = escala;
+    document.querySelectorAll('.escala-btn').forEach(b => b.classList.remove('ativo'));
+    btn.classList.add('ativo');
+    atualizarBracoComEscala();
+}
+
+function selecionarPosicao(posicao, btn) {
+    posicaoBracoAtual = posicao;
+    document.querySelectorAll('.posicao-braco-btn').forEach(b => b.classList.remove('ativo'));
+    btn.classList.add('ativo');
+    atualizarBracoComEscala();
+}
+
+function atualizarBracoComEscala() {
+    const formula = formulasEscalaBraco[escalaBracoAtual] || formulasEscalaBraco.penta_maior;
+    const tonicaIdx = notasCromaticas.indexOf(tonicaBracoAtual);
+    if (tonicaIdx === -1) return;
+    notasEscalaAtual = formula.map(s => notasCromaticas[(tonicaIdx + s) % 12]);
+    desenharBracoMelhorado();
+}
+
+function desenharBracoMelhorado() {
+    const fretboard = document.getElementById('fretboard');
+    const instrumento = document.getElementById('seletorInstrumento').value;
+    fretboard.innerHTML = '';
+
+    const afinacao = instrumento === 'guitarra'
+        ? ['E','B','G','D','A','E']
+        : ['G','D','A','E'];
+    const espessuras = instrumento === 'guitarra'
+        ? [1,1.5,2,2.5,3,3.5]
+        : [1.5,2,2.5,3];
+
+    const tonicaIdx = notasCromaticas.indexOf(tonicaBracoAtual);
+
+    // Define range de casas se posição específica selecionada
+    let casaMin = 0, casaMax = 12;
+    if (posicaoBracoAtual > 0) {
+        // Posições clássicas: 1=casa0-4, 2=casa2-6, 3=casa4-8, 4=casa6-10, 5=casa9-12
+        const posRanges = [[0,4],[2,6],[4,8],[6,10],[9,12]];
+        const range = posRanges[posicaoBracoAtual - 1];
+        // Ajusta baseado na tônica
+        const offset = tonicaIdx;
+        casaMin = range[0];
+        casaMax = range[1];
+    }
+
+    for (let c = 0; c < afinacao.length; c++) {
+        const cordaDiv = document.createElement('div');
+        cordaDiv.className = 'corda';
+        cordaDiv.style.setProperty('--corda-espessura', espessuras[c] + 'px');
+        let ni = notasCromaticas.indexOf(afinacao[c]);
+
+        for (let t = 0; t <= 12; t++) {
+            const trasteDiv = document.createElement('div');
+            trasteDiv.className = 'traste';
+
+            if (t === 0) {
+                trasteDiv.classList.add('corda-solta');
+                const nomeCorda = document.createElement('div');
+                nomeCorda.className = 'nome-corda-solta';
+                nomeCorda.textContent = afinacao[c];
+                trasteDiv.appendChild(nomeCorda);
+            }
+            if (t === 1) trasteDiv.classList.add('pestana');
+
+            // Inlays
+            if (t > 0 && [3,5,7,9,12].includes(t)) {
+                const cordaMeio = Math.floor((afinacao.length - 1) / 2);
+                if (c === cordaMeio) {
+                    const m = document.createElement('div');
+                    m.className = 'marcador-fundo';
+                    trasteDiv.appendChild(m);
+                }
+            }
+
+            // Highlight de posição
+            if (posicaoBracoAtual > 0 && t >= casaMin && t <= casaMax && t > 0) {
+                trasteDiv.classList.add('posicao-highlight');
+            }
+
+            const nota = notasCromaticas[(ni + t) % 12];
+            const ehTonica = nota === tonicaBracoAtual;
+            const ehDaEscala = notasEscalaAtual.includes(nota);
+            // Na posição específica, só mostra notas dentro do range
+            const dentroDoRange = posicaoBracoAtual === 0 || (t >= casaMin && t <= casaMax);
+
+            if (ehDaEscala && dentroDoRange) {
+                const bolinha = document.createElement('div');
+                let cls = t === 0 ? 'bolinha-nota nota-solta-destaque' : 'bolinha-nota';
+                if (ehTonica) cls += ' tonica';
+                bolinha.className = cls;
+                bolinha.textContent = nota;
+                trasteDiv.appendChild(bolinha);
+            }
+            cordaDiv.appendChild(trasteDiv);
+        }
+        fretboard.appendChild(cordaDiv);
+    }
+
+    // Régua
+    const regua = document.createElement('div');
+    regua.className = 'regua-casas';
+    for (let t = 0; t <= 12; t++) {
+        const n = document.createElement('div');
+        n.className = 'numero-casa';
+        if (t === 0) n.classList.add('corda-solta-num');
+        else {
+            n.textContent = t;
+            if ([3,5,7,9,12].includes(t)) n.style.color = '#c8a850';
+        }
+        regua.appendChild(n);
+    }
+    fretboard.appendChild(regua);
+    document.getElementById('fretboard-container').style.display = 'block';
 }
 
 // ==========================================
