@@ -489,12 +489,13 @@ let acordeAtualSelecionado = "";
 let visaoDiagramaAtual = "guitarra";
 
 function gerarBotoesDeVariacao(nomeDoTom) {
-    const container = document.getElementById('variacoes-container');
+    const container = document.getElementById('variacoes-container-inner') || document.getElementById('variacoes-container');
     const grade = document.getElementById('gradeVariacoes');
+    if (!grade) return;
     grade.innerHTML = '';
     const lista = bancoDeAcordes[nomeDoTom];
-    if (!lista) { container.style.display = 'none'; return; }
-    container.style.display = 'block';
+    if (!lista) { if(container) container.style.display = 'none'; return; }
+    if(container) container.style.display = 'block';
     lista.forEach((acorde, idx) => {
         const btn = document.createElement('button');
         btn.className = 'botao-variacao';
@@ -882,37 +883,67 @@ function _renderPopupConteudo() {
 
 function desenharTecladoEm(nomeAcorde, targetArea) {
     const piano = getPiano(nomeAcorde);
-    if (!piano) { targetArea.innerHTML = '<p class="diagrama-indisponivel">Sem dados de teclado.</p>'; return; }
+    if (!piano) {
+        const p = document.createElement('p');
+        p.className = 'diagrama-indisponivel';
+        p.innerHTML = `Sem dados de teclado para <b>${nomeAcorde}</b>.`;
+        targetArea.appendChild(p);
+        return;
+    }
     const notasAtivas = piano;
-    const nomesTeclasBrancas = ["C","D","E","F","G","A","B","C","D","E","F","G","A","B"];
-    const nomesTeclasPretasIdx = {1:"C#",3:"D#",6:"F#",8:"G#",10:"A#",13:"C#",15:"D#",18:"F#",20:"G#",22:"A#"};
+    const nomesBrancas = ["C","D","E","F","G","A","B","C","D","E","F","G","A","B"];
+    const nomesPretas = {1:"C#",3:"D#",6:"F#",8:"G#",10:"A#",13:"C#",15:"D#",18:"F#",20:"G#",22:"A#"};
     const offsetPretas = [1,3,null,6,8,10,null,13,15,null,18,20,22,null];
     const total = 14;
     let counter = 0, posX = 0;
     const largura = 100/total;
-    const wrapperTe = document.createElement('div');
-    wrapperTe.className = 'teclado-wrapper';
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'teclado-wrapper';
     const teclado = document.createElement('div');
     teclado.className = 'teclado-container';
-    for (let i=0; i<total; i++) {
+
+    for (let i = 0; i < total; i++) {
+        // Tecla BRANCA
         const branca = document.createElement('div');
         branca.className = 'tecla-branca';
-        if (notasAtivas.includes(counter)) branca.innerHTML = '<div class="marca-tecla"></div>';
-        const lb = document.createElement('div'); lb.className = 'nota-tecla-label'; lb.textContent = nomesTeclasBrancas[i]||''; branca.appendChild(lb);
+
+        if (notasAtivas.includes(counter)) {
+            const marca = document.createElement('div');
+            marca.className = 'marca-tecla';
+            branca.appendChild(marca);
+        }
+        const lb = document.createElement('div');
+        lb.className = 'nota-tecla-label';
+        lb.textContent = nomesBrancas[i] || '';
+        branca.appendChild(lb);
         teclado.appendChild(branca);
+
+        // Tecla PRETA (se existir)
         if (offsetPretas[i] !== null && offsetPretas[i] !== undefined) {
             const preta = document.createElement('div');
             preta.className = 'tecla-preta';
-            preta.style.left = `calc(${posX+largura}% - 8px)`;
-            if (notasAtivas.includes(offsetPretas[i])) preta.innerHTML = '<div class="marca-tecla"></div>';
-            const lp = document.createElement('div'); lp.className = 'nota-tecla-label'; lp.textContent = nomesTeclasPretasIdx[offsetPretas[i]]||''; preta.appendChild(lp);
+            preta.style.left = `calc(${posX + largura}% - 8px)`;
+
+            if (notasAtivas.includes(offsetPretas[i])) {
+                const marca = document.createElement('div');
+                marca.className = 'marca-tecla';
+                preta.appendChild(marca);
+            }
+            const lp = document.createElement('div');
+            lp.className = 'nota-tecla-label';
+            lp.textContent = nomesPretas[offsetPretas[i]] || '';
+            preta.appendChild(lp);
             teclado.appendChild(preta);
             counter += 2;
-        } else { counter += 1; }
+        } else {
+            counter += 1;
+        }
         posX += largura;
     }
-    wrapperTe.appendChild(teclado);
-    targetArea.appendChild(wrapperTe);
+
+    wrapper.appendChild(teclado);
+    targetArea.appendChild(wrapper);
 }
 
 // ==========================================
@@ -1240,8 +1271,10 @@ function desenharDiagramaAcorde(nomeAcorde) {
 function _renderDiagramaComPosicao(nomeAcorde, posIdx) {
     const container = document.getElementById('chord-diagram-container');
     const area = document.getElementById('chord-visual-area');
+    if (!area) return;
     area.innerHTML = '';
-    document.getElementById('nomeAcordeDestaque').innerText = nomeAcorde;
+    const nomeEl = document.getElementById('nomeAcordeDestaque');
+    if (nomeEl) nomeEl.innerText = nomeAcorde;
     container.style.display = 'block';
 
     const numPos = getNumPosicoes(nomeAcorde);

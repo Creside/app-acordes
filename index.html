@@ -23,10 +23,23 @@
 
             <!-- ========================
                  COLUNA 1 — FERRAMENTAS
+                 Ordem mobile: 1º Afinador, 2º Identificador, 3º Visualização, 4º Transpositor
                  ======================== -->
             <div class="coluna coluna-1">
 
-                <!-- Identificador de Tom -->
+                <!-- 1. Afinador -->
+                <div class="afinador-container modulo-container">
+                    <div class="modulo-titulo-row">
+                        <h3 class="afinador-titulo">🎤 Afinador</h3>
+                        <button class="btn-tooltip" onclick="mostrarTooltip('afinador')">?</button>
+                    </div>
+                    <p class="afinador-subtitulo">Cante uma nota ou toque uma corda.</p>
+                    <button id="btnAfinador" onclick="iniciarAfinador()">Ligar Microfone</button>
+                    <div id="notaDetectada">--</div>
+                    <div id="frequenciaDetectada">-- Hz</div>
+                </div>
+
+                <!-- 2. Identificador de Tom -->
                 <div class="modulo-container">
                     <div class="modulo-titulo-row">
                         <h3 class="modulo-titulo">🎵 Identificador de Tom</h3>
@@ -37,7 +50,24 @@
                     <div id="resultado" class="resultado-box" style="display:none;margin-top:12px;"></div>
                 </div>
 
-                <!-- Transpositor -->
+                <!-- 3. Visualização dos Acordes -->
+                <div id="chord-diagram-container" style="display:none;" class="modulo-container">
+                    <div class="modulo-titulo-row">
+                        <h3 id="nomeAcordeDestaque" class="diagrama-titulo">--</h3>
+                        <div class="diagrama-tabs">
+                            <button id="tab-guitarra" class="tab-btn ativo" onclick="mudarVisaoDiagrama('guitarra')">🎸</button>
+                            <button id="tab-teclado" class="tab-btn" onclick="mudarVisaoDiagrama('teclado')">🎹</button>
+                        </div>
+                    </div>
+                    <div id="variacoes-container-inner" style="display:none;margin-bottom:10px;">
+                        <div id="gradeVariacoes" class="grade-botoes"></div>
+                    </div>
+                    <div class="chord-card" id="chord-card-box">
+                        <div id="chord-visual-area"></div>
+                    </div>
+                </div>
+
+                <!-- 4. Transpositor -->
                 <div class="transpositor-container modulo-container">
                     <div class="modulo-titulo-row">
                         <h3 class="transpositor-titulo">🔀 Transpositor</h3>
@@ -54,38 +84,15 @@
                     <div id="resultadoTransposicao" class="resultado-transposicao"></div>
                 </div>
 
-                <!-- Diagrama do Acorde (abaixo do identificador) -->
-                <div id="chord-diagram-container" style="display:none;" class="modulo-container">
-                    <h3 id="nomeAcordeDestaque" class="diagrama-titulo">--</h3>
-                    <div class="diagrama-tabs">
-                        <button id="tab-guitarra" class="tab-btn ativo" onclick="mudarVisaoDiagrama('guitarra')">🎸 Violão</button>
-                        <button id="tab-teclado" class="tab-btn" onclick="mudarVisaoDiagrama('teclado')">🎹 Teclado</button>
-                    </div>
-                    <div class="chord-card" id="chord-card-box">
-                        <div id="chord-visual-area"></div>
-                    </div>
-                </div>
-
-                <!-- Afinador -->
-                <div class="afinador-container modulo-container">
-                    <div class="modulo-titulo-row">
-                        <h3 class="afinador-titulo">🎤 Afinador</h3>
-                        <button class="btn-tooltip" onclick="mostrarTooltip('afinador')">?</button>
-                    </div>
-                    <p class="afinador-subtitulo">Cante uma nota ou toque uma corda.</p>
-                    <button id="btnAfinador" onclick="iniciarAfinador()">Ligar Microfone</button>
-                    <div id="notaDetectada">--</div>
-                    <div id="frequenciaDetectada">-- Hz</div>
-                </div>
-
             </div>
 
             <!-- ========================
                  COLUNA 2 — CONTEÚDO
+                 Ordem mobile: 5º Cifra, 6º GPS
                  ======================== -->
             <div class="coluna coluna-2">
 
-                <!-- Cifra Completa -->
+                <!-- 5. Cifra Completa -->
                 <div class="cifra-container modulo-container">
                     <div class="modulo-titulo-row">
                         <h3 class="cifra-titulo">📄 Cifra Completa</h3>
@@ -97,7 +104,7 @@
                     <div id="cifraRenderizada" class="cifra-renderizada"></div>
                 </div>
 
-                <!-- GPS Harmônico -->
+                <!-- 6. GPS Harmônico -->
                 <div id="rotas-container" class="gps-container modulo-container">
                     <div class="modulo-titulo-row">
                         <h3 class="gps-titulo">🧭 GPS Harmônico</h3>
@@ -113,20 +120,15 @@
                     <div id="resultado-rotas" style="margin-top:16px;display:flex;flex-direction:column;gap:14px;"></div>
                 </div>
 
-                <!-- Variações (aparece após identificar tom) -->
-                <div id="variacoes-container" style="display:none;margin-top:0;" class="modulo-container">
-                    <h3 class="variacoes-titulo">🎼 Variações de Acordes</h3>
-                    <div id="gradeVariacoes" class="grade-botoes"></div>
-                </div>
-
             </div>
 
             <!-- ========================
-                 COLUNA 3 — VISUALIZAÇÕES
+                 COLUNA 3 — VISUAL
+                 Ordem mobile: 7º Círculo, 8º Braço
                  ======================== -->
             <div class="coluna coluna-3">
 
-                <!-- Círculo de Quintas -->
+                <!-- 7. Círculo de Quintas -->
                 <div class="circulo-container modulo-container">
                     <div class="modulo-titulo-row">
                         <h3 class="circulo-titulo">⭕ Círculo de Quintas</h3>
@@ -137,7 +139,7 @@
                     <div id="circulo-info" class="circulo-info"></div>
                 </div>
 
-                <!-- Braço do Instrumento -->
+                <!-- 8. Escala no Braço -->
                 <div id="fretboard-container" style="display:none;" class="modulo-container">
                     <div class="braco-header">
                         <h3 class="braco-titulo">🎸 Escala no Braço</h3>
@@ -155,7 +157,7 @@
         </div>
     </div>
 
-    <!-- POPUP DIAGRAMA (cifra/transpositor) -->
+    <!-- POPUP DIAGRAMA -->
     <div id="cifra-popup" class="cifra-popup">
         <button class="cifra-popup-fechar" onclick="fecharPopup()">✕</button>
         <div class="cifra-popup-nome" id="popup-nome"></div>
