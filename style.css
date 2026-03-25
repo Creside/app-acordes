@@ -438,3 +438,159 @@ button.tab-btn.ativo {
     cursor: pointer;
     transition: all 0.2s ease;
 }
+/* ==========================================
+   MELHORIA 4: Estilos migrados do HTML inline
+   ========================================== */
+
+/* Afinador */
+.afinador-container {
+    margin-top: 20px;
+    padding: 15px;
+    background: #3d3d3d;
+    border-radius: 5px;
+    border: 1px solid #555;
+}
+.afinador-titulo {
+    margin-top: 0;
+    margin-bottom: 5px;
+    color: #fff;
+    font-size: 16px;
+}
+.afinador-subtitulo {
+    font-size: 12px;
+    color: #ccc;
+    margin-top: 0;
+}
+#btnAfinador {
+    background-color: #e67e22;
+    margin-bottom: 10px;
+    font-size: 14px;
+    padding: 8px;
+}
+#notaDetectada {
+    font-size: 32px;
+    font-weight: bold;
+    color: #f1c40f;
+}
+#frequenciaDetectada {
+    font-size: 14px;
+    color: #aaa;
+}
+
+/* Caixa de resultado do tom */
+.resultado-tom {
+    color: #4CAF50;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+.resultado-detalhes {
+    font-size: 14px;
+    text-align: left;
+    background: #444;
+    padding: 12px;
+    border-radius: 5px;
+    color: #ddd;
+}
+.resultado-detalhes p { margin-top: 0; }
+.resultado-hr {
+    border: 0;
+    border-top: 1px solid #555;
+    margin: 10px 0;
+}
+
+/* GPS Harmônico */
+.gps-container {
+    margin-top: 48px;
+    padding: 20px;
+    background: #1c1c21;
+    border-radius: 10px;
+    border: 1px solid #333;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+.gps-titulo {
+    margin-top: 0;
+    margin-bottom: 5px;
+    color: #f1c40f;
+    font-size: 22px;
+}
+.gps-subtitulo {
+    font-size: 13px;
+    color: #aaa;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+.gps-inputs {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+.gps-input {
+    width: 45%;
+    margin: 0;
+    text-align: center;
+    background: #2a2a35;
+    border-color: #444;
+}
+.gps-seta {
+    color: #f1c40f;
+    align-self: center;
+    font-weight: bold;
+    font-size: 18px;
+}
+#btnTracaRotas {
+    background-color: #f1c40f;
+    color: #1a1a1a;
+    padding: 12px;
+    font-size: 16px;
+}
+#btnTracaRotas:hover {
+    background-color: #d4a017;
+}
+.erro-rota {
+    color: #ff6b6b;
+    font-size: 14px;
+}
+
+/* Variações */
+.variacoes-titulo {
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+/* Diagrama */
+.diagrama-titulo {
+    color: #f1c40f;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+.diagrama-indisponivel {
+    color: #aaa;
+    padding: 20px;
+    font-size: 14px;
+}
+
+/* Braço do instrumento */
+.braco-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.braco-titulo {
+    font-size: 16px;
+    margin: 0;
+    color: #fff;
+}
+#seletorInstrumento {
+    padding: 5px;
+    border-radius: 5px;
+    background: #444;
+    color: white;
+    border: 1px solid #555;
+    cursor: pointer;
+    width: auto;
+    margin: 0;
+    font-size: 14px;
+}

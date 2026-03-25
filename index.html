@@ -9,83 +9,78 @@
 <body>
     <div class="container">
         <h1>Identificador de Tom</h1>
-        
         <div class="layout-grid">
-            
+
+            <!-- PAINEL ESQUERDO -->
             <div class="painel-esquerdo">
                 <p>Digite os acordes separados por vírgula:</p>
                 <input type="text" id="inputAcordes" placeholder="Ex: C, F, G">
                 <button onclick="identificarTom()">Descobrir Tom</button>
 
-                <div id="afinador-container" style="margin-top: 20px; padding: 15px; background: #3d3d3d; border-radius: 5px; border: 1px solid #555;">
-                    <h3 style="margin-top: 0; margin-bottom: 5px; color: #fff; font-size: 16px;">🎤 Afinador / Voz</h3>
-                    <p style="font-size: 12px; color: #ccc; margin-top: 0;">Cante uma nota ou toque uma corda.</p>
-                    
-                    <button id="btnAfinador" onclick="iniciarAfinador()" style="background-color: #e67e22; margin-bottom: 10px; font-size: 14px; padding: 8px;">Ligar Microfone</button>
-                    
-                    <div id="notaDetectada" style="font-size: 32px; font-weight: bold; color: #f1c40f;">--</div>
-                    <div id="frequenciaDetectada" style="font-size: 14px; color: #aaa;">-- Hz</div>
+                <div class="afinador-container">
+                    <h3 class="afinador-titulo">🎤 Afinador / Voz</h3>
+                    <p class="afinador-subtitulo">Cante uma nota ou toque uma corda.</p>
+                    <button id="btnAfinador" onclick="iniciarAfinador()">Ligar Microfone</button>
+                    <div id="notaDetectada">--</div>
+                    <div id="frequenciaDetectada">-- Hz</div>
                 </div>
             </div>
-            
+
+            <!-- PAINEL DIREITO -->
             <div class="painel-direito">
-                
-                <div id="resultado" class="resultado-box" style="display: none;">
+
+                <div id="resultado" class="resultado-box" style="display:none;">
                     Aguardando acordes...
                 </div>
 
-                <div id="rotas-container" style="margin-top: 48px; padding: 20px; background: #1c1c21; border-radius: 10px; border: 1px solid #333; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
-                    <h3 style="margin-top: 0; margin-bottom: 5px; color: #f1c40f; font-size: 22px;">🧭 GPS Harmônico</h3>
-                    <p style="font-size: 13px; color: #aaa; margin-top: 0; margin-bottom: 15px;">Trace a melhor rota de rearmonização entre dois acordes.</p>
-    
-                    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px;">
-                         <input type="text" id="acordeOrigem" placeholder="Acorde Atual (ex: C)" style="width: 45%; margin: 0; text-align: center; background: #2a2a35; border-color: #444;">
-                         <span style="color: #f1c40f; align-self: center; font-weight: bold; font-size: 18px;">➔</span>
-                         <input type="text" id="acordeDestino" placeholder="Acorde Alvo (ex: F)" style="width: 45%; margin: 0; text-align: center; background: #2a2a35; border-color: #444;">
+                <!-- GPS HARMÔNICO -->
+                <div id="rotas-container" class="gps-container">
+                    <h3 class="gps-titulo">🧭 GPS Harmônico</h3>
+                    <p class="gps-subtitulo">Trace a melhor rota de rearmonização entre dois acordes.</p>
+                    <div class="gps-inputs">
+                        <input type="text" id="acordeOrigem" placeholder="Acorde Atual (ex: C)" class="gps-input">
+                        <span class="gps-seta">➔</span>
+                        <input type="text" id="acordeDestino" placeholder="Acorde Alvo (ex: F)" class="gps-input">
                     </div>
-                    <button onclick="gerarRotas()" style="background-color: #f1c40f; color: #1a1a1a; padding: 12px; font-size: 16px;">Traçar Caminhos</button>
-    
-                    <div id="resultado-rotas" style="margin-top: 20px; display: flex; flex-direction: column; gap: 15px;">
-                </div>
-        </div>
-
-                <div id="variacoes-container" style="display: none; margin-top: 20px;">
-                    <h3 style="font-size: 16px; color: #fff; margin-bottom: 10px;">Variações de Acordes</h3>
-                    <div id="gradeVariacoes" class="grade-botoes">
-                        </div>
+                    <button id="btnTracaRotas" onclick="gerarRotas()">Traçar Caminhos</button>
+                    <div id="resultado-rotas" style="margin-top:20px;display:flex;flex-direction:column;gap:15px;"></div>
                 </div>
 
-                <div id="chord-diagram-container" style="display: none; margin-top: 20px; text-align: center;">
-                    <h3 id="nomeAcordeDestaque" style="color: #f1c40f; font-size: 20px; margin-bottom: 10px;">--</h3>
-                    
+                <!-- VARIAÇÕES -->
+                <div id="variacoes-container" style="display:none;margin-top:20px;">
+                    <h3 class="variacoes-titulo">Variações de Acordes</h3>
+                    <div id="gradeVariacoes" class="grade-botoes"></div>
+                </div>
+
+                <!-- DIAGRAMA DO ACORDE -->
+                <div id="chord-diagram-container" style="display:none;margin-top:20px;text-align:center;">
+                    <h3 id="nomeAcordeDestaque" class="diagrama-titulo">--</h3>
                     <div class="diagrama-tabs">
                         <button id="tab-guitarra" class="tab-btn ativo" onclick="mudarVisaoDiagrama('guitarra')">🎸 Violão</button>
                         <button id="tab-teclado" class="tab-btn" onclick="mudarVisaoDiagrama('teclado')">🎹 Teclado</button>
                     </div>
-
                     <div class="chord-card" id="chord-card-box">
                         <div id="chord-visual-area"></div>
                     </div>
                 </div>
 
-                <div id="fretboard-container" style="display: none; margin-top: 20px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <h3 style="font-size: 16px; margin: 0; color: #fff;">Escala no Braço</h3>
-                        <select id="seletorInstrumento" onchange="atualizarBraco()" style="padding: 5px; border-radius: 5px; background: #444; color: white; border: 1px solid #555; cursor: pointer;">
+                <!-- BRAÇO DO INSTRUMENTO -->
+                <div id="fretboard-container" style="display:none;margin-top:20px;">
+                    <div class="braco-header">
+                        <h3 class="braco-titulo">Escala no Braço</h3>
+                        <select id="seletorInstrumento" onchange="atualizarBraco()">
                             <option value="guitarra">Guitarra/Violão (6 Cordas)</option>
                             <option value="baixo">Contrabaixo (4 Cordas)</option>
                         </select>
                     </div>
-                    
                     <div class="fretboard-wrapper">
                         <div class="fretboard" id="fretboard"></div>
                     </div>
                 </div>
 
-            </div> 
-        </div> 
+            </div>
+        </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
