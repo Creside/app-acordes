@@ -887,6 +887,91 @@ button.botao-variacao.tipo-nona.ativo  { background:#1abc9c22; border-color:#1ab
 .solo-container.modulo-container {
     padding: 16px;
 }
+
+/* ==========================================
+   VISUALIZAÇÃO DO ACORDE — layout melhorado
+   ========================================== */
+
+/* Nome do acorde + tabs na mesma linha */
+#chord-diagram-container .modulo-titulo-row:nth-child(2) {
+    background: var(--bg-input-dark);
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+}
+
+/* Botões de variação — scroll horizontal em mobile, wrap em desktop */
+.grade-botoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: flex-start;
+}
+
+@media (max-width: 767px) {
+    .grade-botoes {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 4px;
+        scrollbar-width: none;
+    }
+    .grade-botoes::-webkit-scrollbar { display: none; }
+    button.botao-variacao { flex-shrink: 0; }
+}
+
+/* Legenda de tipos mais compacta */
+.legenda-tipos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+    font-size: 11px;
+}
+
+/* Toggle dedos/notas mais compacto */
+.diagrama-toggle-row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* Chord card limpo, sem borda dupla */
+.chord-card {
+    background: var(--chord-card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 4px 15px var(--shadow);
+}
+
+/* Seletor de posições inline */
+.posicao-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+/* Tabs violão/teclado sem fundo cinza */
+.diagrama-tabs {
+    display: flex;
+    gap: 6px;
+    margin: 0;
+}
+button.tab-btn {
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 20px;
+}
 .solo-titulo {
     color: #2ecc71;
     font-size: 14px;

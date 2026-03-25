@@ -104,21 +104,29 @@
 
                 <!-- 4. Visualização do Acorde -->
                 <div id="chord-diagram-container" style="display:none;" class="modulo-container">
-                    <div class="modulo-titulo-row">
+
+                    <!-- Cabeçalho: título + botão ajuda -->
+                    <div class="modulo-titulo-row" style="margin-bottom:10px;">
                         <h3 class="modulo-titulo">🎼 Visualização do Acorde</h3>
                         <button class="btn-tooltip" onclick="mostrarTooltip('cifra')">?</button>
                     </div>
-                    <div class="modulo-titulo-row" style="margin-bottom:6px;">
-                        <h3 id="nomeAcordeDestaque" class="diagrama-titulo" style="margin:0;font-size:20px;">--</h3>
-                        <div class="diagrama-tabs" style="margin:0;">
+
+                    <!-- Nome do acorde + tabs Violão/Teclado -->
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;">
+                        <h3 id="nomeAcordeDestaque" class="diagrama-titulo" style="margin:0;font-size:22px;"></h3>
+                        <div class="diagrama-tabs">
                             <button id="tab-guitarra" class="tab-btn ativo" onclick="mudarVisaoDiagrama('guitarra')">🎸 Violão</button>
                             <button id="tab-teclado" class="tab-btn" onclick="mudarVisaoDiagrama('teclado')">🎹 Teclado</button>
                         </div>
                     </div>
+
+                    <!-- Variações: legenda + botões em scroll horizontal -->
                     <div id="variacoes-container-inner" style="display:none;margin-bottom:10px;">
                         <div class="legenda-tipos" id="legendaTipos"></div>
                         <div id="gradeVariacoes" class="grade-botoes"></div>
                     </div>
+
+                    <!-- Toggle dedos/notas (só no violão) -->
                     <div class="diagrama-toggle-row" id="toggleRow" style="display:none;">
                         <span>Dedos</span>
                         <label class="toggle-switch">
@@ -128,6 +136,8 @@
                         </label>
                         <span>Notas</span>
                     </div>
+
+                    <!-- Diagrama -->
                     <div class="chord-card" id="chord-card-box">
                         <div id="chord-visual-area"></div>
                     </div>
@@ -228,6 +238,16 @@
         <div class="perf-cifra" id="perfCifra" onscroll="atualizarScrollPerf()"></div>
     </div>
 
+    <!-- BANNER iOS -->
+    <div id="iosBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1c1c21;border-top:2px solid var(--accent);padding:14px 16px;z-index:3000;align-items:center;gap:12px;box-shadow:0 -4px 20px rgba(0,0,0,0.5);">
+        <span style="font-size:28px;">📲</span>
+        <div style="flex:1;">
+            <div style="font-weight:bold;color:var(--accent);font-size:14px;">Instalar no iPhone/iPad</div>
+            <div style="font-size:12px;color:#aaa;margin-top:2px;">Toque em <b>Compartilhar</b> <span style="font-size:16px;">⬆️</span> e depois <b>"Adicionar à Tela de Início"</b></div>
+        </div>
+        <button onclick="document.getElementById('iosBanner').style.display='none'" style="background:none;border:none;color:#aaa;font-size:20px;cursor:pointer;width:auto;padding:4px;">✕</button>
+    </div>
+
     <!-- POPUP DIAGRAMA -->
     <div id="cifra-popup" class="cifra-popup">
         <button class="cifra-popup-fechar" onclick="fecharPopup()">✕</button>
@@ -261,12 +281,14 @@
     // Service Worker
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js').catch(() => {});
+            navigator.serviceWorker.register('/sw.js')
+                .then(() => console.log('SW registrado'))
+                .catch(e => console.log('SW erro:', e));
         });
     }
 
-    // Prompt de instalação
-    let deferredPrompt;
+    // Android Chrome — prompt de instalação nativo
+    let deferredPrompt = null;
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
@@ -274,13 +296,31 @@
     });
     window.addEventListener('appinstalled', () => {
         document.getElementById('btnInstalar').style.display = 'none';
+        document.getElementById('iosBanner').style.display = 'none';
         deferredPrompt = null;
     });
 
     function instalarApp() {
-        if (!deferredPrompt) return;
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
+            return;
+        }
+        // iOS Safari: mostra instruções manuais
+        const banner = document.getElementById('iosBanner');
+        if (banner) banner.style.display = banner.style.display === 'none' ? 'flex' : 'none';
+    }
+
+    // iOS: detecta se é Safari no iPhone/iPad e não está em standalone
+    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    const isStandalone = window.navigator.standalone === true;
+    const isSafari = /safari/i.test(navigator.userAgent) && !/chrome/i.test(navigator.userAgent);
+
+    if (isIOS && !isStandalone) {
+        // Sempre mostra o botão no iOS
+        setTimeout(() => {
+            document.getElementById('btnInstalar').style.display = 'flex';
+        }, 2000);
     }
     </script>
 </body>
