@@ -7,7 +7,7 @@
     <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acordes - App</title>
-    <link rel="stylesheet" href="style.css?v=1774461079">
+    <link rel="stylesheet" href="style.css?v=1774461492">
     <!-- PWA -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#f1c40f">
@@ -32,10 +32,10 @@
     <div class="container">
         <div class="layout-grid">
 
-            <!-- ======================== COLUNA 1 ======================== -->
+            <!-- ======================== COLUNA 1 — INPUT ======================== -->
             <div class="coluna coluna-1">
 
-                <!-- 1. Afinador -->
+                <!-- Afinador -->
                 <div class="afinador-container modulo-container">
                     <div class="modulo-titulo-row">
                         <h3 class="afinador-titulo">🎤 Afinador</h3>
@@ -47,7 +47,7 @@
                     <div id="frequenciaDetectada">-- Hz</div>
                 </div>
 
-                <!-- 1b. Detector de Acorde -->
+                <!-- Detector de Acorde -->
                 <div class="modulo-container" style="border-color:#e67e2255;">
                     <div class="modulo-titulo-row">
                         <h3 class="modulo-titulo" style="color:#e67e22;">🎸 Detector de Acorde</h3>
@@ -66,18 +66,7 @@
                     </div>
                 </div>
 
-                <!-- 2. Círculo de Quintas -->
-                <div class="circulo-container modulo-container">
-                    <div class="modulo-titulo-row">
-                        <h3 class="circulo-titulo">⭕ Círculo de Quintas</h3>
-                        <button class="btn-tooltip" onclick="mostrarTooltip('circulo')">?</button>
-                    </div>
-                    <p class="circulo-subtitulo">Clique num tom para ver o campo harmônico.</p>
-                    <div class="circulo-svg-wrapper" id="circulo-svg-wrapper"></div>
-                    <div id="circulo-info" class="circulo-info"></div>
-                </div>
-
-                <!-- 3. Identificador de Tom -->
+                <!-- Identificador de Tom -->
                 <div class="modulo-container">
                     <div class="modulo-titulo-row">
                         <h3 class="modulo-titulo">🎵 Identificador de Tom</h3>
@@ -107,60 +96,28 @@
                     <div class="progressoes-lista" id="progressoesLista"></div>
                 </div>
 
-                <!-- Escala no Braço -->
-                <div id="fretboard-container" style="display:none;" class="modulo-container">
-                    <div class="braco-header">
-                        <h3 class="braco-titulo">🎸 Escala no Braço</h3>
-                        <select id="seletorInstrumento" onchange="atualizarBraco()">
-                            <option value="guitarra">Violão (6 Cordas)</option>
-                            <option value="baixo">Baixo (4 Cordas)</option>
-                        </select>
-                    </div>
-                    <!-- Seletor de escala -->
-                    <div class="escala-selector-row">
-                        <button class="escala-btn ativo" onclick="selecionarEscala('penta_maior', this)">Penta Maior</button>
-                        <button class="escala-btn" onclick="selecionarEscala('penta_menor', this)">Penta Menor</button>
-                        <button class="escala-btn" onclick="selecionarEscala('maior', this)">Maior</button>
-                        <button class="escala-btn" onclick="selecionarEscala('menor', this)">Menor</button>
-                        <button class="escala-btn" onclick="selecionarEscala('menor_harm', this)">M. Harm.</button>
-                        <button class="escala-btn" onclick="selecionarEscala('blues', this)">Blues</button>
-                    </div>
-                    <!-- Seletor de posição -->
-                    <div class="posicao-selector-row">
-                        <span class="posicao-label">Posição:</span>
-                        <button class="posicao-braco-btn ativo" onclick="selecionarPosicao(0, this)">Todas</button>
-                        <button class="posicao-braco-btn" onclick="selecionarPosicao(1, this)">1ª</button>
-                        <button class="posicao-braco-btn" onclick="selecionarPosicao(2, this)">2ª</button>
-                        <button class="posicao-braco-btn" onclick="selecionarPosicao(3, this)">3ª</button>
-                        <button class="posicao-braco-btn" onclick="selecionarPosicao(4, this)">4ª</button>
-                        <button class="posicao-braco-btn" onclick="selecionarPosicao(5, this)">5ª</button>
-                    </div>
-                    <div class="fretboard-wrapper">
-                        <div class="fretboard" id="fretboard"></div>
-                    </div>
-                    <!-- Legenda -->
-                    <div class="braco-legenda">
-                        <span class="braco-legenda-item"><span class="braco-legenda-cor" style="background:#e74c3c"></span>Tônica</span>
-                        <span class="braco-legenda-item"><span class="braco-legenda-cor" style="background:#3498db"></span>Escala</span>
-                        <span class="braco-legenda-item"><span class="braco-legenda-cor" style="background:#e67e22;border-radius:3px"></span>Corda Solta</span>
-                    </div>
-                </div>
-
             </div>
 
-            <!-- ======================== COLUNA 2 ======================== -->
+            <!-- ======================== COLUNA 2 — VISUAL ======================== -->
             <div class="coluna coluna-2">
 
-                <!-- 4. Visualização do Acorde -->
-                <div id="chord-diagram-container" style="display:none;" class="modulo-container">
+                <!-- Círculo de Quintas -->
+                <div class="circulo-container modulo-container">
+                    <div class="modulo-titulo-row">
+                        <h3 class="circulo-titulo">⭕ Círculo de Quintas</h3>
+                        <button class="btn-tooltip" onclick="mostrarTooltip('circulo')">?</button>
+                    </div>
+                    <p class="circulo-subtitulo">Clique num tom para ver o campo harmônico.</p>
+                    <div class="circulo-svg-wrapper" id="circulo-svg-wrapper"></div>
+                    <div id="circulo-info" class="circulo-info"></div>
+                </div>
 
-                    <!-- Cabeçalho: título + botão ajuda -->
+                <!-- Visualização do Acorde -->
+                <div id="chord-diagram-container" style="display:none;" class="modulo-container">
                     <div class="modulo-titulo-row" style="margin-bottom:10px;">
                         <h3 class="modulo-titulo">🎼 Visualização do Acorde</h3>
                         <button class="btn-tooltip" onclick="mostrarTooltip('cifra')">?</button>
                     </div>
-
-                    <!-- Nome do acorde + tabs Violão/Teclado -->
                     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;">
                         <h3 id="nomeAcordeDestaque" class="diagrama-titulo" style="margin:0;font-size:22px;"></h3>
                         <div class="diagrama-tabs">
@@ -168,14 +125,10 @@
                             <button id="tab-teclado" class="tab-btn" onclick="mudarVisaoDiagrama('teclado')">🎹 Teclado</button>
                         </div>
                     </div>
-
-                    <!-- Variações: legenda + botões em scroll horizontal -->
                     <div id="variacoes-container-inner" style="display:none;margin-bottom:10px;">
                         <div class="legenda-tipos" id="legendaTipos"></div>
                         <div id="gradeVariacoes" class="grade-botoes"></div>
                     </div>
-
-                    <!-- Toggle dedos/notas (só no violão) -->
                     <div class="diagrama-toggle-row" id="toggleRow" style="display:none;">
                         <span>Dedos</span>
                         <label class="toggle-switch">
@@ -185,14 +138,12 @@
                         </label>
                         <span>Notas</span>
                     </div>
-
-                    <!-- Diagrama -->
                     <div class="chord-card" id="chord-card-box">
                         <div id="chord-visual-area"></div>
                     </div>
                 </div>
 
-                <!-- 5. Sugestão de Solo -->
+                <!-- Sugestão de Solo -->
                 <div class="solo-container modulo-container" id="soloContainer">
                     <div class="modulo-titulo-row">
                         <h3 class="modulo-titulo solo-titulo">🎸 Sugestão de Solo</h3>
@@ -201,7 +152,7 @@
                     <div class="solo-escalas" id="soloEscalas"></div>
                 </div>
 
-                <!-- 6. Transpositor -->
+                <!-- Transpositor -->
                 <div class="transpositor-container modulo-container">
                     <div class="modulo-titulo-row">
                         <h3 class="transpositor-titulo">🔀 Transpositor</h3>
@@ -220,10 +171,10 @@
 
             </div>
 
-            <!-- ======================== COLUNA 3 ======================== -->
+            <!-- ======================== COLUNA 3 — CONTEÚDO ======================== -->
             <div class="coluna coluna-3">
 
-                <!-- 7. GPS Harmônico -->
+                <!-- GPS Harmônico -->
                 <div id="rotas-container" class="gps-container modulo-container">
                     <div class="modulo-titulo-row">
                         <h3 class="gps-titulo">🧭 GPS Harmônico</h3>
@@ -239,7 +190,7 @@
                     <div id="resultado-rotas" style="margin-top:16px;display:flex;flex-direction:column;gap:14px;"></div>
                 </div>
 
-                <!-- 8. Cifra Completa -->
+                <!-- Cifra Completa -->
                 <div class="cifra-container modulo-container">
                     <div class="modulo-titulo-row">
                         <h3 class="cifra-titulo">📄 Cifra Completa</h3>
@@ -255,24 +206,44 @@
                     <div id="cifraRenderizada" class="cifra-renderizada"></div>
                 </div>
 
-<!-- fretboard movido para coluna-1 -->
+                <!-- Escala no Braço -->
+                <div id="fretboard-container" style="display:none;" class="modulo-container">
+                    <div class="braco-header">
+                        <h3 class="braco-titulo">🎸 Escala no Braço</h3>
+                        <select id="seletorInstrumento" onchange="atualizarBraco()">
+                            <option value="guitarra">Violão (6 Cordas)</option>
+                            <option value="baixo">Baixo (4 Cordas)</option>
+                        </select>
+                    </div>
+                    <div class="escala-selector-row">
+                        <button class="escala-btn ativo" onclick="selecionarEscala('penta_maior', this)">Penta Maior</button>
+                        <button class="escala-btn" onclick="selecionarEscala('penta_menor', this)">Penta Menor</button>
+                        <button class="escala-btn" onclick="selecionarEscala('maior', this)">Maior</button>
+                        <button class="escala-btn" onclick="selecionarEscala('menor', this)">Menor</button>
+                        <button class="escala-btn" onclick="selecionarEscala('menor_harm', this)">M. Harm.</button>
+                        <button class="escala-btn" onclick="selecionarEscala('blues', this)">Blues</button>
+                    </div>
+                    <div class="posicao-selector-row">
+                        <span class="posicao-label">Posição:</span>
+                        <button class="posicao-braco-btn ativo" onclick="selecionarPosicao(0, this)">Todas</button>
+                        <button class="posicao-braco-btn" onclick="selecionarPosicao(1, this)">1ª</button>
+                        <button class="posicao-braco-btn" onclick="selecionarPosicao(2, this)">2ª</button>
+                        <button class="posicao-braco-btn" onclick="selecionarPosicao(3, this)">3ª</button>
+                        <button class="posicao-braco-btn" onclick="selecionarPosicao(4, this)">4ª</button>
+                        <button class="posicao-braco-btn" onclick="selecionarPosicao(5, this)">5ª</button>
+                    </div>
+                    <div class="fretboard-wrapper">
+                        <div class="fretboard" id="fretboard"></div>
+                    </div>
+                    <div class="braco-legenda">
+                        <span class="braco-legenda-item"><span class="braco-legenda-cor" style="background:#e74c3c"></span>Tônica</span>
+                        <span class="braco-legenda-item"><span class="braco-legenda-cor" style="background:#3498db"></span>Escala</span>
+                        <span class="braco-legenda-item"><span class="braco-legenda-cor" style="background:#e67e22;border-radius:3px"></span>Corda Solta</span>
+                    </div>
+                </div>
 
             </div>
         </div>
-    </div>
-
-    <!-- MODO PERFORMANCE -->
-    <div class="modo-performance" id="modoPerformance">
-        <div class="perf-header">
-            <div class="perf-tom" id="perfTom">🎸 Modo Performance</div>
-            <div class="perf-controles">
-                <button class="perf-fonte-btn" onclick="ajustarFontePerf(-2)">A−</button>
-                <button class="perf-fonte-btn" onclick="ajustarFontePerf(2)">A+</button>
-                <button class="btn-fechar-perf" onclick="fecharModoPerformance()">✕ Fechar</button>
-            </div>
-        </div>
-        <div class="perf-scroll-bar"><div class="perf-scroll-progress" id="perfScrollProgress"></div></div>
-        <div class="perf-cifra" id="perfCifra" onscroll="atualizarScrollPerf()"></div>
     </div>
 
     <!-- BANNER iOS -->
@@ -313,7 +284,7 @@
         </div>
     </div>
 
-    <script src="script.js?v=1774461079"></script>
+    <script src="script.js?v=1774461492"></script>
     <script>
     // Service Worker
     if ('serviceWorker' in navigator) {
