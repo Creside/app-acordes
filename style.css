@@ -1285,16 +1285,20 @@ button.genero-btn.ativo { color: #111; border-color: transparent; }
     border-top: 1px solid var(--border);
     margin: 12px 0 10px 0;
 }
-button#btnDetector {
-    background: #e67e22 !important;
+/* Detector button — identical visual to Ligar Microfone */
+#btnDetector {
+    background-color: #e67e22 !important;
     color: white !important;
-    font-size: 16px;
-    padding: 12px 20px;
-    width: 100%;
-    margin: 0;
-    border-radius: 5px;
-    font-weight: bold;
-    transition: 0.3s;
+    border: none !important;
+    padding: 12px 20px !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
+    font-size: 16px !important;
+    width: 100% !important;
+    font-weight: bold !important;
+    transition: 0.3s !important;
+    display: block !important;
+    margin-bottom: 0 !important;
 }
-button#btnDetector:hover { background: #ca6f1e !important; }
-button#btnDetector.ativo { background: #e74c3c !important; }
+#btnDetector:hover { background-color: #ca6f1e !important; }
+#btnDetector.ativo { background-color: #e74c3c !important; }
