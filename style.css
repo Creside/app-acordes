@@ -695,3 +695,169 @@ button.posicao-btn.ativo { background: var(--accent); color: #1a1a1a; border-col
     .chord-card { padding: 10px; }
     .teclado-wrapper { border-radius: 6px; }
 }
+
+/* ==========================================
+   CARDS COLORIDOS POR TIPO DE ACORDE
+   ========================================== */
+button.botao-variacao.tipo-maior   { border-left: 3px solid #3498db; }
+button.botao-variacao.tipo-menor   { border-left: 3px solid #9b59b6; }
+button.botao-variacao.tipo-dom7    { border-left: 3px solid #e67e22; }
+button.botao-variacao.tipo-maj7    { border-left: 3px solid #2ecc71; }
+button.botao-variacao.tipo-min7    { border-left: 3px solid #8e44ad; }
+button.botao-variacao.tipo-dim     { border-left: 3px solid #e74c3c; }
+button.botao-variacao.tipo-nona    { border-left: 3px solid #1abc9c; }
+
+button.botao-variacao.tipo-maior.ativo { background:#3498db22; border-color:#3498db; }
+button.botao-variacao.tipo-menor.ativo { background:#9b59b622; border-color:#9b59b6; }
+button.botao-variacao.tipo-dom7.ativo  { background:#e67e2222; border-color:#e67e22; }
+button.botao-variacao.tipo-maj7.ativo  { background:#2ecc7122; border-color:#2ecc71; }
+button.botao-variacao.tipo-min7.ativo  { background:#8e44ad22; border-color:#8e44ad; }
+button.botao-variacao.tipo-dim.ativo   { background:#e74c3c22; border-color:#e74c3c; }
+button.botao-variacao.tipo-nona.ativo  { background:#1abc9c22; border-color:#1abc9c; }
+
+/* Legenda dos tipos */
+.legenda-tipos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-size: 11px;
+}
+.legenda-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-muted);
+}
+.legenda-cor {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+}
+
+/* ==========================================
+   TOGGLE NOTAS vs DEDOS no diagrama
+   ========================================== */
+.diagrama-toggle-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+.toggle-switch {
+    position: relative;
+    width: 36px;
+    height: 20px;
+    cursor: pointer;
+}
+.toggle-switch input { display: none; }
+.toggle-track {
+    position: absolute;
+    inset: 0;
+    background: var(--border-light);
+    border-radius: 20px;
+    transition: 0.2s;
+}
+.toggle-switch input:checked + .toggle-track { background: var(--accent); }
+.toggle-thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 14px;
+    height: 14px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.2s;
+}
+.toggle-switch input:checked ~ .toggle-thumb { left: 19px; }
+
+/* ==========================================
+   SUGESTÃO DE SOLO
+   ========================================== */
+.solo-container {
+    margin-top: 12px;
+    padding: 14px;
+    background: var(--bg-input-dark);
+    border-radius: 8px;
+    border: 1px solid #2ecc7155;
+    display: none;
+}
+.solo-titulo {
+    color: #2ecc71;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0 0 10px 0;
+}
+.solo-escalas {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.solo-escala-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-modulo);
+    border-radius: 6px;
+    padding: 8px 10px;
+    gap: 8px;
+}
+.solo-escala-nome {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--text);
+    min-width: 120px;
+}
+.solo-escala-notas {
+    font-size: 11px;
+    color: var(--text-muted);
+    flex: 1;
+    font-family: monospace;
+}
+.btn-play-solo {
+    background: #2ecc71;
+    border: none;
+    color: #111;
+    padding: 5px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    width: auto;
+    margin: 0;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+.btn-play-solo:hover { background: #27ae60; }
+.btn-play-solo.tocando { background: #e74c3c; }
+
+/* Cores tônica/terça/quinta no teclado */
+.marca-tecla.tonica  { background: #e74c3c; }
+.marca-tecla.terca   { background: #3498db; }
+.marca-tecla.quinta  { background: #2ecc71; }
+.marca-tecla.setima  { background: #f39c12; }
+.marca-tecla.nona    { background: #9b59b6; }
+
+/* Legenda teclado */
+.teclado-legenda {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 8px;
+    flex-wrap: wrap;
+    font-size: 11px;
+    color: var(--text-muted);
+}
+.teclado-legenda-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.teclado-legenda-cor {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}

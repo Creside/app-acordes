@@ -105,6 +105,9 @@ function identificarTom() {
         const btnComp = document.getElementById('btnCompartilhar');
         if (btnComp) btnComp.style.display = 'flex';
 
+        // Sugestão de solo
+        mostrarSugestoesSolo(tonica, modo);
+
         resultadoDiv.style.display = 'block';
         resultadoDiv.innerHTML = `
             <div class="resultado-tom">🎵 A música está em:<br><b>${labelTom}</b></div>
@@ -1359,6 +1362,9 @@ function _renderDiagramaComPosicao(nomeAcorde, posIdx) {
     const nomeEl = document.getElementById('nomeAcordeDestaque');
     if (nomeEl) nomeEl.innerText = nomeAcorde;
     container.style.display = 'block';
+    // Mostra toggle só no modo violão
+    const toggleRow = document.getElementById('toggleRow');
+    if (toggleRow) toggleRow.style.display = visaoDiagramaAtual === 'guitarra' ? 'flex' : 'none';
 
     const numPos = getNumPosicoes(nomeAcorde);
     if (numPos === 0) {
@@ -1884,4 +1890,438 @@ function abrirAjuda() {
 
 function fecharTooltip() {
     document.getElementById('tooltip-overlay').classList.remove('aberto');
+}
+
+// ==========================================
+// HELPER: TIPO DE ACORDE → CLASSE CSS
+// ==========================================
+function tipoAcorde(nome) {
+    if (/dim/.test(nome)) return 'tipo-dim';
+    if (/m7b5/.test(nome)) return 'tipo-dim';
+    if (/maj7|7M/.test(nome)) return 'tipo-maj7';
+    if (/m7/.test(nome)) return 'tipo-min7';
+    if (/^[A-G][#b]?7/.test(nome)) return 'tipo-dom7';
+    if (/9/.test(nome)) return 'tipo-nona';
+    if (/m/.test(nome)) return 'tipo-menor';
+    return 'tipo-maior';
+}
+
+function corTipo(tipo) {
+    const cores = {
+        'tipo-maior':'#3498db','tipo-menor':'#9b59b6','tipo-dom7':'#e67e22',
+        'tipo-maj7':'#2ecc71','tipo-min7':'#8e44ad','tipo-dim':'#e74c3c','tipo-nona':'#1abc9c'
+    };
+    return cores[tipo] || '#555';
+}
+
+// Aplica classes de tipo aos botões de variação
+const _gerarBotoesOrig = gerarBotoesDeVariacao;
+function gerarBotoesDeVariacao(nomeDoTom) {
+    const container = document.getElementById('variacoes-container-inner') || document.getElementById('variacoes-container');
+    const grade = document.getElementById('gradeVariacoes');
+    if (!grade) return;
+    grade.innerHTML = '';
+    const lista = bancoDeAcordes[nomeDoTom];
+    if (!lista) { if(container) container.style.display = 'none'; return; }
+    if(container) container.style.display = 'block';
+
+    // Legenda dos tipos presentes
+    const tiposPresentes = new Map();
+    lista.forEach(a => {
+        const t = tipoAcorde(a);
+        if (!tiposPresentes.has(t)) tiposPresentes.set(t, corTipo(t));
+    });
+    const legendaEl = document.getElementById('legendaTipos');
+    if (legendaEl) {
+        const nomes = {
+            'tipo-maior':'Maior','tipo-menor':'Menor','tipo-dom7':'Dom7',
+            'tipo-maj7':'Maj7','tipo-min7':'m7','tipo-dim':'Dim','tipo-nona':'Nona'
+        };
+        legendaEl.innerHTML = [...tiposPresentes.entries()].map(([t,c]) =>
+            `<span class="legenda-item"><span class="legenda-cor" style="background:${c}"></span>${nomes[t]||t}</span>`
+        ).join('');
+    }
+
+    lista.forEach((acorde, idx) => {
+        const btn = document.createElement('button');
+        const tipo = tipoAcorde(acorde);
+        btn.className = `botao-variacao ${tipo}`;
+        btn.innerText = acorde;
+        btn.onclick = () => {
+            document.querySelectorAll('.botao-variacao').forEach(b => b.classList.remove('ativo'));
+            btn.classList.add('ativo');
+            acordeAtualSelecionado = acorde;
+            renderizarVisualizacao();
+        };
+        grade.appendChild(btn);
+        if (idx === 0) {
+            btn.classList.add('ativo');
+            acordeAtualSelecionado = acorde;
+            renderizarVisualizacao();
+        }
+    });
+}
+
+// ==========================================
+// TOGGLE NOTAS vs DEDOS no diagrama violão
+// ==========================================
+let modoNotas = false; // false = dedos, true = notas
+
+function alternarModoNotas() {
+    modoNotas = document.getElementById('toggleNotasDedos').checked;
+    renderizarVisualizacao();
+}
+
+// Modificar criarSVGAcorde para usar modoNotas
+const _criarSVGOrig = criarSVGAcorde;
+criarSVGAcorde = function(nomeAcorde, escala, posicaoIdx) {
+    escala = escala || 1;
+    posicaoIdx = posicaoIdx || 0;
+    const W=140, H=170, FRETS=7, ML=20, MT=30;  // FRETS=7 para mostrar até 7ª casa
+    const strSp = (W - 2*ML) / 5;
+    const fretSp = (H - MT - 10) / FRETS;
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg","svg");
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    svg.setAttribute("width", W*escala);
+    svg.setAttribute("height", H*escala);
+    svg.style.display = "block";
+    if (escala >= 1) svg.style.margin = "0 auto";
+
+    const data = getShapeData(nomeAcorde, posicaoIdx);
+    if (!data) {
+        const t = document.createElementNS("http://www.w3.org/2000/svg","text");
+        t.setAttribute("x", W/2); t.setAttribute("y", H/2);
+        t.setAttribute("fill","#888"); t.setAttribute("font-size","40px");
+        t.setAttribute("text-anchor","middle"); t.setAttribute("dominant-baseline","central");
+        t.textContent = "?"; svg.appendChild(t); return svg;
+    }
+
+    // Número da casa se barra > 1ª
+    if (data.barra && data.barra.casa > 1) {
+        const casaLabel = document.createElementNS("http://www.w3.org/2000/svg","text");
+        casaLabel.setAttribute("x", W - ML + 4);
+        casaLabel.setAttribute("y", MT + fretSp * 0.5);
+        casaLabel.setAttribute("fill","#aaa"); casaLabel.setAttribute("font-size","10px");
+        casaLabel.setAttribute("dominant-baseline","central");
+        casaLabel.textContent = `${data.barra.casa}fr`;
+        svg.appendChild(casaLabel);
+    }
+
+    // Pestana
+    const nut = document.createElementNS("http://www.w3.org/2000/svg","line");
+    nut.setAttribute("x1",ML); nut.setAttribute("y1",MT);
+    nut.setAttribute("x2",W-ML); nut.setAttribute("y2",MT);
+    nut.setAttribute("stroke", data.barra && data.barra.casa > 1 ? "#555" : "#fff");
+    nut.setAttribute("stroke-width", data.barra && data.barra.casa > 1 ? "1" : "4");
+    svg.appendChild(nut);
+
+    // Trastes
+    for (let i=1; i<=FRETS; i++) {
+        const y = MT + i*fretSp;
+        const l = document.createElementNS("http://www.w3.org/2000/svg","line");
+        l.setAttribute("x1",ML); l.setAttribute("y1",y);
+        l.setAttribute("x2",W-ML); l.setAttribute("y2",y);
+        l.setAttribute("stroke","#666"); l.setAttribute("stroke-width", escala<1?"2":"1");
+        svg.appendChild(l);
+    }
+
+    // Cordas
+    for (let i=0; i<6; i++) {
+        const x = ML + i*strSp;
+        const l = document.createElementNS("http://www.w3.org/2000/svg","line");
+        l.setAttribute("x1",x); l.setAttribute("y1",MT);
+        l.setAttribute("x2",x); l.setAttribute("y2",H-10);
+        l.setAttribute("stroke","#666"); l.setAttribute("stroke-width", escala<1?"2":"1");
+        svg.appendChild(l);
+    }
+
+    // BARRA
+    if (data.barra) {
+        const xDe = ML + data.barra.de * strSp;
+        const xAte = ML + data.barra.ate * strSp;
+        const yBarra = MT + (1 - 0.5) * fretSp;
+        const rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
+        rect.setAttribute("x", xDe - 6); rect.setAttribute("y", yBarra - 9);
+        rect.setAttribute("width", (xAte - xDe) + 12); rect.setAttribute("height", 18);
+        rect.setAttribute("rx", 9); rect.setAttribute("fill", "#f1c40f");
+        svg.appendChild(rect);
+        if (escala >= 1) {
+            const bt = document.createElementNS("http://www.w3.org/2000/svg","text");
+            bt.setAttribute("x", (xDe+xAte)/2); bt.setAttribute("y", yBarra);
+            bt.setAttribute("fill","#000"); bt.setAttribute("font-size","10px");
+            bt.setAttribute("font-weight","bold"); bt.setAttribute("text-anchor","middle");
+            bt.setAttribute("dominant-baseline","central");
+            bt.textContent = "B"; svg.appendChild(bt);
+        }
+    }
+
+    // Notas das cordas soltas — para mostrar nome
+    const afinacao = ['E','B','G','D','A','E'];
+    const notasCrom = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+    const tonicaMatch = nomeAcorde.match(/^([A-G][#b]?)/);
+    const tonica = tonicaMatch ? tonicaMatch[1] : null;
+    const pianoData = getPiano(nomeAcorde);
+
+    // NOTAS E DEDOS
+    for (let i=0; i<6; i++) {
+        const casa = data.g_frets[i], dedo = data.g_fingers ? data.g_fingers[i] : null;
+        const x = ML + i*strSp;
+        if (casa === null || casa === 0) {
+            const t = document.createElementNS("http://www.w3.org/2000/svg","text");
+            t.setAttribute("x",x); t.setAttribute("y", MT - 10);
+            t.setAttribute("fill", escala<1?"#aaa":"#888");
+            t.setAttribute("font-size", escala<1?"14px":"12px");
+            t.setAttribute("font-weight","bold"); t.setAttribute("text-anchor","middle");
+            t.textContent = casa===null?"X":"O"; svg.appendChild(t);
+        } else if (casa > 0) {
+            const casaRel = data.barra ? casa - data.barra.casa + 1 : casa;
+            if (casaRel < 1 || casaRel > FRETS) continue;
+            const y = MT + (casaRel - 0.5) * fretSp;
+            const cobertaPelaBarra = data.barra && dedo === 1 && casaRel === 1;
+            if (!cobertaPelaBarra) {
+                // Calcula a nota desta corda+casa para colorir
+                const cordaAberta = afinacao[i];
+                const cordaIdx = notasCrom.indexOf(cordaAberta);
+                const notaNome = notasCrom[(cordaIdx + casa) % 12];
+                const dot = document.createElementNS("http://www.w3.org/2000/svg","circle");
+                dot.setAttribute("cx",x); dot.setAttribute("cy",y);
+                dot.setAttribute("r","9"); dot.setAttribute("fill","#f1c40f");
+                if (escala>=1) { dot.setAttribute("stroke","#d4a017"); dot.setAttribute("stroke-width","1"); }
+                svg.appendChild(dot);
+
+                // Texto: notas ou dedos
+                const label = (modoNotas && escala >= 1) ? notaNome : (dedo !== null ? String(dedo) : '');
+                if (label) {
+                    const t = document.createElementNS("http://www.w3.org/2000/svg","text");
+                    t.setAttribute("x",x); t.setAttribute("y",y);
+                    t.setAttribute("fill","#000");
+                    t.setAttribute("font-size", modoNotas ? "9px" : "11px");
+                    t.setAttribute("font-weight","bold"); t.setAttribute("text-anchor","middle");
+                    t.setAttribute("dominant-baseline","central");
+                    t.textContent = label; svg.appendChild(t);
+                }
+            }
+        }
+    }
+    return svg;
+};
+
+// Mostrar toggle quando modo violão
+const _mudarVisaoOrig = mudarVisaoDiagrama;
+mudarVisaoDiagrama = function(visao) {
+    visaoDiagramaAtual = visao;
+    document.getElementById('tab-guitarra').classList.toggle('ativo', visao==='guitarra');
+    document.getElementById('tab-teclado').classList.toggle('ativo', visao==='teclado');
+    const toggleRow = document.getElementById('toggleRow');
+    if (toggleRow) toggleRow.style.display = visao === 'guitarra' ? 'flex' : 'none';
+    renderizarVisualizacao();
+};
+
+// ==========================================
+// TECLADO COM CORES POR FUNÇÃO HARMÔNICA
+// ==========================================
+// Fórmulas: [tônica=0, terça(M=4/m=3), quinta=7, sétima=10/11, nona=14]
+function getIntervaloNota(nomeAcorde, idxTeclado) {
+    const match = nomeAcorde.match(/^([A-G][#b]?)/);
+    if (!match) return 'outra';
+    const eq = {'Db':'C#','Eb':'D#','Gb':'F#','Ab':'G#','Bb':'A#'};
+    const tonicaRaw = match[1];
+    const tonica = eq[tonicaRaw] || tonicaRaw;
+    const notasCrom = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+    const tonicaIdx = notasCrom.indexOf(tonica);
+    const notaIdx = idxTeclado % 12;
+    const intervalo = (notaIdx - tonicaIdx + 12) % 12;
+    if (intervalo === 0) return 'tonica';
+    if (intervalo === 3 || intervalo === 4) return 'terca';
+    if (intervalo === 7) return 'quinta';
+    if (intervalo === 10 || intervalo === 11) return 'setima';
+    if (intervalo === 2 || intervalo === 14) return 'nona';
+    return 'outra';
+}
+
+// Override desenharTecladoEm to add colors and legend
+const _desenharTecladoEmOrig = desenharTecladoEm;
+desenharTecladoEm = function(nomeAcorde, targetArea) {
+    const piano = getPiano(nomeAcorde);
+    if (!piano) {
+        const p = document.createElement('p');
+        p.className = 'diagrama-indisponivel';
+        p.innerHTML = `Sem dados de teclado para <b>${nomeAcorde}</b>.`;
+        targetArea.appendChild(p);
+        return;
+    }
+    const notasAtivas = piano;
+    const nomesBrancas = ["C","D","E","F","G","A","B","C","D","E","F","G","A","B"];
+    const nomesPretas = {1:"C#",3:"D#",6:"F#",8:"G#",10:"A#",13:"C#",15:"D#",18:"F#",20:"G#",22:"A#"};
+    const offsetPretas = [1,3,null,6,8,10,null,13,15,null,18,20,22,null];
+    const total = 14;
+    let counter = 0, posX = 0;
+    const largura = 100/total;
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'teclado-wrapper';
+    const teclado = document.createElement('div');
+    teclado.className = 'teclado-container';
+
+    for (let i=0; i<total; i++) {
+        const branca = document.createElement('div');
+        branca.className = 'tecla-branca';
+        if (notasAtivas.includes(counter)) {
+            const marca = document.createElement('div');
+            const intervalo = getIntervaloNota(nomeAcorde, counter);
+            marca.className = `marca-tecla ${intervalo}`;
+            branca.appendChild(marca);
+        }
+        const lb = document.createElement('div');
+        lb.className = 'nota-tecla-label';
+        lb.textContent = nomesBrancas[i] || '';
+        branca.appendChild(lb);
+        teclado.appendChild(branca);
+
+        if (offsetPretas[i] !== null && offsetPretas[i] !== undefined) {
+            const preta = document.createElement('div');
+            preta.className = 'tecla-preta';
+            preta.style.left = `calc(${posX+largura}% - 8px)`;
+            if (notasAtivas.includes(offsetPretas[i])) {
+                const marca = document.createElement('div');
+                const intervalo = getIntervaloNota(nomeAcorde, offsetPretas[i]);
+                marca.className = `marca-tecla ${intervalo}`;
+                preta.appendChild(marca);
+            }
+            const lp = document.createElement('div');
+            lp.className = 'nota-tecla-label';
+            lp.textContent = nomesPretas[offsetPretas[i]] || '';
+            preta.appendChild(lp);
+            teclado.appendChild(preta);
+            counter += 2;
+        } else { counter += 1; }
+        posX += largura;
+    }
+
+    wrapper.appendChild(teclado);
+    targetArea.appendChild(wrapper);
+
+    // Legenda de cores
+    const legenda = document.createElement('div');
+    legenda.className = 'teclado-legenda';
+    const items = [
+        {cls:'tonica',nome:'Tônica',cor:'#e74c3c'},
+        {cls:'terca',nome:'Terça',cor:'#3498db'},
+        {cls:'quinta',nome:'Quinta',cor:'#2ecc71'},
+        {cls:'setima',nome:'7ª',cor:'#f39c12'},
+        {cls:'nona',nome:'9ª',cor:'#9b59b6'},
+    ];
+    // Mostra só os que existem no acorde
+    const semitonsAcorde = piano.map(p => p % 12);
+    items.filter(it => {
+        if (it.cls === 'tonica') return true;
+        if (it.cls === 'terca') return semitonsAcorde.some(s => s===3||s===4);
+        if (it.cls === 'quinta') return semitonsAcorde.includes(7);
+        if (it.cls === 'setima') return semitonsAcorde.some(s => s===10||s===11);
+        if (it.cls === 'nona') return semitonsAcorde.some(s => s===2||s===14%12);
+        return false;
+    }).forEach(it => {
+        legenda.innerHTML += `<span class="teclado-legenda-item">
+            <span class="teclado-legenda-cor" style="background:${it.cor}"></span>${it.nome}
+        </span>`;
+    });
+    targetArea.appendChild(legenda);
+};
+
+// ==========================================
+// SUGESTÃO DE SOLO / IMPROVISAÇÃO
+// ==========================================
+let audioCtxSolo = null;
+let soloTocando = false;
+let soloTimeouts = [];
+
+const escalasParaSolo = {
+    maior: [
+        { nome: 'Pentatônica Maior', formula: [0,2,4,7,9], desc: 'Alegre e brilhante' },
+        { nome: 'Escala Maior', formula: [0,2,4,5,7,9,11], desc: 'Clássica e completa' },
+        { nome: 'Mixolídio', formula: [0,2,4,5,7,9,10], desc: 'Blues e rock' },
+    ],
+    menor: [
+        { nome: 'Pentatônica Menor', formula: [0,3,5,7,10], desc: 'Blues e emoção' },
+        { nome: 'Menor Natural', formula: [0,2,3,5,7,8,10], desc: 'Melódica e sombria' },
+        { nome: 'Menor Harmônica', formula: [0,2,3,5,7,8,11], desc: 'Dramática e intensa' },
+        { nome: 'Dórico', formula: [0,2,3,5,7,9,10], desc: 'Jazz e funk' },
+    ]
+};
+
+function mostrarSugestoesSolo(tonica, modo) {
+    const container = document.getElementById('soloContainer');
+    const escalasDiv = document.getElementById('soloEscalas');
+    if (!container || !escalasDiv) return;
+
+    const notasCrom = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+    const tonicaIdx = notasCrom.indexOf(tonica);
+    const escalas = escalasParaSolo[modo] || escalasParaSolo.maior;
+
+    escalasDiv.innerHTML = '';
+    escalas.forEach(escala => {
+        const notas = escala.formula.map(s => notasCrom[(tonicaIdx + s) % 12]);
+        const row = document.createElement('div');
+        row.className = 'solo-escala-row';
+        row.innerHTML = `
+            <span class="solo-escala-nome">${escala.nome}</span>
+            <span class="solo-escala-notas">${notas.join(' · ')}</span>
+            <button class="btn-play-solo" onclick="tocarEscala('${tonica}', ${JSON.stringify(escala.formula)}, this)">▶ Ouvir</button>
+        `;
+        escalasDiv.appendChild(row);
+    });
+
+    container.style.display = 'block';
+}
+
+function tocarEscala(tonica, formula, btn) {
+    // Para qualquer som em andamento
+    soloTimeouts.forEach(t => clearTimeout(t));
+    soloTimeouts = [];
+    document.querySelectorAll('.btn-play-solo').forEach(b => {
+        b.textContent = '▶ Ouvir'; b.classList.remove('tocando');
+    });
+
+    if (soloTocando && btn.classList.contains('tocando')) {
+        soloTocando = false; return;
+    }
+
+    soloTocando = true;
+    btn.textContent = '■ Parar'; btn.classList.add('tocando');
+
+    if (!audioCtxSolo) audioCtxSolo = new (window.AudioContext || window.webkitAudioContext)();
+
+    const notasCrom = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+    const tonicaIdx = notasCrom.indexOf(tonica);
+    // Frequência base: A4=440, C4≈261.63
+    const freqBase = 261.63 * Math.pow(2, tonicaIdx / 12);
+
+    const bpm = 120;
+    const noteDur = 60 / bpm;
+
+    // Toca a escala subindo e descendo
+    const notas = [...formula, ...formula.slice().reverse().slice(1)];
+    notas.forEach((semi, i) => {
+        const t = setTimeout(() => {
+            if (!soloTocando) return;
+            const freq = freqBase * Math.pow(2, semi / 12);
+            const osc = audioCtxSolo.createOscillator();
+            const gain = audioCtxSolo.createGain();
+            osc.connect(gain); gain.connect(audioCtxSolo.destination);
+            osc.frequency.value = freq;
+            osc.type = 'triangle';
+            gain.gain.setValueAtTime(0.3, audioCtxSolo.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtxSolo.currentTime + noteDur * 0.9);
+            osc.start(); osc.stop(audioCtxSolo.currentTime + noteDur * 0.9);
+        }, i * noteDur * 1000);
+        soloTimeouts.push(t);
+    });
+
+    // Reset botão ao terminar
+    const totalDur = notas.length * noteDur * 1000 + 200;
+    soloTimeouts.push(setTimeout(() => {
+        soloTocando = false;
+        btn.textContent = '▶ Ouvir'; btn.classList.remove('tocando');
+    }, totalDur));
 }

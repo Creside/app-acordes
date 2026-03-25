@@ -48,6 +48,11 @@
                     <input type="text" id="inputAcordes" placeholder="Ex: C, F, G">
                     <button onclick="identificarTom()">Descobrir Tom</button>
                     <div id="resultado" class="resultado-box" style="display:none;margin-top:12px;"></div>
+                    <!-- Sugestão de Solo -->
+                    <div class="solo-container" id="soloContainer">
+                        <p class="solo-titulo">🎸 Sugestão de Solo / Improvisação</p>
+                        <div class="solo-escalas" id="soloEscalas"></div>
+                    </div>
                 </div>
 
                 <!-- 3. Visualização dos Acordes -->
@@ -64,7 +69,18 @@
                         </div>
                     </div>
                     <div id="variacoes-container-inner" style="display:none;margin-bottom:10px;">
+                        <div class="legenda-tipos" id="legendaTipos"></div>
                         <div id="gradeVariacoes" class="grade-botoes"></div>
+                    </div>
+                    <!-- Toggle notas/dedos -->
+                    <div class="diagrama-toggle-row" id="toggleRow" style="display:none;">
+                        <span>Dedos</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggleNotasDedos" onchange="alternarModoNotas()">
+                            <div class="toggle-track"></div>
+                            <div class="toggle-thumb"></div>
+                        </label>
+                        <span>Notas</span>
                     </div>
                     <div class="chord-card" id="chord-card-box">
                         <div id="chord-visual-area"></div>
