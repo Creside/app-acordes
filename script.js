@@ -320,170 +320,170 @@ const dicionarioShapes = {
     "C#":   { posicoes: [
                 { label:"Barra 4ª",barra:{casa:4,de:0,ate:4}, g_frets:[4,6,6,5,4,4],    g_fingers:[1,3,4,2,1,1] },
                 { label:"Barra 9ª",barra:{casa:9,de:0,ate:4}, g_frets:[9,11,11,10,9,9], g_fingers:[1,3,4,2,1,1] },
-              ], piano:[1,5,8] },
+              ], piano:[0,4,7] },
     "D":    { posicoes: [
                 { label:"Aberta",  g_frets:[null,null,0,2,3,2], g_fingers:[null,null,null,1,3,2] },
                 { label:"Barra 5ª",barra:{casa:5,de:0,ate:4}, g_frets:[5,7,7,6,5,5],    g_fingers:[1,3,4,2,1,1] },
                 { label:"Barra 10ª",barra:{casa:10,de:0,ate:4},g_frets:[10,12,12,11,10,10],g_fingers:[1,3,4,2,1,1]},
-              ], piano:[2,6,9] },
+              ], piano:[1,5,8] },
     "D#":   { posicoes: [
                 { label:"Barra 6ª",barra:{casa:6,de:0,ate:4}, g_frets:[6,8,8,7,6,6],    g_fingers:[1,3,4,2,1,1] },
                 { label:"Aberta",  g_frets:[null,null,1,3,4,3],g_fingers:[null,null,1,2,4,3] },
-              ], piano:[3,7,10] },
+              ], piano:[2,6,9] },
     "E":    { posicoes: [
                 { label:"Aberta",  g_frets:[0,2,2,1,0,0],      g_fingers:[null,2,3,1,null,null] },
                 { label:"Barra 7ª",barra:{casa:7,de:0,ate:4}, g_frets:[7,9,9,8,7,7],    g_fingers:[1,3,4,2,1,1] },
-              ], piano:[4,8,11] },
+              ], piano:[3,7,10] },
     "F":    { posicoes: [
                 { label:"Barra 1ª",barra:{casa:1,de:0,ate:4}, g_frets:[1,3,3,2,1,1],    g_fingers:[1,3,4,2,1,1] },
                 { label:"Barra 8ª",barra:{casa:8,de:0,ate:4}, g_frets:[8,10,10,9,8,8],  g_fingers:[1,3,4,2,1,1] },
                 { label:"Simples", g_frets:[null,null,3,2,1,1],g_fingers:[null,null,3,2,1,1] },
-              ], piano:[5,9,12] },
+              ], piano:[4,8,11] },
     "F#":   { posicoes: [
                 { label:"Barra 2ª",barra:{casa:2,de:0,ate:4}, g_frets:[2,4,4,3,2,2],    g_fingers:[1,3,4,2,1,1] },
                 { label:"Barra 9ª",barra:{casa:9,de:0,ate:4}, g_frets:[9,11,11,10,9,9], g_fingers:[1,3,4,2,1,1] },
-              ], piano:[6,10,13] },
+              ], piano:[5,9,12] },
     "G":    { posicoes: [
                 { label:"Aberta",  g_frets:[3,2,0,0,0,3],      g_fingers:[2,1,null,null,null,3] },
                 { label:"Barra 3ª",barra:{casa:3,de:0,ate:4}, g_frets:[3,5,5,4,3,3],    g_fingers:[1,3,4,2,1,1] },
                 { label:"Aberta 2",g_frets:[3,2,0,0,0,3],      g_fingers:[3,2,null,null,null,4] },
-              ], piano:[7,11,14] },
+              ], piano:[6,10,13] },
     "G#":   { posicoes: [
                 { label:"Barra 4ª",barra:{casa:4,de:0,ate:4}, g_frets:[4,6,6,5,4,4],    g_fingers:[1,3,4,2,1,1] },
                 { label:"Barra 11ª",barra:{casa:11,de:0,ate:4},g_frets:[11,13,13,12,11,11],g_fingers:[1,3,4,2,1,1]},
-              ], piano:[8,12,15] },
+              ], piano:[7,11,14] },
     "A":    { posicoes: [
                 { label:"Aberta",  g_frets:[null,0,2,2,2,0],   g_fingers:[null,null,1,2,3,null] },
                 { label:"Barra 5ª",barra:{casa:5,de:0,ate:4}, g_frets:[5,7,7,6,5,5],    g_fingers:[1,3,4,2,1,1] },
                 { label:"Aberta 2",g_frets:[null,0,2,2,2,0],   g_fingers:[null,null,2,3,4,null] },
-              ], piano:[9,13,16] },
+              ], piano:[8,12,15] },
     "A#":   { posicoes: [
                 { label:"Barra 6ª",barra:{casa:6,de:0,ate:4}, g_frets:[6,8,8,7,6,6],    g_fingers:[1,3,4,2,1,1] },
                 { label:"Aberta",  g_frets:[null,1,3,3,3,1],   g_fingers:[null,1,2,3,4,1] },
-              ], piano:[10,14,17] },
+              ], piano:[9,13,16] },
     "B":    { posicoes: [
                 { label:"Barra 2ª",barra:{casa:2,de:0,ate:4}, g_frets:[null,2,4,4,4,2], g_fingers:[null,1,2,3,4,1] },
                 { label:"Barra 7ª",barra:{casa:7,de:0,ate:4}, g_frets:[7,9,9,8,7,7],    g_fingers:[1,3,4,2,1,1] },
-              ], piano:[11,15,18] },
+              ], piano:[10,14,17] },
     "Am":   { posicoes: [
                 { label:"Aberta",  g_frets:[null,0,2,2,1,0],   g_fingers:[null,null,2,3,1,null] },
                 { label:"Barra 5ª",barra:{casa:5,de:0,ate:4}, g_frets:[5,7,7,5,5,5],    g_fingers:[1,3,4,1,1,1] },
-              ], piano:[0,3,7] },
+              ], piano:[11,15,18] },
     "A#m":  { posicoes: [
                 { label:"Barra 1ª",barra:{casa:1,de:0,ate:4}, g_frets:[null,1,3,3,2,1], g_fingers:[null,1,3,4,2,1] },
                 { label:"Barra 6ª",barra:{casa:6,de:0,ate:4}, g_frets:[6,8,8,6,6,6],    g_fingers:[1,3,4,1,1,1] },
-              ], piano:[1,4,8] },
+              ], piano:[9,12,16] },
     "Bm":   { posicoes: [
                 { label:"Barra 2ª",barra:{casa:2,de:0,ate:4}, g_frets:[null,2,4,4,3,2], g_fingers:[null,1,3,4,2,1] },
                 { label:"Barra 7ª",barra:{casa:7,de:0,ate:4}, g_frets:[7,9,9,7,7,7],    g_fingers:[1,3,4,1,1,1] },
-              ], piano:[2,5,9] },
+              ], piano:[10,13,17] },
     "Cm":   { posicoes: [
                 { label:"Barra 3ª",barra:{casa:3,de:0,ate:4}, g_frets:[null,3,5,5,4,3], g_fingers:[null,1,3,4,2,1] },
                 { label:"Barra 8ª",barra:{casa:8,de:0,ate:4}, g_frets:[8,10,10,8,8,8],  g_fingers:[1,3,4,1,1,1] },
-              ], piano:[3,6,10] },
+              ], piano:[11,14,18] },
     "C#m":  { posicoes: [
                 { label:"Barra 4ª",barra:{casa:4,de:0,ate:4}, g_frets:[null,4,6,6,5,4], g_fingers:[null,1,3,4,2,1] },
                 { label:"Barra 9ª",barra:{casa:9,de:0,ate:4}, g_frets:[9,11,11,9,9,9],  g_fingers:[1,3,4,1,1,1] },
-              ], piano:[4,7,11] },
+              ], piano:[0,3,7] },
     "Dm":   { posicoes: [
                 { label:"Aberta",  g_frets:[null,null,0,2,3,1],g_fingers:[null,null,null,2,3,1] },
                 { label:"Barra 5ª",barra:{casa:5,de:0,ate:4}, g_frets:[5,6,7,7,5,5],    g_fingers:[1,2,3,4,1,1] },
-              ], piano:[5,8,12] },
+              ], piano:[1,4,8] },
     "D#m":  { posicoes: [
                 { label:"Barra 6ª",barra:{casa:6,de:0,ate:4}, g_frets:[6,7,8,8,6,6],    g_fingers:[1,2,3,4,1,1] },
                 { label:"Aberta",  g_frets:[null,null,1,3,4,2],g_fingers:[null,null,1,3,4,2] },
-              ], piano:[6,9,13] },
+              ], piano:[2,5,9] },
     "Em":   { posicoes: [
                 { label:"Aberta",  g_frets:[0,2,2,0,0,0],      g_fingers:[null,2,3,null,null,null] },
                 { label:"Barra 7ª",barra:{casa:7,de:0,ate:4}, g_frets:[7,9,9,7,7,7],    g_fingers:[1,3,4,1,1,1] },
-              ], piano:[7,10,14] },
+              ], piano:[3,6,10] },
     "Fm":   { posicoes: [
                 { label:"Barra 1ª",barra:{casa:1,de:0,ate:4}, g_frets:[1,3,3,1,1,1],    g_fingers:[1,3,4,1,1,1] },
                 { label:"Barra 8ª",barra:{casa:8,de:0,ate:4}, g_frets:[8,10,10,8,8,8],  g_fingers:[1,3,4,1,1,1] },
-              ], piano:[8,11,15] },
+              ], piano:[4,7,11] },
     "F#m":  { posicoes: [
                 { label:"Barra 2ª",barra:{casa:2,de:0,ate:4}, g_frets:[2,4,4,2,2,2],    g_fingers:[1,3,4,1,1,1] },
                 { label:"Barra 9ª",barra:{casa:9,de:0,ate:4}, g_frets:[9,11,11,9,9,9],  g_fingers:[1,3,4,1,1,1] },
-              ], piano:[9,12,16] },
+              ], piano:[5,8,12] },
     "Gm":   { posicoes: [
                 { label:"Barra 3ª",barra:{casa:3,de:0,ate:4}, g_frets:[3,5,5,3,3,3],    g_fingers:[1,3,4,1,1,1] },
                 { label:"Barra 10ª",barra:{casa:10,de:0,ate:4},g_frets:[10,12,12,10,10,10],g_fingers:[1,3,4,1,1,1]},
-              ], piano:[10,13,17] },
+              ], piano:[6,9,13] },
     "G#m":  { posicoes: [
                 { label:"Barra 4ª",barra:{casa:4,de:0,ate:4}, g_frets:[4,6,6,4,4,4],    g_fingers:[1,3,4,1,1,1] },
                 { label:"Barra 11ª",barra:{casa:11,de:0,ate:4},g_frets:[11,13,13,11,11,11],g_fingers:[1,3,4,1,1,1]},
-              ], piano:[11,14,18] },
+              ], piano:[7,10,14] },
     "E7":   { posicoes: [
                 { label:"Aberta",  g_frets:[0,2,0,1,0,0],      g_fingers:[null,2,null,1,null,null] },
                 { label:"Barra 7ª",barra:{casa:7,de:0,ate:4}, g_frets:[7,9,7,8,7,7],    g_fingers:[1,3,1,2,1,1] },
-              ], piano:[4,8,11,14] },
+              ], piano:[8,11,15] },
     "A7":   { posicoes: [
                 { label:"Aberta",  g_frets:[null,0,2,0,2,0],   g_fingers:[null,null,2,null,3,null] },
                 { label:"Barra 5ª",barra:{casa:5,de:0,ate:4}, g_frets:[5,7,5,6,5,5],    g_fingers:[1,3,1,2,1,1] },
-              ], piano:[9,13,16,19] },
+              ], piano:[4,8,11,14] },
     "D7":   { posicoes: [
                 { label:"Aberta",  g_frets:[null,null,0,2,1,2],g_fingers:[null,null,null,2,1,3] },
                 { label:"Barra 5ª",barra:{casa:5,de:0,ate:3}, g_frets:[null,5,7,5,7,5], g_fingers:[null,1,3,1,4,1] },
-              ], piano:[2,6,9,12] },
+              ], piano:[9,13,16,19] },
     "G7":   { posicoes: [
                 { label:"Aberta",  g_frets:[3,2,0,0,0,1],      g_fingers:[3,2,null,null,null,1] },
                 { label:"Barra 3ª",barra:{casa:3,de:0,ate:4}, g_frets:[3,5,3,4,3,3],    g_fingers:[1,3,1,2,1,1] },
-              ], piano:[7,11,14,17] },
+              ], piano:[2,6,9,12] },
     "C7":   { posicoes: [
                 { label:"Aberta",  g_frets:[null,3,2,3,1,0],   g_fingers:[null,3,2,4,1,null] },
                 { label:"Barra 8ª",barra:{casa:8,de:0,ate:4}, g_frets:[8,10,8,9,8,8],   g_fingers:[1,3,1,2,1,1] },
-              ], piano:[0,4,7,10] },
+              ], piano:[7,11,14,17] },
     "B7":   { posicoes: [
                 { label:"Aberta",  g_frets:[null,2,1,2,0,2],   g_fingers:[null,2,1,3,null,4] },
                 { label:"Barra 7ª",barra:{casa:7,de:0,ate:4}, g_frets:[7,9,7,8,7,7],    g_fingers:[1,3,1,2,1,1] },
-              ], piano:[11,15,18,21] },
+              ], piano:[0,4,7,10] },
     "Am7":  { posicoes: [
                 { label:"Aberta",  g_frets:[null,0,2,0,1,0],   g_fingers:[null,null,2,null,1,null] },
                 { label:"Barra 5ª",barra:{casa:5,de:0,ate:4}, g_frets:[5,7,5,5,5,5],    g_frets:[5,7,5,5,5,5],  g_fingers:[1,3,1,1,1,1] },
-              ], piano:[0,3,7,10] },
+              ], piano:[11,15,18,21] },
     "Em7":  { posicoes: [
                 { label:"Aberta",  g_frets:[0,2,0,0,0,0],      g_fingers:[null,1,null,null,null,null] },
                 { label:"Barra 7ª",barra:{casa:7,de:0,ate:4}, g_frets:[7,9,7,7,7,7],    g_fingers:[1,3,1,1,1,1] },
-              ], piano:[7,10,14,17] },
+              ], piano:[9,12,16,19] },
     "Dm7":  { posicoes: [
                 { label:"Aberta",  g_frets:[null,null,0,2,1,1],g_fingers:[null,null,null,3,1,2] },
                 { label:"Barra 5ª",barra:{casa:5,de:0,ate:4}, g_frets:[null,5,7,5,6,5], g_fingers:[null,1,3,1,2,1] },
-              ], piano:[5,8,12,15] },
+              ], piano:[4,7,11,14] },
     "C7M":  { posicoes: [
                 { label:"Aberta",  g_frets:[null,3,2,0,0,0],   g_fingers:[null,3,2,null,null,null] },
                 { label:"Barra 8ª",barra:{casa:8,de:0,ate:4}, g_frets:[null,8,10,9,8,null],g_fingers:[null,1,3,2,1,null] },
-              ], piano:[0,4,7,11] },
+              ], piano:[2,5,9,12] },
     "G7M":  { posicoes: [
                 { label:"Aberta",  g_frets:[3,null,0,0,0,2],   g_fingers:[2,null,null,null,null,1] },
                 { label:"Barra 3ª",barra:{casa:3,de:0,ate:4}, g_frets:[null,3,5,4,3,null],g_fingers:[null,1,3,2,1,null] },
-              ], piano:[7,11,14,18] },
+              ], piano:[0,4,7,11] },
     "F7M":  { posicoes: [
                 { label:"Aberta",  g_frets:[null,null,3,2,1,0],g_fingers:[null,null,3,2,1,null] },
                 { label:"Barra 8ª",barra:{casa:8,de:0,ate:4}, g_frets:[null,8,10,9,8,null],g_fingers:[null,1,3,2,1,null] },
-              ], piano:[5,9,12,16] },
+              ], piano:[7,11,14,18] },
     "Bm7":  { posicoes: [
                 { label:"Barra 2ª",barra:{casa:2,de:0,ate:4}, g_frets:[null,2,4,2,3,2], g_fingers:[null,1,3,1,2,1] },
                 { label:"Barra 7ª",barra:{casa:7,de:0,ate:4}, g_frets:[7,9,7,7,7,7],    g_fingers:[1,3,1,1,1,1] },
-              ], piano:[2,5,9,12] },
+              ], piano:[5,9,12,16] },
     "F#m7": { posicoes: [
                 { label:"Barra 2ª",barra:{casa:2,de:0,ate:4}, g_frets:[2,4,2,2,2,2],    g_fingers:[1,3,1,1,1,1] },
                 { label:"Barra 9ª",barra:{casa:9,de:0,ate:4}, g_frets:[9,11,9,9,9,9],   g_fingers:[1,3,1,1,1,1] },
-              ], piano:[9,12,16,19] },
+              ], piano:[11,14,18,21] },
     "C#7":  { posicoes: [
                 { label:"Barra 4ª",barra:{casa:4,de:0,ate:4}, g_frets:[null,4,6,4,5,4], g_fingers:[null,1,3,1,2,1] },
-              ], piano:[1,5,8,11] },
+              ], piano:[11,14,18,21] },
     "F#7":  { posicoes: [
                 { label:"Barra 2ª",barra:{casa:2,de:0,ate:4}, g_frets:[2,4,2,3,2,2],    g_fingers:[1,3,1,2,1,1] },
-              ], piano:[6,10,13,16] },
+              ], piano:[6,9,13,16] },
     "C9":   { posicoes: [
                 { label:"Aberta",  g_frets:[null,3,2,3,3,null],g_fingers:[null,2,1,3,4,null] },
-              ], piano:[0,4,7,10,14] },
+              ], piano:[1,5,8,11] },
     "Edim": { posicoes: [
                 { label:"Aberta",  g_frets:[null,null,2,3,2,3],g_fingers:[null,null,1,3,2,4] },
-              ], piano:[4,7,10] },
+              ], piano:[6,10,13,16] },
     "Bdim": { posicoes: [
                 { label:"Aberta",  g_frets:[null,2,3,4,3,null],g_fingers:[null,1,2,4,3,null] },
-              ], piano:[11,14,17] },
+              ], piano:[0,4,7,10,14] },
 };
 let acordeAtualSelecionado = "";
 let visaoDiagramaAtual = "guitarra";
