@@ -148,14 +148,13 @@ body {
 .coluna-1 .modulo-container:nth-child(2) { order: 4; } /* Transpositor */
 .coluna-1 .modulo-container:nth-child(3) { order: 6; } /* Afinador */
 
-/* DESKTOP: 3 colunas verdadeiras com grid */
-@media (min-width: 900px) {
+/* DESKTOP: 3 colunas equilibradas */
+@media (min-width: 1024px) {
     .layout-grid {
         display: grid;
-        grid-template-columns: 300px 1fr 320px;
-        grid-template-rows: auto;
+        grid-template-columns: 1fr 1fr 1fr;
         align-items: start;
-        gap: 16px;
+        gap: 18px;
     }
     .coluna-1 { grid-column: 1; }
     .coluna-2 { grid-column: 2; }
@@ -163,7 +162,7 @@ body {
 }
 
 /* TABLET: 2 colunas */
-@media (min-width: 600px) and (max-width: 899px) {
+@media (min-width: 600px) and (max-width: 1023px) {
     .layout-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -553,18 +552,113 @@ button.posicao-btn.ativo { background: var(--accent); color: #1a1a1a; border-col
     width: auto; margin: 0; font-size: 13px;
 }
 .fretboard-wrapper { width: 100%; overflow-x: auto; padding-bottom: 8px; }
-.fretboard { display: flex; flex-direction: column; min-width: 550px; }
-.corda { display: flex; height: 30px; align-items: center; position: relative; border-right: 2px solid #222; }
-.corda::before { content:''; position:absolute; width:100%; height:2px; background:#bdc3c7; z-index:1; box-shadow:0 1px 2px rgba(0,0,0,0.5); }
-.traste { flex:1; border-right:2px solid #a0a0a0; height:100%; display:flex; justify-content:center; align-items:center; position:relative; background:var(--fret-bg); }
-.corda-solta { width:35px; flex:none; border-right:none; background:transparent; }
-.pestana { border-left:6px solid #d4c4b7; }
-.marcador-fundo { position:absolute; width:16px; height:16px; background:rgba(255,255,255,0.25); border-radius:50%; z-index:0; }
-.bolinha-nota { width:20px; height:20px; background:#3498db; border-radius:50%; z-index:2; box-shadow:0 0 5px rgba(0,0,0,0.8); display:flex; justify-content:center; align-items:center; color:white; font-size:10px; font-weight:bold; }
-.nota-solta-destaque { background:#e67e22; border-radius:4px; }
-.regua-casas { display:flex; height:24px; align-items:center; margin-top:4px; }
-.numero-casa { flex:1; text-align:center; color:var(--text-dim); font-size:12px; font-weight:bold; }
-.corda-solta-num { width:35px; flex:none; }
+.fretboard {
+    display: flex;
+    flex-direction: column;
+    min-width: 500px;
+    background: #2a1a0e;
+    border-radius: 6px;
+    padding: 6px 0;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
+}
+.corda {
+    display: flex;
+    height: 34px;
+    align-items: center;
+    position: relative;
+    border-right: 3px solid #1a0f07;
+}
+/* Corda metálica com espessura variável */
+.corda::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: var(--corda-espessura, 2px);
+    background: linear-gradient(to bottom, rgba(255,255,255,0.4), #c0c0c0, rgba(0,0,0,0.2));
+    z-index: 1;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.7), 0 -1px 0px rgba(255,255,255,0.15);
+}
+.traste {
+    flex: 1;
+    border-right: 2px solid #8B6914;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background: linear-gradient(to right, #3d2210, #4a2f1d, #3d2210);
+}
+/* Marcação de casa nas trastes */
+.traste:nth-child(4)  { border-right-color: #c8a850; border-right-width: 3px; }
+.traste:nth-child(6)  { border-right-color: #c8a850; border-right-width: 3px; }
+.traste:nth-child(8)  { border-right-color: #c8a850; border-right-width: 3px; }
+.traste:nth-child(10) { border-right-color: #c8a850; border-right-width: 3px; }
+
+.corda-solta {
+    width: 38px;
+    flex: none;
+    border-right: 3px solid #c8a850;
+    background: #1a0f07;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pestana { border-left: 7px solid #e8d8c0; }
+
+.marcador-fundo {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 50%;
+    z-index: 0;
+    box-shadow: 0 0 6px rgba(255,255,255,0.05);
+}
+.bolinha-nota {
+    width: 22px;
+    height: 22px;
+    background: #3498db;
+    border-radius: 50%;
+    z-index: 2;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.8), inset 0 1px 2px rgba(255,255,255,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+.nota-solta-destaque {
+    background: #e67e22;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(230,126,34,0.5);
+}
+/* Régua de casas */
+.regua-casas {
+    display: flex;
+    height: 20px;
+    align-items: center;
+    margin-top: 6px;
+    border-top: 1px solid #3a2010;
+    padding-top: 4px;
+}
+.numero-casa {
+    flex: 1;
+    text-align: center;
+    color: #8B6914;
+    font-size: 11px;
+    font-weight: bold;
+}
+.corda-solta-num { width: 38px; flex: none; }
+
+/* Nome da corda na corda solta */
+.nome-corda-solta {
+    color: #c8a850;
+    font-size: 10px;
+    font-weight: bold;
+    z-index: 2;
+}
 
 /* ==========================================
    TECLADO (PIANO)
