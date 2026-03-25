@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,21 +7,41 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- HEADER -->
+    <div class="app-header">
+        <h1 class="app-titulo">🎸 Identificador de Tom</h1>
+        <div class="header-acoes">
+            <!-- Onboarding -->
+            <button class="btn-icone" onclick="abrirAjuda()" title="Ajuda / Glossário">❓</button>
+            <!-- Compartilhar -->
+            <button class="btn-icone" id="btnCompartilhar" onclick="compartilharResultado()" title="Compartilhar resultado" style="display:none">📤</button>
+            <!-- Modo claro/escuro -->
+            <button class="btn-icone" id="btnTema" onclick="alternarTema()" title="Modo claro/escuro">🌙</button>
+        </div>
+    </div>
+
     <div class="container">
-        <h1>Identificador de Tom</h1>
         <div class="layout-grid">
 
             <!-- PAINEL ESQUERDO -->
             <div class="painel-esquerdo">
 
                 <!-- Identificador de Tom -->
-                <p>Digite os acordes separados por vírgula:</p>
-                <input type="text" id="inputAcordes" placeholder="Ex: C, F, G">
-                <button onclick="identificarTom()">Descobrir Tom</button>
+                <div class="modulo-container">
+                    <div class="modulo-titulo-row">
+                        <h3 class="modulo-titulo">🎵 Identificador de Tom</h3>
+                        <button class="btn-tooltip" onclick="mostrarTooltip('campo-harmonico')">?</button>
+                    </div>
+                    <input type="text" id="inputAcordes" placeholder="Ex: C, F, G">
+                    <button onclick="identificarTom()">Descobrir Tom</button>
+                </div>
 
                 <!-- Afinador -->
-                <div class="afinador-container">
-                    <h3 class="afinador-titulo">🎤 Afinador / Voz</h3>
+                <div class="afinador-container modulo-container">
+                    <div class="modulo-titulo-row">
+                        <h3 class="afinador-titulo">🎤 Afinador / Voz</h3>
+                        <button class="btn-tooltip" onclick="mostrarTooltip('afinador')">?</button>
+                    </div>
                     <p class="afinador-subtitulo">Cante uma nota ou toque uma corda.</p>
                     <button id="btnAfinador" onclick="iniciarAfinador()">Ligar Microfone</button>
                     <div id="notaDetectada">--</div>
@@ -29,8 +49,11 @@
                 </div>
 
                 <!-- Transpositor -->
-                <div class="transpositor-container">
-                    <h3 class="transpositor-titulo">🔀 Transpositor de Tom</h3>
+                <div class="transpositor-container modulo-container">
+                    <div class="modulo-titulo-row">
+                        <h3 class="transpositor-titulo">🔀 Transpositor de Tom</h3>
+                        <button class="btn-tooltip" onclick="mostrarTooltip('transpositor')">?</button>
+                    </div>
                     <p class="transpositor-subtitulo">Digite os acordes e escolha quantos semitons transpor.</p>
                     <input type="text" id="inputTranspor" placeholder="Ex: Am, Dm, G7, C">
                     <div class="transpor-controles">
@@ -42,11 +65,13 @@
                     <div id="resultadoTransposicao" class="resultado-transposicao"></div>
                 </div>
 
-
                 <!-- Círculo de Quintas -->
-                <div class="circulo-container">
-                    <h3 class="circulo-titulo">⭕ Círculo de Quintas</h3>
-                    <p class="circulo-subtitulo">Clique num tom para ver o campo harmônico. Anel externo = maior, interno = menor.</p>
+                <div class="circulo-container modulo-container">
+                    <div class="modulo-titulo-row">
+                        <h3 class="circulo-titulo">⭕ Círculo de Quintas</h3>
+                        <button class="btn-tooltip" onclick="mostrarTooltip('circulo')">?</button>
+                    </div>
+                    <p class="circulo-subtitulo">Clique num tom para ver o campo harmônico.</p>
                     <div class="circulo-svg-wrapper" id="circulo-svg-wrapper"></div>
                     <div id="circulo-info" class="circulo-info"></div>
                 </div>
@@ -57,25 +82,26 @@
             <div class="painel-direito">
 
                 <!-- Resultado do identificador -->
-                <div id="resultado" class="resultado-box" style="display:none;">
-                    Aguardando acordes...
-                </div>
+                <div id="resultado" class="resultado-box" style="display:none;"></div>
 
                 <!-- Cifra Completa -->
-                <div class="cifra-container">
-                    <h3 class="cifra-titulo">📄 Cifra Completa</h3>
-                    <p class="cifra-subtitulo">Cole sua cifra abaixo. Clique em qualquer acorde para ver o diagrama.</p>
-                    <textarea id="inputCifra" class="cifra-textarea" placeholder="Am          Dm       E7
-Hoje eu quero te dizer
-      Am       G        C
-Que o amor que sinto é real"></textarea>
+                <div class="cifra-container modulo-container">
+                    <div class="modulo-titulo-row">
+                        <h3 class="cifra-titulo">📄 Cifra Completa</h3>
+                        <button class="btn-tooltip" onclick="mostrarTooltip('cifra')">?</button>
+                    </div>
+                    <p class="cifra-subtitulo">Cole sua cifra. Clique em qualquer acorde para ver o diagrama.</p>
+                    <textarea id="inputCifra" class="cifra-textarea" placeholder="Am          Dm       E7&#10;Hoje eu quero te dizer&#10;      Am       G        C&#10;Que o amor que sinto é real"></textarea>
                     <button id="btnRenderCifra" onclick="renderizarCifra()">Renderizar Cifra</button>
                     <div id="cifraRenderizada" class="cifra-renderizada"></div>
                 </div>
 
                 <!-- GPS Harmônico -->
-                <div id="rotas-container" class="gps-container">
-                    <h3 class="gps-titulo">🧭 GPS Harmônico</h3>
+                <div id="rotas-container" class="gps-container modulo-container">
+                    <div class="modulo-titulo-row">
+                        <h3 class="gps-titulo">🧭 GPS Harmônico</h3>
+                        <button class="btn-tooltip" onclick="mostrarTooltip('gps')">?</button>
+                    </div>
                     <p class="gps-subtitulo">Trace a melhor rota de rearmonização entre dois acordes.</p>
                     <div class="gps-inputs">
                         <input type="text" id="acordeOrigem" placeholder="Acorde Atual (ex: C)" class="gps-input">
@@ -121,6 +147,24 @@ Que o amor que sinto é real"></textarea>
             </div>
         </div>
     </div>
+
+    <!-- POPUP ONBOARDING/TOOLTIP -->
+    <div id="tooltip-overlay" class="tooltip-overlay" onclick="fecharTooltip()">
+        <div class="tooltip-modal" onclick="event.stopPropagation()">
+            <button class="tooltip-fechar" onclick="fecharTooltip()">✕</button>
+            <div id="tooltip-conteudo"></div>
+        </div>
+    </div>
+
+    <!-- POPUP COMPARTILHAR -->
+    <div id="share-overlay" class="tooltip-overlay" onclick="fecharShare()">
+        <div class="tooltip-modal" onclick="event.stopPropagation()">
+            <button class="tooltip-fechar" onclick="fecharShare()">✕</button>
+            <h3 style="color:var(--accent);margin-top:0">📤 Compartilhar Resultado</h3>
+            <div id="share-conteudo"></div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

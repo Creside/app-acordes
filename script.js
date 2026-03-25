@@ -100,6 +100,11 @@ function identificarTom() {
             notasEscalaAtual = pentaNotas;
         }
 
+        // Salva para compartilhar
+        ultimoResultado = { labelTom, campo, pentaNotas };
+        const btnComp = document.getElementById('btnCompartilhar');
+        if (btnComp) btnComp.style.display = 'flex';
+
         resultadoDiv.style.display = 'block';
         resultadoDiv.innerHTML = `
             <div class="resultado-tom">🎵 A música está em:<br><b>${labelTom}</b></div>
@@ -843,6 +848,10 @@ function mostrarDiagramaPopup(nomeAcorde, event) {
         popup.innerHTML = `
             <button class="cifra-popup-fechar" onclick="fecharPopup()">✕</button>
             <div class="cifra-popup-nome" id="popup-nome"></div>
+            <div class="popup-tabs">
+                <button class="popup-tab-btn ativo" id="popup-tab-violao" onclick="popupMudarTab('violao')">🎸 Violão</button>
+                <button class="popup-tab-btn" id="popup-tab-teclado" onclick="popupMudarTab('teclado')">🎹 Teclado</button>
+            </div>
             <div id="popup-svg"></div>
         `;
         document.body.appendChild(popup);
@@ -855,9 +864,11 @@ function mostrarDiagramaPopup(nomeAcorde, event) {
     }
 
     document.getElementById('popup-nome').innerText = nomeAcorde;
-    const svgArea = document.getElementById('popup-svg');
-    svgArea.innerHTML = '';
-    svgArea.appendChild(criarSVGAcorde(nomeAcorde, 1));
+    popupNomeAtual = nomeAcorde;
+    popupTabAtual = 'violao';
+    document.getElementById('popup-tab-violao').classList.add('ativo');
+    document.getElementById('popup-tab-teclado').classList.remove('ativo');
+    _renderPopupConteudo();
 
     // Posiciona o popup próximo ao clique
     const x = Math.min(event.clientX, window.innerWidth - 200);
@@ -872,6 +883,65 @@ function mostrarDiagramaPopup(nomeAcorde, event) {
 function fecharPopup() {
     const popup = document.getElementById('cifra-popup');
     if (popup) popup.style.display = 'none';
+}
+
+let popupNomeAtual = '';
+let popupTabAtual = 'violao';
+
+function popupMudarTab(tab) {
+    popupTabAtual = tab;
+    document.getElementById('popup-tab-violao').classList.toggle('ativo', tab === 'violao');
+    document.getElementById('popup-tab-teclado').classList.toggle('ativo', tab === 'teclado');
+    _renderPopupConteudo();
+}
+
+function _renderPopupConteudo() {
+    const svgArea = document.getElementById('popup-svg');
+    if (!svgArea) return;
+    svgArea.innerHTML = '';
+    if (popupTabAtual === 'violao') {
+        svgArea.appendChild(criarSVGAcorde(popupNomeAtual, 1));
+    } else {
+        // Render mini teclado no popup
+        const tmp = document.createElement('div');
+        tmp.id = 'chord-visual-area';
+        tmp.style.display = 'none';
+        document.body.appendChild(tmp);
+        desenharTecladoEm(popupNomeAtual, svgArea);
+        tmp.remove();
+    }
+}
+
+function desenharTecladoEm(nomeAcorde, targetArea) {
+    const piano = getPiano(nomeAcorde);
+    if (!piano) { targetArea.innerHTML = '<p class="diagrama-indisponivel">Sem dados de teclado.</p>'; return; }
+    const notasAtivas = piano;
+    const nomesTeclasBrancas = ["C","D","E","F","G","A","B","C","D","E","F","G","A","B"];
+    const nomesTeclasPretasIdx = {1:"C#",3:"D#",6:"F#",8:"G#",10:"A#",13:"C#",15:"D#",18:"F#",20:"G#",22:"A#"};
+    const offsetPretas = [1,3,null,6,8,10,null,13,15,null,18,20,22,null];
+    const total = 14;
+    let counter = 0, posX = 0;
+    const largura = 100/total;
+    const teclado = document.createElement('div');
+    teclado.className = 'teclado-container';
+    for (let i=0; i<total; i++) {
+        const branca = document.createElement('div');
+        branca.className = 'tecla-branca';
+        if (notasAtivas.includes(counter)) branca.innerHTML = '<div class="marca-tecla"></div>';
+        const lb = document.createElement('div'); lb.className = 'nota-tecla-label'; lb.textContent = nomesTeclasBrancas[i]||''; branca.appendChild(lb);
+        teclado.appendChild(branca);
+        if (offsetPretas[i] !== null && offsetPretas[i] !== undefined) {
+            const preta = document.createElement('div');
+            preta.className = 'tecla-preta';
+            preta.style.left = `calc(${posX+largura}% - 8px)`;
+            if (notasAtivas.includes(offsetPretas[i])) preta.innerHTML = '<div class="marca-tecla"></div>';
+            const lp = document.createElement('div'); lp.className = 'nota-tecla-label'; lp.textContent = nomesTeclasPretasIdx[offsetPretas[i]]||''; preta.appendChild(lp);
+            teclado.appendChild(preta);
+            counter += 2;
+        } else { counter += 1; }
+        posX += largura;
+    }
+    targetArea.appendChild(teclado);
 }
 
 // ==========================================
@@ -1408,41 +1478,6 @@ function linhaEhAcordes(linha) {
     return acordesValidos.length / tokens.length >= 0.6;
 }
 
-function renderizarCifra() {
-    const texto = document.getElementById('inputCifra').value;
-    const linhas = texto.split('\n');
-    const container = document.getElementById('cifraRenderizada');
-    container.style.display = 'block';
-    container.innerHTML = '';
-
-    linhas.forEach(linha => {
-        const span = document.createElement('span');
-
-        if (linha.trim() === '') {
-            span.className = 'cifra-linha-vazia';
-        } else if (linhaEhAcordes(linha)) {
-            span.className = 'cifra-linha-acordes';
-            // Cada token que for acorde vira clicável
-            const tokens = linha.split(/(\s+)/);
-            tokens.forEach(token => {
-                if (/^[A-G][#b]?(m|dim|aug|7M|7|m7|m7b5|maj7|sus2|sus4|add9)?$/.test(token.trim()) && token.trim() !== '') {
-                    const a = document.createElement('span');
-                    a.className = 'cifra-acorde-inline';
-                    a.innerText = token;
-                    a.onclick = (e) => mostrarDiagramaPopup(token.trim(), e);
-                    span.appendChild(a);
-                } else {
-                    span.appendChild(document.createTextNode(token));
-                }
-            });
-        } else {
-            span.className = 'cifra-linha-letra';
-            span.innerText = linha;
-        }
-
-        container.appendChild(span);
-    });
-}
 
 // ==========================================
 // POPUP FLUTUANTE DE DIAGRAMA
@@ -1456,6 +1491,10 @@ function mostrarDiagramaPopup(nomeAcorde, event) {
         popup.innerHTML = `
             <button class="cifra-popup-fechar" onclick="fecharPopup()">✕</button>
             <div class="cifra-popup-nome" id="popup-nome"></div>
+            <div class="popup-tabs">
+                <button class="popup-tab-btn ativo" id="popup-tab-violao" onclick="popupMudarTab('violao')">🎸 Violão</button>
+                <button class="popup-tab-btn" id="popup-tab-teclado" onclick="popupMudarTab('teclado')">🎹 Teclado</button>
+            </div>
             <div id="popup-svg"></div>
         `;
         document.body.appendChild(popup);
@@ -1468,9 +1507,11 @@ function mostrarDiagramaPopup(nomeAcorde, event) {
     }
 
     document.getElementById('popup-nome').innerText = nomeAcorde;
-    const svgArea = document.getElementById('popup-svg');
-    svgArea.innerHTML = '';
-    svgArea.appendChild(criarSVGAcorde(nomeAcorde, 1));
+    popupNomeAtual = nomeAcorde;
+    popupTabAtual = 'violao';
+    document.getElementById('popup-tab-violao').classList.add('ativo');
+    document.getElementById('popup-tab-teclado').classList.remove('ativo');
+    _renderPopupConteudo();
 
     // Posiciona o popup próximo ao clique
     const x = Math.min(event.clientX, window.innerWidth - 200);
@@ -1485,6 +1526,65 @@ function mostrarDiagramaPopup(nomeAcorde, event) {
 function fecharPopup() {
     const popup = document.getElementById('cifra-popup');
     if (popup) popup.style.display = 'none';
+}
+
+// dup removed: let popupNomeAtual = '';
+// dup removed: let popupTabAtual = 'violao';
+
+function popupMudarTab(tab) {
+    popupTabAtual = tab;
+    document.getElementById('popup-tab-violao').classList.toggle('ativo', tab === 'violao');
+    document.getElementById('popup-tab-teclado').classList.toggle('ativo', tab === 'teclado');
+    _renderPopupConteudo();
+}
+
+function _renderPopupConteudo() {
+    const svgArea = document.getElementById('popup-svg');
+    if (!svgArea) return;
+    svgArea.innerHTML = '';
+    if (popupTabAtual === 'violao') {
+        svgArea.appendChild(criarSVGAcorde(popupNomeAtual, 1));
+    } else {
+        // Render mini teclado no popup
+        const tmp = document.createElement('div');
+        tmp.id = 'chord-visual-area';
+        tmp.style.display = 'none';
+        document.body.appendChild(tmp);
+        desenharTecladoEm(popupNomeAtual, svgArea);
+        tmp.remove();
+    }
+}
+
+function desenharTecladoEm(nomeAcorde, targetArea) {
+    const piano = getPiano(nomeAcorde);
+    if (!piano) { targetArea.innerHTML = '<p class="diagrama-indisponivel">Sem dados de teclado.</p>'; return; }
+    const notasAtivas = piano;
+    const nomesTeclasBrancas = ["C","D","E","F","G","A","B","C","D","E","F","G","A","B"];
+    const nomesTeclasPretasIdx = {1:"C#",3:"D#",6:"F#",8:"G#",10:"A#",13:"C#",15:"D#",18:"F#",20:"G#",22:"A#"};
+    const offsetPretas = [1,3,null,6,8,10,null,13,15,null,18,20,22,null];
+    const total = 14;
+    let counter = 0, posX = 0;
+    const largura = 100/total;
+    const teclado = document.createElement('div');
+    teclado.className = 'teclado-container';
+    for (let i=0; i<total; i++) {
+        const branca = document.createElement('div');
+        branca.className = 'tecla-branca';
+        if (notasAtivas.includes(counter)) branca.innerHTML = '<div class="marca-tecla"></div>';
+        const lb = document.createElement('div'); lb.className = 'nota-tecla-label'; lb.textContent = nomesTeclasBrancas[i]||''; branca.appendChild(lb);
+        teclado.appendChild(branca);
+        if (offsetPretas[i] !== null && offsetPretas[i] !== undefined) {
+            const preta = document.createElement('div');
+            preta.className = 'tecla-preta';
+            preta.style.left = `calc(${posX+largura}% - 8px)`;
+            if (notasAtivas.includes(offsetPretas[i])) preta.innerHTML = '<div class="marca-tecla"></div>';
+            const lp = document.createElement('div'); lp.className = 'nota-tecla-label'; lp.textContent = nomesTeclasPretasIdx[offsetPretas[i]]||''; preta.appendChild(lp);
+            teclado.appendChild(preta);
+            counter += 2;
+        } else { counter += 1; }
+        posX += largura;
+    }
+    targetArea.appendChild(teclado);
 }
 
 // ==========================================
@@ -1630,3 +1730,129 @@ function selecionarTomCirculo(idx, tipo) {
 
 // Inicializa o círculo quando a página carrega
 window.addEventListener('DOMContentLoaded', desenharCirculoDeQuintas);
+
+// ==========================================
+// MODO CLARO / ESCURO
+// ==========================================
+function alternarTema() {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    document.getElementById('btnTema').textContent = isDark ? '🌑' : '🌙';
+    localStorage.setItem('tema', isDark ? 'light' : 'dark');
+}
+
+// Aplica tema salvo ao carregar
+(function() {
+    const temaSalvo = localStorage.getItem('tema');
+    if (temaSalvo) {
+        document.documentElement.setAttribute('data-theme', temaSalvo);
+        const btn = document.getElementById('btnTema');
+        if (btn) btn.textContent = temaSalvo === 'light' ? '🌑' : '🌙';
+    }
+})();
+
+// ==========================================
+// COMPARTILHAR RESULTADO
+// ==========================================
+let ultimoResultado = null;
+
+function compartilharResultado() {
+    if (!ultimoResultado) return;
+    const { labelTom, campo, pentaNotas } = ultimoResultado;
+    const texto = `🎵 Tom: ${labelTom}\n🛤️ Campo Harmônico: ${campo.join(' - ')}\n🎸 Pentatônica: ${pentaNotas.join(', ')}\n\n🎸 App de Acordes`;
+
+    const overlay = document.getElementById('share-overlay');
+    const conteudo = document.getElementById('share-conteudo');
+    conteudo.innerHTML = `
+        <div class="share-texto">${texto}</div>
+        <div class="share-opcoes">
+            <button class="btn-copy" onclick="copiarTextoShare()">📋 Copiar texto</button>
+            <button class="btn-share" onclick="compartilharWhatsApp()">💬 Compartilhar no WhatsApp</button>
+        </div>
+    `;
+    overlay.classList.add('aberto');
+    window._shareTexto = texto;
+}
+
+function fecharShare() {
+    document.getElementById('share-overlay').classList.remove('aberto');
+}
+
+function copiarTextoShare() {
+    navigator.clipboard.writeText(window._shareTexto || '').then(() => {
+        const btn = document.querySelector('.btn-copy');
+        btn.textContent = '✅ Copiado!';
+        setTimeout(() => btn.textContent = '📋 Copiar texto', 2000);
+    });
+}
+
+function compartilharWhatsApp() {
+    const url = `https://wa.me/?text=${encodeURIComponent(window._shareTexto || '')}`;
+    window.open(url, '_blank');
+}
+
+// ==========================================
+// ONBOARDING / TOOLTIPS
+// ==========================================
+const glossario = {
+    'campo-harmonico': {
+        titulo: '🛤️ Campo Harmônico',
+        texto: 'O campo harmônico é o conjunto de 7 acordes que "pertencem" a um determinado tom. São os acordes que soam bem juntos naturalmente.\n\nExemplo: no tom de C Maior, os acordes do campo são C, Dm, Em, F, G, Am e Bdim. Qualquer música que use só esses acordes provavelmente está em C Maior.'
+    },
+    'pentatonica': {
+        titulo: '🎸 Escala Pentatônica',
+        texto: 'A escala pentatônica tem apenas 5 notas (penta = cinco). É a escala mais usada em solos de guitarra e improvisação.\n\nA pentatônica maior soa alegre e brilhante. A pentatônica menor soa mais blues e emotiva. Toda pentatônica menor é relativa de uma maior (e vice-versa).'
+    },
+    'afinador': {
+        titulo: '🎤 Afinador',
+        texto: 'O afinador usa o microfone do seu dispositivo para detectar a frequência do som e identificar qual nota musical está sendo tocada.\n\nComo usar: clique em "Ligar Microfone", permita o acesso e toque uma corda ou cante uma nota. O app mostrará a nota detectada e sua frequência em Hz.\n\nDica: toque a nota limpa e sustentada para melhor precisão.'
+    },
+    'transpositor': {
+        titulo: '🔀 Transpositor',
+        texto: 'Transpor significa mover uma música para outro tom. O transpositor faz isso automaticamente para cada acorde.\n\nExemplo: se uma música está em Am (Lá menor) mas está grave demais para sua voz, você pode transpor +2 semitons para Bm (Si menor) e ficará mais agudo.\n\n1 semitom = 1 casa no violão. 12 semitons = 1 oitava.'
+    },
+    'circulo': {
+        titulo: '⭕ Círculo de Quintas',
+        texto: 'O círculo de quintas organiza os 12 tons musicais em um círculo. Tons vizinhos no círculo são harmonicamente próximos — compartilham muitos acordes em comum.\n\nAnel externo = tons maiores. Anel interno = tons menores relativos.\n\nUsabilidade: tons próximos são ótimos para modulação (mudança de tom) durante uma música.'
+    },
+    'cifra': {
+        titulo: '📄 Cifra Completa',
+        texto: 'Cole aqui uma cifra no formato padrão brasileiro: linha de acordes seguida pela linha da letra.\n\nO app detecta automaticamente quais linhas são acordes e quais são letra. Os acordes ficam destacados em amarelo e são clicáveis — ao clicar, aparece o diagrama de como tocá-los.\n\nExemplo de formato:\nAm    Dm    G\nHoje eu quero te dizer'
+    },
+    'gps': {
+        titulo: '🧭 GPS Harmônico',
+        texto: 'O GPS Harmônico sugere caminhos para ir de um acorde a outro de forma musical.\n\nCada "rota" é uma técnica diferente:\n• Dominante Secundário: acorde V7 do destino\n• Substituto Trítono: acorde que substitui o V7 por simetria\n• Preparação II-V: progressão clássica do jazz\n• Diminuto de Passagem: acorde diminuto que cria tensão\n\nClique em qualquer acorde da rota para ver o diagrama.'
+    }
+};
+
+function mostrarTooltip(chave) {
+    const info = glossario[chave];
+    if (!info) return;
+    const conteudo = document.getElementById('tooltip-conteudo');
+    conteudo.innerHTML = `
+        <div class="tooltip-secao">
+            <h4 style="font-size:18px;margin-bottom:10px">${info.titulo}</h4>
+            <p style="white-space:pre-line">${info.texto}</p>
+        </div>
+    `;
+    document.getElementById('tooltip-overlay').classList.add('aberto');
+}
+
+function abrirAjuda() {
+    const conteudo = document.getElementById('tooltip-conteudo');
+    conteudo.innerHTML = `
+        <h3 style="color:var(--accent);margin-top:0">❓ Guia do App</h3>
+        ${Object.values(glossario).map(g => `
+            <div class="tooltip-secao">
+                <h4>${g.titulo}</h4>
+                <p style="white-space:pre-line">${g.texto}</p>
+            </div>
+        `).join('<hr style="border-color:var(--border);margin:14px 0">')}
+    `;
+    document.getElementById('tooltip-overlay').classList.add('aberto');
+}
+
+function fecharTooltip() {
+    document.getElementById('tooltip-overlay').classList.remove('aberto');
+}

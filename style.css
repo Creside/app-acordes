@@ -1,27 +1,121 @@
+/* ==========================================
+   CSS VARIABLES — TEMA ESCURO (padrão)
+   ========================================== */
+:root {
+    --bg-body:       #1e1e1e;
+    --bg-container:  #2d2d2d;
+    --bg-modulo:     #1c1c21;
+    --bg-input:      #444;
+    --bg-input-dark: #2a2a35;
+    --border:        #333;
+    --border-light:  #555;
+    --text:          #ffffff;
+    --text-muted:    #aaa;
+    --text-dim:      #888;
+    --accent:        #f1c40f;
+    --accent-dark:   #d4a017;
+    --btn-primary:   #007bff;
+    --btn-primary-h: #0056b3;
+    --resultado-bg:  #3d3d3d;
+    --cifra-bg:      #111;
+    --fret-bg:       #4a2f1d;
+    --chord-card-bg: #1a1a1a;
+    --shadow:        rgba(0,0,0,0.5);
+}
+
+[data-theme="light"] {
+    --bg-body:       #f0f0f0;
+    --bg-container:  #ffffff;
+    --bg-modulo:     #f8f8f8;
+    --bg-input:      #e8e8e8;
+    --bg-input-dark: #efefef;
+    --border:        #ddd;
+    --border-light:  #ccc;
+    --text:          #1a1a1a;
+    --text-muted:    #555;
+    --text-dim:      #777;
+    --accent:        #e6a800;
+    --accent-dark:   #b88200;
+    --btn-primary:   #0066cc;
+    --btn-primary-h: #004499;
+    --resultado-bg:  #e8e8e8;
+    --cifra-bg:      #f4f4f4;
+    --fret-bg:       #8B5E3C;
+    --chord-card-bg: #f0f0f0;
+    --shadow:        rgba(0,0,0,0.15);
+}
+
+/* ==========================================
+   BASE
+   ========================================== */
+* { box-sizing: border-box; }
+
 body {
     font-family: Arial, sans-serif;
-    background-color: #1e1e1e;
-    color: #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: var(--bg-body);
+    color: var(--text);
     min-height: 100vh;
     margin: 0;
-    padding: 20px;
-    box-sizing: border-box;
+    padding: 0;
+    transition: background 0.3s, color 0.3s;
 }
 
+/* ==========================================
+   HEADER
+   ========================================== */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-container);
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px var(--shadow);
+}
+.app-titulo {
+    font-size: 20px;
+    margin: 0;
+    color: var(--text);
+}
+.header-acoes {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+.btn-icone {
+    background: var(--bg-input-dark);
+    border: 1px solid var(--border-light);
+    color: var(--text);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+    padding: 0;
+}
+.btn-icone:hover {
+    background: var(--accent);
+    color: #1a1a1a;
+    border-color: var(--accent);
+}
+
+/* ==========================================
+   CONTAINER E GRID
+   ========================================== */
 .container {
-    background-color: #2d2d2d;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    text-align: center;
+    padding: 20px;
     width: 100%;
     max-width: 1200px;
+    margin: 0 auto;
 }
 
-/* --- NOVO: Layout em Grid para telas maiores (Desktop) --- */
 .layout-grid {
     display: flex;
     flex-direction: column;
@@ -31,657 +125,161 @@ body {
 @media (min-width: 768px) {
     .layout-grid {
         flex-direction: row;
-        align-items: start;
-        text-align: left;
+        align-items: flex-start;
     }
-    .painel-esquerdo, .painel-direito {
+    .painel-esquerdo {
+        width: 420px;
+        flex-shrink: 0;
+    }
+    .painel-direito {
         flex: 1;
         min-width: 0;
     }
-    .painel-esquerdo {
-        max-width: 480px;
-    }
 }
-/* -------------------------------------------------------- */
 
-h1 { font-size: 24px; margin-bottom: 10px; }
+/* ==========================================
+   MÓDULOS GENÉRICOS
+   ========================================== */
+.modulo-container {
+    background: var(--bg-modulo);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 15px var(--shadow);
+}
+.modulo-titulo-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+.modulo-titulo {
+    margin: 0;
+    font-size: 16px;
+    color: var(--text);
+}
+.btn-tooltip {
+    background: var(--bg-input-dark);
+    border: 1px solid var(--border-light);
+    color: var(--text-muted);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    font-size: 11px;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 0;
+    width: auto;
+    min-width: 22px;
+    transition: 0.2s;
+}
+.btn-tooltip:hover {
+    background: var(--accent);
+    color: #1a1a1a;
+    border-color: var(--accent);
+}
 
 input {
-    width: 100%; /* Mudado de 90% para 100% para alinhar com o botão azul */
+    width: 100%;
     padding: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     border-radius: 5px;
-    border: 1px solid #555;
-    background-color: #444;
-    color: white;
-    font-size: 16px;
-    box-sizing: border-box; /* Garante que o input respeite os limites da coluna */
+    border: 1px solid var(--border-light);
+    background-color: var(--bg-input);
+    color: var(--text);
+    font-size: 15px;
 }
+input:focus { outline: none; border-color: var(--accent); }
 
 button {
-    background-color: #007bff;
+    background-color: var(--btn-primary);
     color: white;
     border: none;
-    padding: 12px 20px;
+    padding: 11px 18px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 15px;
     width: 100%;
     font-weight: bold;
-    transition: 0.3s;
+    transition: 0.2s;
 }
+button:hover { background-color: var(--btn-primary-h); }
 
-button:hover { background-color: #0056b3; }
+h1 { font-size: 24px; margin: 0 0 10px 0; }
 
+/* ==========================================
+   RESULTADO DO IDENTIFICADOR
+   ========================================== */
 .resultado-box {
     padding: 15px;
-    background-color: #3d3d3d;
-    border-radius: 5px;
+    background-color: var(--resultado-bg);
+    border-radius: 8px;
     font-weight: bold;
     min-height: 20px;
     text-align: center;
+    margin-bottom: 16px;
 }
-
-.fretboard-wrapper {
-    width: 100%;
-    overflow-x: auto;
-    padding-bottom: 10px;
-}
-
-.fretboard {
-    display: flex;
-    flex-direction: column;
-    /* Removemos as bordas gerais e o fundo daqui e movemos para as trastes */
-    min-width: 550px; 
-}
-
-.corda {
-    display: flex;
-    height: 30px; /* Um pouco mais de espaço vertical para as notas */
-    align-items: center;
-    position: relative;
-    border-right: 2px solid #222; /* Final do braço */
-}
-
-/* A corda de metal visual */
-.corda::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    background-color: #bdc3c7;
-    z-index: 1;
-    box-shadow: 0px 1px 2px rgba(0,0,0,0.5);
-}
-
-.traste {
-    flex: 1;
-    border-right: 2px solid #a0a0a0;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    background-color: #4a2f1d; /* Fundo de madeira aplicado individualmente */
-}
-
-/* --- NOVO: Estilos da Corda Solta e Pestana --- */
-.corda-solta {
-    width: 35px; /* Largura fixa */
-    flex: none; /* Impede de esticar */
-    border-right: none; /* Tira o ferro do traste */
-    background-color: transparent; /* Remove a madeira, mostrando o fundo */
-}
-
-.pestana {
-    border-left: 6px solid #d4c4b7; /* O 'Osso/Nut' grosso separando a corda solta do braço */
-}
-
-/* Bolinha visual no fundo do braço (casas 3, 5, 7, 9...) */
-.marcador-fundo {
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    background-color: rgba(255, 255, 255, 0.25);
-    border-radius: 50%;
-    z-index: 0; 
-}
-/* ---------------------------------------------- */
-
-.bolinha-nota {
-    width: 20px;
-    height: 20px;
-    background-color: #3498db;
-    border-radius: 50%;
-    z-index: 2;
-    box-shadow: 0px 0px 5px rgba(0,0,0,0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-size: 10px;
-    font-weight: bold;
-}
-
-.nota-solta-destaque {
-    background-color: #e67e22; /* Notas soltas ficam laranja para bater o olho e saber */
-    border-radius: 4px; /* Formato levemente quadrado */
-}
-
-/* --- NOVO: Régua de Casas --- */
-.regua-casas {
-    display: flex;
-    height: 25px;
-    align-items: center;
-    margin-top: 5px;
-}
-
-.numero-casa {
-    flex: 1;
-    text-align: center;
-    color: #888;
-    font-size: 12px;
-    font-weight: bold;
-}
-
-.corda-solta-num {
-    width: 35px; /* Mesmo tamanho da corda solta para empurrar os números pro lugar certo */
-    flex: none;
-}
-
-/* --- ESTILO DAS VARIAÇÕES (BOTÕES QUADRADOS IGUAL AO VÍDEO) --- */
-.grade-botoes {
-    display: flex; /* Mudando para Flexbox para alinhar lado a lado */
-    flex-wrap: wrap; /* Permite quebrar linha se faltar espaço */
-    gap: 8px; /* Espaço entre os botões */
-    margin-top: 10px;
-    justify-content: center; /* Centraliza os botões */
-}
-
-/* Forçamos a especificidade para sobrescrever a regra de 'button' genérica */
-button.botao-variacao {
-    width: auto; /* Tira o width 100% da regra antiga */
-    background-color: #333; /* Fundo escuro */
-    border: 1px solid #555;
-    color: #fff;
-    padding: 10px 15px; /* Mais espaçamento interno */
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    text-align: center;
-    transition: all 0.2s ease;
-    margin: 0; /* Remove margens indesejadas */
-}
-
-button.botao-variacao:hover {
-    background-color: #444;
-    border-color: #f1c40f; 
-}
-
-button.botao-variacao.ativo {
-    background-color: #f1c40f; /* O Dourado/Laranja do vídeo */
-    color: #1a1a1a;
-    border-color: #f1c40f;
-}
-
-/* Linhas do braço e cordas no diagrama */
-.chord-fret, .chord-string {
-    stroke: #666;
-    stroke-width: 1;
-}
-
-/* A pestana (nut) no topo do diagrama */
-.chord-nut {
-    stroke: #fff;
-    stroke-width: 4;
-}
-
-/* As bolinhas dos dedos no diagrama */
-.chord-dot {
-    fill: #f1c40f; /* Amarelo ouro do vídeo */
-    stroke: #d4a017;
-    stroke-width: 1;
-}
-
-/* Número do dedo dentro da bolinha */
-.chord-dot-text {
-    fill: #000;
-    font-size: 11px;
-    font-weight: bold;
-    text-anchor: middle;
-    dominant-baseline: central;
-}
-
-/* Marcações X e O no topo */
-.chord-top-text {
-    fill: #888;
-    font-size: 12px;
-    font-weight: bold;
-    text-anchor: middle;
-}
-
-/* --- ESTILO DO CARD DO DIAGRAMA (O FUNDO ESCURO DO SVG) --- */
-.chord-card {
-    background-color: #1a1a1a;
-    border: 2px solid #444;
-    border-radius: 12px;
-    padding: 20px;
-    display: inline-block;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-    margin-bottom: 20px;
-    min-width: 180px; /* Garante um tamanho mínimo pro card não ficar espremido */
-}
-
-/* --- TABS (VIOLÃO / TECLADO) --- */
-.diagrama-tabs {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-/* Forçamos a especificidade para sobrescrever o botão azul padrão */
-button.tab-btn {
-    width: auto;
-    background-color: #333;
-    border: 1px solid #555;
-    color: #888;
-    padding: 8px 15px;
-    border-radius: 20px; /* Bordas bem arredondadas, estilo pílula */
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    transition: 0.2s;
-    margin: 0;
-}
-
-button.tab-btn:hover {
-    background-color: #444;
-    color: #fff;
-}
-
-button.tab-btn.ativo {
-    background-color: #444;
-    color: #fff;
-    border-color: #f1c40f; /* Borda dourada para mostrar qual está selecionado */
-}
-
-/* --- ESTILOS DO TECLADO (PIANO) --- */
-.teclado-container {
-    display: flex;
-    position: relative;
-    height: 120px;
-    background: #111;
-    border: 2px solid #333;
-    border-radius: 4px;
-    padding: 2px;
-    margin: 0 auto; /* Centraliza o teclado dentro do card */
-    width: fit-content;
-}
-
-.tecla-branca {
-    width: 26px;
-    height: 100%;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 0 0 3px 3px;
-    margin: 0 1px;
-    position: relative;
-    z-index: 1;
-}
-
-.tecla-preta {
-    width: 16px;
-    height: 60%;
-    background-color: #222;
-    border-radius: 0 0 3px 3px;
-    position: absolute;
-    z-index: 2;
-    box-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* Sombras para dar volume 3D */
-}
-
-/* Bolinha amarela na tecla quando ela faz parte do acorde */
-.marca-tecla {
-    width: 14px;
-    height: 14px;
-    background-color: #f1c40f;
-    border-radius: 50%;
-    position: absolute;
-    bottom: 10px; /* Nas teclas brancas fica embaixo */
-    left: 50%;
-    transform: translateX(-50%);
-    box-shadow: 0px 0px 5px rgba(0,0,0,0.8);
-    z-index: 3;
-}
-
-.tecla-preta .marca-tecla {
-    bottom: 8px; /* Nas pretas a bolinha sobe um pouco */
-}
-
-/* --- ESTILOS DO GPS HARMÓNICO E MINI-DIAGRAMAS --- */
-.rota-card {
-    background-color: #1e1e24; /* Fundo ligeiramente azulado/escuro como no vídeo */
-    border: 1px solid #3a3a45;
-    border-radius: 10px;
-    padding: 15px;
-    text-align: left;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
-}
-
-.rota-titulo {
-    color: #4CAF50;
-    font-size: 15px;
-    margin: 0 0 12px 0;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.rota-caminho {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    
-    /* AS DUAS LINHAS MÁGICAS: */
-    flex-wrap: wrap; /* Faz os acordes descerem para a próxima linha se não couberem */
-    overflow-x: hidden; /* Remove a barra de rolagem horizontal */
-    
-    padding-bottom: 10px;
-    justify-content: flex-start; /* Mantém alinhado à esquerda */
-}
-
-/* O cartão em miniatura para cada acorde da rota */
-.mini-chord-box {
-    background-color: #2a2a35;
-    border: 2px solid #444;
-    border-radius: 8px;
-    padding: 10px;
-    text-align: center;
-    min-width: 75px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.mini-chord-box:hover {
-    border-color: #f1c40f;
-    transform: translateY(-3px); /* Efeito de flutuar ao passar o rato */
-    box-shadow: 0 5px 15px rgba(241, 196, 15, 0.2);
-}
-
-.mini-chord-name {
-    color: #f1c40f;
-    font-weight: bold;
-    font-size: 16px;
-    margin-bottom: 8px;
-}
-
-.rota-seta {
-    color: #666;
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.mini-chord-box {
-    background-color: #2a2a35;
-    border: 2px solid #444;
-    border-radius: 8px;
-    padding: 10px;
-    
-    /* --- AS TRÊS LINHAS NOVAS PARA ALINHAMENTO --- */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* ------------------------------------------- */
-    
-    min-width: 75px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-/* ==========================================
-   MELHORIA 4: Estilos migrados do HTML inline
-   ========================================== */
-
-/* Afinador */
-.afinador-container {
-    margin-top: 20px;
-    padding: 15px;
-    background: #3d3d3d;
-    border-radius: 5px;
-    border: 1px solid #555;
-}
-.afinador-titulo {
-    margin-top: 0;
-    margin-bottom: 5px;
-    color: #fff;
-    font-size: 16px;
-}
-.afinador-subtitulo {
-    font-size: 12px;
-    color: #ccc;
-    margin-top: 0;
-}
-#btnAfinador {
-    background-color: #e67e22;
-    margin-bottom: 10px;
-    font-size: 14px;
-    padding: 8px;
-}
-#notaDetectada {
-    font-size: 32px;
-    font-weight: bold;
-    color: #f1c40f;
-}
-#frequenciaDetectada {
-    font-size: 14px;
-    color: #aaa;
-}
-
-/* Caixa de resultado do tom */
-.resultado-tom {
-    color: #4CAF50;
-    font-size: 18px;
-    margin-bottom: 15px;
-}
+.resultado-tom { color: #4CAF50; font-size: 18px; margin-bottom: 12px; }
 .resultado-detalhes {
     font-size: 14px;
     text-align: left;
-    background: #444;
+    background: var(--bg-input-dark);
     padding: 12px;
     border-radius: 5px;
-    color: #ddd;
+    color: var(--text);
+    font-weight: normal;
 }
 .resultado-detalhes p { margin-top: 0; }
-.resultado-hr {
-    border: 0;
-    border-top: 1px solid #555;
-    margin: 10px 0;
-}
-
-/* GPS Harmônico */
-.gps-container {
-    margin-top: 48px;
-    padding: 20px;
-    background: #1c1c21;
-    border-radius: 10px;
-    border: 1px solid #333;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-}
-.gps-titulo {
-    margin-top: 0;
-    margin-bottom: 5px;
-    color: #f1c40f;
-    font-size: 22px;
-}
-.gps-subtitulo {
-    font-size: 13px;
-    color: #aaa;
-    margin-top: 0;
-    margin-bottom: 15px;
-}
-.gps-inputs {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-bottom: 15px;
-}
-.gps-input {
-    width: 45%;
-    margin: 0;
-    text-align: center;
-    background: #2a2a35;
-    border-color: #444;
-}
-.gps-seta {
-    color: #f1c40f;
-    align-self: center;
-    font-weight: bold;
-    font-size: 18px;
-}
-#btnTracaRotas {
-    background-color: #f1c40f;
-    color: #1a1a1a;
-    padding: 12px;
-    font-size: 16px;
-}
-#btnTracaRotas:hover {
-    background-color: #d4a017;
-}
-.erro-rota {
-    color: #ff6b6b;
-    font-size: 14px;
-}
-
-/* Variações */
-.variacoes-titulo {
-    font-size: 16px;
-    color: #fff;
-    margin-bottom: 10px;
-}
-
-/* Diagrama */
-.diagrama-titulo {
-    color: #f1c40f;
-    font-size: 20px;
-    margin-bottom: 10px;
-}
-.diagrama-indisponivel {
-    color: #aaa;
-    padding: 20px;
-    font-size: 14px;
-}
-
-/* Braço do instrumento */
-.braco-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-.braco-titulo {
-    font-size: 16px;
-    margin: 0;
-    color: #fff;
-}
-#seletorInstrumento {
-    padding: 5px;
-    border-radius: 5px;
-    background: #444;
-    color: white;
-    border: 1px solid #555;
-    cursor: pointer;
-    width: auto;
-    margin: 0;
-    font-size: 14px;
-}
+.resultado-hr { border: 0; border-top: 1px solid var(--border-light); margin: 8px 0; }
 
 /* ==========================================
-   MÓDULO: TRANSPOSITOR DE TOM
+   AFINADOR
    ========================================== */
-.transpositor-container {
-    margin-top: 20px;
-    padding: 20px;
-    background: #1c1c21;
-    border-radius: 10px;
-    border: 1px solid #333;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-}
-.transpositor-titulo {
-    margin-top: 0;
-    margin-bottom: 5px;
-    color: #3498db;
-    font-size: 22px;
-}
-.transpositor-subtitulo {
-    font-size: 13px;
-    color: #aaa;
-    margin-top: 0;
-    margin-bottom: 15px;
-}
-.transpositor-inputs {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    margin-bottom: 15px;
-    flex-wrap: wrap;
-}
-.transpositor-inputs input {
-    flex: 1;
-    min-width: 150px;
-    margin: 0;
-}
-.transpositor-label {
-    color: #aaa;
-    font-size: 13px;
-    white-space: nowrap;
-}
+.afinador-titulo { margin: 0; font-size: 16px; color: var(--text); }
+.afinador-subtitulo { font-size: 12px; color: var(--text-muted); margin: 4px 0 10px; }
+#btnAfinador { background-color: #e67e22; margin-bottom: 10px; font-size: 14px; padding: 8px; }
+#btnAfinador:hover { background-color: #ca6f1e; }
+#notaDetectada { font-size: 32px; font-weight: bold; color: var(--accent); }
+#frequenciaDetectada { font-size: 14px; color: var(--text-muted); }
+
+/* ==========================================
+   TRANSPOSITOR
+   ========================================== */
+.transpositor-titulo { margin: 0; font-size: 16px; color: #3498db; }
+.transpositor-subtitulo { font-size: 13px; color: var(--text-muted); margin: 4px 0 10px; }
 .transpor-controles {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
+    gap: 8px;
+    margin-bottom: 10px;
     flex-wrap: wrap;
 }
 .btn-semitons {
-    background: #2a2a35;
-    border: 1px solid #555;
-    color: #fff;
+    background: var(--bg-input-dark);
+    border: 1px solid var(--border-light);
+    color: var(--text);
     padding: 8px 14px;
     border-radius: 6px;
     cursor: pointer;
     font-size: 18px;
     font-weight: bold;
     width: auto;
-    transition: 0.2s;
     margin: 0;
 }
 .btn-semitons:hover { background: #3a3a50; border-color: #3498db; }
-.semitons-display {
-    font-size: 16px;
-    font-weight: bold;
-    color: #3498db;
-    min-width: 80px;
-    text-align: center;
-}
-#btnTranspor {
-    background-color: #3498db;
-    color: #fff;
-    padding: 10px 20px;
-    font-size: 15px;
-    width: auto;
-    margin: 0;
-}
-#btnTranspor:hover { background-color: #2176ae; }
+.semitons-display { font-size: 15px; font-weight: bold; color: #3498db; min-width: 90px; text-align: center; }
+#btnTranspor { background: #3498db; width: auto; margin: 0; padding: 8px 16px; }
+#btnTranspor:hover { background: #2176ae; }
 .resultado-transposicao {
-    margin-top: 15px;
-    padding: 15px;
-    background: #2a2a35;
+    margin-top: 10px;
+    padding: 12px;
+    background: var(--bg-input-dark);
     border-radius: 8px;
-    border: 1px solid #3498db;
+    border: 1px solid #3498db55;
     font-size: 16px;
-    color: #fff;
     letter-spacing: 2px;
-    word-spacing: 8px;
+    word-spacing: 6px;
     line-height: 2;
     display: none;
 }
@@ -697,93 +295,79 @@ button.tab-btn.ativo {
     cursor: pointer;
     transition: 0.15s;
 }
-.acorde-transposto:hover {
-    background: #3498db44;
-}
+.acorde-transposto:hover { background: #3498db44; }
 
 /* ==========================================
-   MÓDULO: CIFRA COMPLETA
+   CÍRCULO DE QUINTAS
    ========================================== */
-.cifra-container {
-    margin-top: 20px;
-    padding: 20px;
-    background: #1c1c21;
-    border-radius: 10px;
-    border: 1px solid #333;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+.circulo-titulo { margin: 0; font-size: 16px; color: #9b59b6; }
+.circulo-subtitulo { font-size: 13px; color: var(--text-muted); margin: 4px 0 10px; }
+.circulo-svg-wrapper { display: flex; justify-content: center; overflow-x: auto; }
+.circulo-info {
+    margin-top: 12px;
+    padding: 12px;
+    background: var(--bg-input-dark);
+    border-radius: 8px;
+    border: 1px solid #9b59b655;
+    font-size: 14px;
+    color: var(--text);
+    display: none;
+    line-height: 1.8;
 }
-.cifra-titulo {
-    margin-top: 0;
-    margin-bottom: 5px;
-    color: #e67e22;
-    font-size: 22px;
-}
-.cifra-subtitulo {
-    font-size: 13px;
-    color: #aaa;
-    margin-top: 0;
-    margin-bottom: 15px;
-}
+.circulo-info-tom { color: #9b59b6; font-size: 17px; font-weight: bold; margin-bottom: 6px; }
+
+/* ==========================================
+   CIFRA COMPLETA
+   ========================================== */
+.cifra-titulo { margin: 0; font-size: 16px; color: #e67e22; }
+.cifra-subtitulo { font-size: 13px; color: var(--text-muted); margin: 4px 0 10px; }
 .cifra-textarea {
     width: 100%;
-    min-height: 140px;
-    max-height: 220px;
-    background: #2a2a35;
-    border: 1px solid #444;
+    min-height: 130px;
+    max-height: 200px;
+    background: var(--bg-input-dark);
+    border: 1px solid var(--border-light);
     border-radius: 8px;
-    color: #fff;
-    font-family: 'Courier New', monospace;
-    font-size: 14px;
-    padding: 12px;
-    box-sizing: border-box;
+    color: var(--text);
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+    padding: 10px;
     resize: vertical;
     margin-bottom: 10px;
     line-height: 1.6;
-    position: relative;
-    z-index: 0;
     display: block;
 }
-.cifra-textarea:focus {
-    outline: none;
-    border-color: #e67e22;
-}
-#btnRenderCifra {
-    background-color: #e67e22;
-    color: #fff;
-    padding: 10px 20px;
-    font-size: 15px;
-    width: auto;
-    margin: 0 0 15px 0;
-}
-#btnRenderCifra:hover { background-color: #ca6f1e; }
+.cifra-textarea:focus { outline: none; border-color: #e67e22; }
+#btnRenderCifra { background: #e67e22; margin-bottom: 12px; }
+#btnRenderCifra:hover { background: #ca6f1e; }
+
+/* FIX DESKTOP: cifra aparece abaixo, nunca escondida */
 .cifra-renderizada {
-    margin-top: 10px;
-    padding: 20px;
-    background: #111;
-    border-radius: 8px;
-    border: 1px solid #333;
-    font-family: 'Courier New', monospace;
-    font-size: 14px;
-    line-height: 2.2;
-    white-space: pre-wrap;
     display: none;
+    margin-top: 0;
+    padding: 16px;
+    background: var(--cifra-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-family: "Courier New", monospace;
+    font-size: 14px;
+    line-height: 2;
     text-align: left;
     width: 100%;
-    box-sizing: border-box;
     overflow-x: auto;
-    position: relative;
-    z-index: 1;
+    clear: both;
 }
 .cifra-linha-acordes {
     display: block;
-    color: #f1c40f;
+    color: var(--accent);
     font-weight: bold;
-    line-height: 1.4;
-    margin-bottom: 2px;
+    line-height: 1.5;
+    margin-bottom: 1px;
+    white-space: pre;
 }
 .cifra-acorde-inline {
     display: inline-block;
-    color: #f1c40f;
+    color: var(--accent);
     font-weight: bold;
     cursor: pointer;
     border-bottom: 1px dashed #f1c40f55;
@@ -791,159 +375,227 @@ button.tab-btn.ativo {
     padding: 0 2px;
 }
 .cifra-acorde-inline:hover {
-    color: #fff;
-    border-bottom-color: #f1c40f;
+    color: var(--text);
     background: #f1c40f22;
     border-radius: 3px;
+    border-bottom-color: var(--accent);
 }
-.cifra-linha-letra {
-    display: block;
-    color: #ddd;
-    line-height: 1.8;
-}
-.cifra-linha-vazia {
-    display: block;
-    height: 10px;
-}
+.cifra-linha-letra { display: block; color: var(--text); line-height: 1.8; white-space: pre; }
+.cifra-linha-vazia { display: block; height: 8px; }
 .cifra-popup {
     position: fixed;
-    z-index: 1000;
-    background: #1a1a1a;
-    border: 2px solid #f1c40f;
+    z-index: 500;
+    background: var(--bg-container);
+    border: 2px solid var(--accent);
     border-radius: 12px;
     padding: 15px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.8);
+    box-shadow: 0 8px 30px var(--shadow);
     display: none;
     text-align: center;
+    min-width: 200px;
+}
+.cifra-popup-nome { color: var(--accent); font-size: 18px; font-weight: bold; margin-bottom: 8px; }
+.cifra-popup-fechar {
+    position: absolute; top: 6px; right: 10px;
+    color: var(--text-dim); cursor: pointer;
+    background: none; border: none; padding: 0; width: auto; font-size: 16px; line-height: 1;
+}
+.cifra-popup-fechar:hover { color: var(--text); background: none; }
+/* Tabs violão/teclado dentro do popup */
+.popup-tabs { display: flex; gap: 6px; justify-content: center; margin-bottom: 10px; }
+button.popup-tab-btn {
+    width: auto; background: var(--bg-input-dark); border: 1px solid var(--border-light);
+    color: var(--text-muted); padding: 4px 12px; border-radius: 20px; font-size: 12px;
+    font-weight: bold; cursor: pointer; margin: 0; transition: 0.2s;
+}
+button.popup-tab-btn.ativo { background: var(--accent); color: #1a1a1a; border-color: var(--accent); }
+
+/* ==========================================
+   GPS HARMÔNICO
+   ========================================== */
+.gps-titulo { margin: 0; font-size: 16px; color: var(--accent); }
+.gps-subtitulo { font-size: 13px; color: var(--text-muted); margin: 4px 0 12px; }
+.gps-inputs { display: flex; gap: 10px; justify-content: center; margin-bottom: 12px; }
+.gps-input { width: 45%; margin: 0; text-align: center; background: var(--bg-input-dark); border-color: var(--border-light); }
+.gps-seta { color: var(--accent); align-self: center; font-weight: bold; font-size: 18px; }
+#btnTracaRotas { background: var(--accent); color: #1a1a1a; font-size: 15px; }
+#btnTracaRotas:hover { background: var(--accent-dark); }
+.erro-rota { color: #ff6b6b; font-size: 14px; }
+
+/* ==========================================
+   VARIAÇÕES E DIAGRAMAS
+   ========================================== */
+.variacoes-titulo { font-size: 15px; color: var(--text); margin-bottom: 10px; }
+.grade-botoes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; justify-content: center; }
+button.botao-variacao {
+    width: auto; background: var(--bg-input-dark); border: 1px solid var(--border-light);
+    color: var(--text); padding: 8px 14px; border-radius: 6px; cursor: pointer;
+    font-size: 14px; font-weight: bold; margin: 0; transition: 0.2s;
+}
+button.botao-variacao:hover { background: #444; border-color: var(--accent); }
+button.botao-variacao.ativo { background: var(--accent); color: #1a1a1a; border-color: var(--accent); }
+
+.diagrama-titulo { color: var(--accent); font-size: 20px; margin-bottom: 10px; }
+.diagrama-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 14px; }
+button.tab-btn {
+    width: auto; background: var(--bg-input-dark); border: 1px solid var(--border-light);
+    color: var(--text-muted); padding: 7px 14px; border-radius: 20px;
+    font-size: 14px; font-weight: bold; cursor: pointer; margin: 0; transition: 0.2s;
+}
+button.tab-btn:hover { background: #444; color: var(--text); }
+button.tab-btn.ativo { background: #444; color: var(--text); border-color: var(--accent); }
+
+.chord-card {
+    background: var(--chord-card-bg);
+    border: 2px solid var(--border-light);
+    border-radius: 12px;
+    padding: 16px;
+    display: inline-block;
+    box-shadow: 0 8px 25px var(--shadow);
+    margin-bottom: 16px;
     min-width: 180px;
 }
-.cifra-popup-nome {
-    color: #f1c40f;
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 8px;
-}
-.cifra-popup-fechar {
-    position: absolute;
-    top: 6px; right: 10px;
-    color: #888;
-    cursor: pointer;
-    font-size: 16px;
-    background: none;
-    border: none;
-    padding: 0;
-    width: auto;
-    line-height: 1;
-}
-.cifra-popup-fechar:hover { color: #fff; background: none; }
 
-/* ==========================================
-   MÓDULO: CÍRCULO DE QUINTAS
-   ========================================== */
-.circulo-container {
-    margin-top: 20px;
-    padding: 20px;
-    background: #1c1c21;
-    border-radius: 10px;
-    border: 1px solid #333;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    text-align: center;
-}
-.circulo-titulo {
-    margin-top: 0;
-    margin-bottom: 5px;
-    color: #9b59b6;
-    font-size: 22px;
-}
-.circulo-subtitulo {
-    font-size: 13px;
-    color: #aaa;
-    margin-top: 0;
-    margin-bottom: 15px;
-}
-.circulo-svg-wrapper {
-    display: flex;
-    justify-content: center;
-    overflow-x: auto;
-}
-.circulo-info {
-    margin-top: 15px;
-    padding: 12px;
-    background: #2a2a35;
-    border-radius: 8px;
-    border: 1px solid #9b59b655;
-    font-size: 14px;
-    color: #ddd;
-    text-align: left;
-    display: none;
-    line-height: 1.8;
-}
-.circulo-info-tom {
-    color: #9b59b6;
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 6px;
-}
-
-/* ==========================================
-   SELETOR DE POSIÇÕES DO ACORDE
-   ========================================== */
-.posicao-tabs {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    margin-bottom: 12px;
-    flex-wrap: wrap;
-}
+.posicao-tabs { display: flex; justify-content: center; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
 button.posicao-btn {
-    width: auto;
-    background: #2a2a35;
-    border: 1px solid #555;
-    color: #aaa;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-    margin: 0;
+    width: auto; background: var(--bg-input-dark); border: 1px solid var(--border-light);
+    color: var(--text-muted); padding: 4px 12px; border-radius: 20px; font-size: 12px;
+    font-weight: bold; cursor: pointer; margin: 0; transition: 0.2s;
 }
-button.posicao-btn:hover {
-    background: #3a3a50;
-    color: #fff;
-}
-button.posicao-btn.ativo {
-    background: #f1c40f;
-    color: #1a1a1a;
-    border-color: #f1c40f;
-}
+button.posicao-btn:hover { background: #3a3a50; color: var(--text); }
+button.posicao-btn.ativo { background: var(--accent); color: #1a1a1a; border-color: var(--accent); }
+.diagrama-indisponivel { color: var(--text-muted); padding: 16px; font-size: 14px; }
 
 /* ==========================================
-   MOBILE: fixes cifra e layout geral
+   BRAÇO DO INSTRUMENTO
+   ========================================== */
+.braco-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.braco-titulo { font-size: 15px; margin: 0; color: var(--text); }
+#seletorInstrumento {
+    padding: 5px 8px; border-radius: 5px; background: var(--bg-input);
+    color: var(--text); border: 1px solid var(--border-light); cursor: pointer;
+    width: auto; margin: 0; font-size: 13px;
+}
+.fretboard-wrapper { width: 100%; overflow-x: auto; padding-bottom: 8px; }
+.fretboard { display: flex; flex-direction: column; min-width: 550px; }
+.corda { display: flex; height: 30px; align-items: center; position: relative; border-right: 2px solid #222; }
+.corda::before { content:''; position:absolute; width:100%; height:2px; background:#bdc3c7; z-index:1; box-shadow:0 1px 2px rgba(0,0,0,0.5); }
+.traste { flex:1; border-right:2px solid #a0a0a0; height:100%; display:flex; justify-content:center; align-items:center; position:relative; background:var(--fret-bg); }
+.corda-solta { width:35px; flex:none; border-right:none; background:transparent; }
+.pestana { border-left:6px solid #d4c4b7; }
+.marcador-fundo { position:absolute; width:16px; height:16px; background:rgba(255,255,255,0.25); border-radius:50%; z-index:0; }
+.bolinha-nota { width:20px; height:20px; background:#3498db; border-radius:50%; z-index:2; box-shadow:0 0 5px rgba(0,0,0,0.8); display:flex; justify-content:center; align-items:center; color:white; font-size:10px; font-weight:bold; }
+.nota-solta-destaque { background:#e67e22; border-radius:4px; }
+.regua-casas { display:flex; height:24px; align-items:center; margin-top:4px; }
+.numero-casa { flex:1; text-align:center; color:var(--text-dim); font-size:12px; font-weight:bold; }
+.corda-solta-num { width:35px; flex:none; }
+
+/* ==========================================
+   TECLADO (PIANO)
+   ========================================== */
+.teclado-container { display:flex; position:relative; height:110px; background:#111; border:2px solid #333; border-radius:4px; padding:2px; margin:0 auto; width:fit-content; }
+.tecla-branca { width:26px; height:100%; background:#f0f0f0; border:1px solid #ccc; border-radius:0 0 3px 3px; margin:0 1px; position:relative; z-index:1; }
+.tecla-preta { width:16px; height:60%; background:#222; border-radius:0 0 3px 3px; position:absolute; z-index:2; box-shadow:1px 1px 2px rgba(0,0,0,0.5); }
+.marca-tecla { width:14px; height:14px; background:var(--accent); border-radius:50%; position:absolute; bottom:10px; left:50%; transform:translateX(-50%); box-shadow:0 0 5px rgba(0,0,0,0.8); z-index:3; }
+.tecla-preta .marca-tecla { bottom:8px; }
+.nota-tecla-label {
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 8px;
+    font-weight: bold;
+    color: #333;
+    z-index: 4;
+    white-space: nowrap;
+}
+.tecla-preta .nota-tecla-label { color: #eee; bottom: 2px; }
+
+/* ==========================================
+   GPS — MINI DIAGRAMAS
+   ========================================== */
+.rota-card { background:var(--bg-modulo); border:1px solid var(--border); border-radius:10px; padding:14px; text-align:left; box-shadow:inset 0 0 10px rgba(0,0,0,0.3); }
+.rota-titulo { color:#4CAF50; font-size:13px; margin:0 0 10px 0; font-weight:bold; text-transform:uppercase; letter-spacing:1px; }
+.rota-caminho { display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding-bottom:8px; justify-content:flex-start; }
+.mini-chord-box { background:var(--bg-input-dark); border:2px solid var(--border-light); border-radius:8px; padding:8px; text-align:center; min-width:72px; cursor:pointer; transition:0.2s; display:flex; flex-direction:column; align-items:center; }
+.mini-chord-box:hover { border-color:var(--accent); transform:translateY(-2px); box-shadow:0 4px 12px rgba(241,196,15,0.2); }
+.mini-chord-name { color:var(--accent); font-weight:bold; font-size:15px; margin-bottom:6px; }
+.rota-seta { color:var(--text-dim); font-size:18px; font-weight:bold; }
+
+/* ==========================================
+   TOOLTIP / ONBOARDING MODAL
+   ========================================== */
+.tooltip-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+.tooltip-overlay.aberto { display: flex; }
+.tooltip-modal {
+    background: var(--bg-container);
+    border: 1px solid var(--border-light);
+    border-radius: 14px;
+    padding: 24px;
+    max-width: 480px;
+    width: 90%;
+    position: relative;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+}
+.tooltip-fechar {
+    position: absolute; top: 12px; right: 16px;
+    background: none; border: none; color: var(--text-dim);
+    font-size: 18px; cursor: pointer; width: auto; padding: 0;
+}
+.tooltip-fechar:hover { color: var(--text); background: none; }
+.tooltip-secao { margin-bottom: 18px; }
+.tooltip-secao h4 { color: var(--accent); margin: 0 0 6px 0; font-size: 15px; }
+.tooltip-secao p { color: var(--text); font-size: 13px; line-height: 1.7; margin: 0; }
+
+/* ==========================================
+   COMPARTILHAR
+   ========================================== */
+.share-opcoes { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.share-texto {
+    background: var(--bg-input-dark);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+.btn-share { background: #25D366; font-size: 14px; padding: 10px; }
+.btn-share:hover { background: #128C4A; }
+.btn-copy { background: var(--btn-primary); font-size: 14px; padding: 10px; }
+
+/* ==========================================
+   MOBILE
    ========================================== */
 @media (max-width: 767px) {
-    .cifra-container {
-        padding: 12px;
-    }
-    .cifra-renderizada {
-        font-size: 12px;
-        padding: 12px;
-        overflow-x: scroll;
-    }
-    .cifra-linha-acordes,
-    .cifra-linha-letra {
-        white-space: nowrap;
-    }
+    .app-header { padding: 10px 14px; }
+    .app-titulo { font-size: 16px; }
+    .container { padding: 12px; }
+    .modulo-container { padding: 14px; }
+    .cifra-renderizada { font-size: 12px; padding: 10px; }
     .cifra-popup {
-        position: fixed;
+        position: fixed !important;
         left: 50% !important;
         top: 50% !important;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%) !important;
     }
-    .container {
-        padding: 15px;
-    }
-    .chord-card {
-        padding: 10px;
-    }
+    .fretboard { min-width: 400px; }
+    .gps-inputs { flex-direction: column; }
+    .gps-input { width: 100%; }
+    .rota-caminho { gap: 8px; }
+    .mini-chord-box { min-width: 60px; padding: 6px; }
+    .chord-card { padding: 10px; }
+    .teclado-container { transform: scale(0.85); transform-origin: left center; }
 }
