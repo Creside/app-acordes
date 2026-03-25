@@ -775,64 +775,72 @@ button.botao-variacao.tipo-nona.ativo  { background:#1abc9c22; border-color:#1ab
 .toggle-switch input:checked ~ .toggle-thumb { left: 19px; }
 
 /* ==========================================
-   SUGESTÃO DE SOLO
+   SUGESTÃO DE SOLO — layout horizontal
    ========================================== */
 .solo-container {
-    margin-top: 12px;
-    padding: 14px;
-    background: var(--bg-input-dark);
-    border-radius: 8px;
-    border: 1px solid #2ecc7155;
-    display: none;
+    display: none; /* mostrado via JS após identificar tom */
+}
+/* Quando visível, herda estilos do modulo-container */
+.solo-container.modulo-container {
+    padding: 16px;
 }
 .solo-titulo {
     color: #2ecc71;
     font-size: 14px;
     font-weight: bold;
-    margin: 0 0 10px 0;
+    margin: 0 0 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 .solo-escalas {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
 }
 .solo-escala-row {
+    background: var(--bg-input-dark);
+    border-radius: 8px;
+    padding: 10px 12px;
+    border-left: 3px solid #2ecc71;
+}
+.solo-escala-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: var(--bg-modulo);
-    border-radius: 6px;
-    padding: 8px 10px;
-    gap: 8px;
+    margin-bottom: 8px;
 }
 .solo-escala-nome {
     font-size: 13px;
     font-weight: bold;
-    color: var(--text);
-    min-width: 120px;
+    color: #2ecc71;
 }
-.solo-escala-notas {
+.solo-escala-desc {
     font-size: 11px;
     color: var(--text-muted);
-    flex: 1;
-    font-family: monospace;
+    font-style: italic;
 }
-.btn-play-solo {
-    background: #2ecc71;
-    border: none;
-    color: #111;
-    padding: 5px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 13px;
+.solo-notas-horizontal {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+.solo-nota-chip {
+    background: var(--bg-modulo);
+    border: 1px solid #2ecc7155;
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 12px;
     font-weight: bold;
-    width: auto;
-    margin: 0;
-    transition: 0.2s;
-    white-space: nowrap;
+    color: var(--text);
+    font-family: monospace;
+    letter-spacing: 0.5px;
 }
-.btn-play-solo:hover { background: #27ae60; }
-.btn-play-solo.tocando { background: #e74c3c; }
+.solo-nota-chip.tonica {
+    background: #e74c3c33;
+    border-color: #e74c3c;
+    color: #e74c3c;
+}
 
 /* Cores tônica/terça/quinta no teclado */
 .marca-tecla.tonica  { background: #e74c3c; }

@@ -2256,72 +2256,41 @@ function mostrarSugestoesSolo(tonica, modo) {
     if (!container || !escalasDiv) return;
 
     const notasCrom = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
-    const tonicaIdx = notasCrom.indexOf(tonica);
+    const eq = {'Db':'C#','Eb':'D#','Gb':'F#','Ab':'G#','Bb':'A#'};
+    const tonicaNorm = eq[tonica] || tonica;
+    const tonicaIdx = notasCrom.indexOf(tonicaNorm);
     const escalas = escalasParaSolo[modo] || escalasParaSolo.maior;
 
     escalasDiv.innerHTML = '';
     escalas.forEach(escala => {
         const notas = escala.formula.map(s => notasCrom[(tonicaIdx + s) % 12]);
+
         const row = document.createElement('div');
         row.className = 'solo-escala-row';
-        row.innerHTML = `
+
+        // Header com nome e descrição
+        const header = document.createElement('div');
+        header.className = 'solo-escala-header';
+        header.innerHTML = `
             <span class="solo-escala-nome">${escala.nome}</span>
-            <span class="solo-escala-notas">${notas.join(' · ')}</span>
-            <button class="btn-play-solo" onclick="tocarEscala('${tonica}', ${JSON.stringify(escala.formula)}, this)">▶ Ouvir</button>
+            <span class="solo-escala-desc">${escala.desc}</span>
         `;
+        row.appendChild(header);
+
+        // Notas em chips horizontais
+        const chipsDiv = document.createElement('div');
+        chipsDiv.className = 'solo-notas-horizontal';
+        notas.forEach((nota, i) => {
+            const chip = document.createElement('span');
+            chip.className = 'solo-nota-chip' + (i === 0 ? ' tonica' : '');
+            chip.textContent = nota;
+            chipsDiv.appendChild(chip);
+        });
+        row.appendChild(chipsDiv);
         escalasDiv.appendChild(row);
     });
 
     container.style.display = 'block';
 }
 
-function tocarEscala(tonica, formula, btn) {
-    // Para qualquer som em andamento
-    soloTimeouts.forEach(t => clearTimeout(t));
-    soloTimeouts = [];
-    document.querySelectorAll('.btn-play-solo').forEach(b => {
-        b.textContent = '▶ Ouvir'; b.classList.remove('tocando');
-    });
-
-    if (soloTocando && btn.classList.contains('tocando')) {
-        soloTocando = false; return;
-    }
-
-    soloTocando = true;
-    btn.textContent = '■ Parar'; btn.classList.add('tocando');
-
-    if (!audioCtxSolo) audioCtxSolo = new (window.AudioContext || window.webkitAudioContext)();
-
-    const notasCrom = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
-    const tonicaIdx = notasCrom.indexOf(tonica);
-    // Frequência base: A4=440, C4≈261.63
-    const freqBase = 261.63 * Math.pow(2, tonicaIdx / 12);
-
-    const bpm = 120;
-    const noteDur = 60 / bpm;
-
-    // Toca a escala subindo e descendo
-    const notas = [...formula, ...formula.slice().reverse().slice(1)];
-    notas.forEach((semi, i) => {
-        const t = setTimeout(() => {
-            if (!soloTocando) return;
-            const freq = freqBase * Math.pow(2, semi / 12);
-            const osc = audioCtxSolo.createOscillator();
-            const gain = audioCtxSolo.createGain();
-            osc.connect(gain); gain.connect(audioCtxSolo.destination);
-            osc.frequency.value = freq;
-            osc.type = 'triangle';
-            gain.gain.setValueAtTime(0.3, audioCtxSolo.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtxSolo.currentTime + noteDur * 0.9);
-            osc.start(); osc.stop(audioCtxSolo.currentTime + noteDur * 0.9);
-        }, i * noteDur * 1000);
-        soloTimeouts.push(t);
-    });
-
-    // Reset botão ao terminar
-    const totalDur = notas.length * noteDur * 1000 + 200;
-    soloTimeouts.push(setTimeout(() => {
-        soloTocando = false;
-        btn.textContent = '▶ Ouvir'; btn.classList.remove('tocando');
-    }, totalDur));
-}
+// tocarEscala removido (botão de play eliminado)

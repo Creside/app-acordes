@@ -8,7 +8,6 @@
 </head>
 <body>
 
-    <!-- HEADER -->
     <div class="app-header">
         <h1 class="app-titulo">🎸 Identificador de Tom</h1>
         <div class="header-acoes">
@@ -21,10 +20,7 @@
     <div class="container">
         <div class="layout-grid">
 
-            <!-- ========================
-                 COLUNA 1 — FERRAMENTAS
-                 Ordem mobile: 1º Afinador, 2º Identificador, 3º Visualização, 4º Transpositor
-                 ======================== -->
+            <!-- ======================== COLUNA 1 ======================== -->
             <div class="coluna coluna-1">
 
                 <!-- 1. Afinador -->
@@ -39,7 +35,18 @@
                     <div id="frequenciaDetectada">-- Hz</div>
                 </div>
 
-                <!-- 2. Identificador de Tom -->
+                <!-- 2. Círculo de Quintas -->
+                <div class="circulo-container modulo-container">
+                    <div class="modulo-titulo-row">
+                        <h3 class="circulo-titulo">⭕ Círculo de Quintas</h3>
+                        <button class="btn-tooltip" onclick="mostrarTooltip('circulo')">?</button>
+                    </div>
+                    <p class="circulo-subtitulo">Clique num tom para ver o campo harmônico.</p>
+                    <div class="circulo-svg-wrapper" id="circulo-svg-wrapper"></div>
+                    <div id="circulo-info" class="circulo-info"></div>
+                </div>
+
+                <!-- 3. Identificador de Tom -->
                 <div class="modulo-container">
                     <div class="modulo-titulo-row">
                         <h3 class="modulo-titulo">🎵 Identificador de Tom</h3>
@@ -48,21 +55,21 @@
                     <input type="text" id="inputAcordes" placeholder="Ex: C, F, G">
                     <button onclick="identificarTom()">Descobrir Tom</button>
                     <div id="resultado" class="resultado-box" style="display:none;margin-top:12px;"></div>
-                    <!-- Sugestão de Solo -->
-                    <div class="solo-container" id="soloContainer">
-                        <p class="solo-titulo">🎸 Sugestão de Solo / Improvisação</p>
-                        <div class="solo-escalas" id="soloEscalas"></div>
-                    </div>
                 </div>
 
-                <!-- 3. Visualização dos Acordes -->
+            </div>
+
+            <!-- ======================== COLUNA 2 ======================== -->
+            <div class="coluna coluna-2">
+
+                <!-- 4. Visualização do Acorde -->
                 <div id="chord-diagram-container" style="display:none;" class="modulo-container">
                     <div class="modulo-titulo-row">
                         <h3 class="modulo-titulo">🎼 Visualização do Acorde</h3>
                         <button class="btn-tooltip" onclick="mostrarTooltip('cifra')">?</button>
                     </div>
-                    <div class="modulo-titulo-row" style="margin-bottom:8px;">
-                        <h3 id="nomeAcordeDestaque" class="diagrama-titulo" style="margin:0;font-size:18px;">--</h3>
+                    <div class="modulo-titulo-row" style="margin-bottom:6px;">
+                        <h3 id="nomeAcordeDestaque" class="diagrama-titulo" style="margin:0;font-size:20px;">--</h3>
                         <div class="diagrama-tabs" style="margin:0;">
                             <button id="tab-guitarra" class="tab-btn ativo" onclick="mudarVisaoDiagrama('guitarra')">🎸 Violão</button>
                             <button id="tab-teclado" class="tab-btn" onclick="mudarVisaoDiagrama('teclado')">🎹 Teclado</button>
@@ -72,7 +79,6 @@
                         <div class="legenda-tipos" id="legendaTipos"></div>
                         <div id="gradeVariacoes" class="grade-botoes"></div>
                     </div>
-                    <!-- Toggle notas/dedos -->
                     <div class="diagrama-toggle-row" id="toggleRow" style="display:none;">
                         <span>Dedos</span>
                         <label class="toggle-switch">
@@ -87,7 +93,16 @@
                     </div>
                 </div>
 
-                <!-- 4. Transpositor -->
+                <!-- 5. Sugestão de Solo -->
+                <div class="solo-container modulo-container" id="soloContainer">
+                    <div class="modulo-titulo-row">
+                        <h3 class="modulo-titulo solo-titulo">🎸 Sugestão de Solo</h3>
+                        <button class="btn-tooltip" onclick="mostrarTooltip('pentatonica')">?</button>
+                    </div>
+                    <div class="solo-escalas" id="soloEscalas"></div>
+                </div>
+
+                <!-- 6. Transpositor -->
                 <div class="transpositor-container modulo-container">
                     <div class="modulo-titulo-row">
                         <h3 class="transpositor-titulo">🔀 Transpositor</h3>
@@ -106,25 +121,10 @@
 
             </div>
 
-            <!-- ========================
-                 COLUNA 2 — CONTEÚDO
-                 Ordem mobile: 5º Cifra, 6º GPS
-                 ======================== -->
-            <div class="coluna coluna-2">
+            <!-- ======================== COLUNA 3 ======================== -->
+            <div class="coluna coluna-3">
 
-                <!-- 5. Cifra Completa -->
-                <div class="cifra-container modulo-container">
-                    <div class="modulo-titulo-row">
-                        <h3 class="cifra-titulo">📄 Cifra Completa</h3>
-                        <button class="btn-tooltip" onclick="mostrarTooltip('cifra')">?</button>
-                    </div>
-                    <p class="cifra-subtitulo">Cole sua cifra. Clique em qualquer acorde para ver o diagrama.</p>
-                    <textarea id="inputCifra" class="cifra-textarea" placeholder="Am          Dm       E7&#10;Hoje eu quero te dizer&#10;      Am       G        C&#10;Que o amor que sinto é real"></textarea>
-                    <button id="btnRenderCifra" onclick="renderizarCifra()">Renderizar Cifra</button>
-                    <div id="cifraRenderizada" class="cifra-renderizada"></div>
-                </div>
-
-                <!-- 6. GPS Harmônico -->
+                <!-- 7. GPS Harmônico -->
                 <div id="rotas-container" class="gps-container modulo-container">
                     <div class="modulo-titulo-row">
                         <h3 class="gps-titulo">🧭 GPS Harmônico</h3>
@@ -140,26 +140,19 @@
                     <div id="resultado-rotas" style="margin-top:16px;display:flex;flex-direction:column;gap:14px;"></div>
                 </div>
 
-            </div>
-
-            <!-- ========================
-                 COLUNA 3 — VISUAL
-                 Ordem mobile: 7º Círculo, 8º Braço
-                 ======================== -->
-            <div class="coluna coluna-3">
-
-                <!-- 7. Círculo de Quintas -->
-                <div class="circulo-container modulo-container">
+                <!-- 8. Cifra Completa -->
+                <div class="cifra-container modulo-container">
                     <div class="modulo-titulo-row">
-                        <h3 class="circulo-titulo">⭕ Círculo de Quintas</h3>
-                        <button class="btn-tooltip" onclick="mostrarTooltip('circulo')">?</button>
+                        <h3 class="cifra-titulo">📄 Cifra Completa</h3>
+                        <button class="btn-tooltip" onclick="mostrarTooltip('cifra')">?</button>
                     </div>
-                    <p class="circulo-subtitulo">Clique num tom para ver o campo harmônico.</p>
-                    <div class="circulo-svg-wrapper" id="circulo-svg-wrapper"></div>
-                    <div id="circulo-info" class="circulo-info"></div>
+                    <p class="cifra-subtitulo">Cole sua cifra. Clique em qualquer acorde para ver o diagrama.</p>
+                    <textarea id="inputCifra" class="cifra-textarea" placeholder="Am          Dm       E7&#10;Hoje eu quero te dizer&#10;      Am       G        C&#10;Que o amor que sinto é real"></textarea>
+                    <button id="btnRenderCifra" onclick="renderizarCifra()">Renderizar Cifra</button>
+                    <div id="cifraRenderizada" class="cifra-renderizada"></div>
                 </div>
 
-                <!-- 8. Escala no Braço -->
+                <!-- Escala no Braço (aparece após identificar tom) -->
                 <div id="fretboard-container" style="display:none;" class="modulo-container">
                     <div class="braco-header">
                         <h3 class="braco-titulo">🎸 Escala no Braço</h3>
