@@ -105,6 +105,19 @@ body {
     color: #1a1a1a;
     border-color: var(--accent);
 }
+/* No touch, remove hover persistente */
+@media (hover: none) {
+    .btn-icone:hover {
+        background: var(--bg-input-dark);
+        color: var(--text);
+        border-color: var(--border-light);
+    }
+    .btn-icone:active {
+        background: var(--accent);
+        color: #1a1a1a;
+        border-color: var(--accent);
+    }
+}
 
 /* ==========================================
    CONTAINER E GRID
@@ -178,6 +191,17 @@ body {
     background: var(--accent);
     color: #1a1a1a;
     border-color: var(--accent);
+}
+@media (hover: none) {
+    .btn-tooltip:hover {
+        background: var(--bg-input-dark);
+        color: var(--text-muted);
+        border-color: var(--border-light);
+    }
+    .btn-tooltip:active {
+        background: var(--accent);
+        color: #1a1a1a;
+    }
 }
 
 input {
