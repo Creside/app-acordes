@@ -108,6 +108,14 @@ function identificarTom() {
         // Sugestão de solo
         mostrarSugestoesSolo(tonica, modo);
 
+        // Graus do campo harmônico
+        mostrarGraus(campo);
+
+        // Progressões por gênero com campo real
+        campoHarmonicoAtual = campo;
+        tonicaAtual = tonica;
+        inicializarProgressoes();
+
         resultadoDiv.style.display = 'block';
         resultadoDiv.innerHTML = `
             <div class="resultado-tom">🎵 A música está em:<br><b>${labelTom}</b></div>
@@ -2294,3 +2302,408 @@ function mostrarSugestoesSolo(tonica, modo) {
 }
 
 // tocarEscala removido (botão de play eliminado)
+
+// ==========================================
+// GRAUS DO CAMPO HARMÔNICO
+// ==========================================
+const numeraisRomanos = ['I','II','III','IV','V','VI','VII'];
+// Funções harmônicas: I=Tônica, II=Subdominante, III=Tônica, IV=Subdominante, V=Dominante, VI=Tônica, VII=Dominante
+const funcaoGrau = {
+    0: {nome:'Tônica',cls:'tonica-grau'},
+    1: {nome:'Subdominante',cls:'subdominante-grau'},
+    2: {nome:'Tônica',cls:'tonica-grau'},
+    3: {nome:'Subdominante',cls:'subdominante-grau'},
+    4: {nome:'Dominante',cls:'dominante-grau'},
+    5: {nome:'Tônica',cls:'tonica-grau'},
+    6: {nome:'Dominante',cls:'dominante-grau'},
+};
+
+function mostrarGraus(campo) {
+    const container = document.getElementById('grausContainer');
+    const grid = document.getElementById('grausGrid');
+    if (!container || !grid) return;
+    grid.innerHTML = '';
+    campo.forEach((acorde, i) => {
+        const item = document.createElement('div');
+        const funcao = funcaoGrau[i];
+        item.className = `grau-item ${funcao.cls}`;
+        item.innerHTML = `
+            <div class="grau-numeral">${numeraisRomanos[i]}</div>
+            <div class="grau-acorde">${acorde}</div>
+            <div class="grau-funcao">${funcao.nome.substring(0,3)}</div>
+        `;
+        item.onclick = () => {
+            acordeAtualSelecionado = acorde;
+            document.getElementById('chord-diagram-container').style.display = 'block';
+            renderizarVisualizacao();
+            document.getElementById('chord-diagram-container').scrollIntoView({behavior:'smooth',block:'nearest'});
+        };
+        grid.appendChild(item);
+    });
+    container.style.display = 'block';
+}
+
+// ==========================================
+// PROGRESSÕES POR GÊNERO
+// ==========================================
+const progressoesPorGenero = {
+    'Gospel': {cor:'#f1c40f', prog:[
+        {nome:'I - IV - V - I',  acordes:['I','IV','V','I']},
+        {nome:'I - VI - IV - V', acordes:['I','VI','IV','V']},
+        {nome:'I - IV - I - V',  acordes:['I','IV','I','V']},
+        {nome:'II - V - I',      acordes:['II','V','I']},
+        {nome:'I - III - IV - V',acordes:['I','III','IV','V']},
+    ]},
+    'Pop/Rock': {cor:'#e74c3c', prog:[
+        {nome:'I - V - VI - IV',  acordes:['I','V','VI','IV']},
+        {nome:'I - IV - V',       acordes:['I','IV','V']},
+        {nome:'VI - IV - I - V',  acordes:['VI','IV','I','V']},
+        {nome:'I - VI - II - V',  acordes:['I','VI','II','V']},
+    ]},
+    'Blues': {cor:'#3498db', prog:[
+        {nome:'12 Bar Blues', acordes:['I','I','I','I','IV','IV','I','I','V','IV','I','V']},
+        {nome:'I - IV - V',   acordes:['I','IV','V']},
+        {nome:'I7 - IV7 - V7',acordes:['I7','IV7','V7']},
+    ]},
+    'Bossa Nova': {cor:'#2ecc71', prog:[
+        {nome:'IIM7 - V7 - IM7',   acordes:['IIM7','V7','IM7']},
+        {nome:'I - VI - II - V',   acordes:['I','VI','II','V']},
+        {nome:'IM7 - IVM7 - IIM7 - V7', acordes:['IM7','IVM7','IIM7','V7']},
+    ]},
+    'Samba': {cor:'#e67e22', prog:[
+        {nome:'I - IV - V - I', acordes:['I','IV','V','I']},
+        {nome:'I - II - V - I', acordes:['I','II','V','I']},
+        {nome:'VIM - II - V - I',acordes:['VIM','II','V','I']},
+    ]},
+    'Jazz': {cor:'#9b59b6', prog:[
+        {nome:'II - V - I',      acordes:['IIm7','V7','IM7']},
+        {nome:'I - VI - II - V', acordes:['IM7','VIm7','IIm7','V7']},
+        {nome:'Ritmo de Coltrane',acordes:['IM7','bIIIM7','bVIM7','bVIIM7']},
+    ]},
+};
+
+let generoAtivo = 'Gospel';
+let campoHarmonicoAtual = [];
+let tonicaAtual = 'C';
+
+function inicializarProgressoes() {
+    const tabs = document.getElementById('generoTabs');
+    if (!tabs) return;
+    tabs.innerHTML = '';
+    Object.entries(progressoesPorGenero).forEach(([nome, data]) => {
+        const btn = document.createElement('button');
+        btn.className = 'genero-btn' + (nome === generoAtivo ? ' ativo' : '');
+        btn.style.background = nome === generoAtivo ? data.cor : '';
+        btn.textContent = nome;
+        btn.onclick = () => {
+            generoAtivo = nome;
+            document.querySelectorAll('.genero-btn').forEach(b => {
+                b.classList.remove('ativo');
+                b.style.background = '';
+            });
+            btn.classList.add('ativo');
+            btn.style.background = data.cor;
+            renderizarProgressoes();
+        };
+        tabs.appendChild(btn);
+    });
+    renderizarProgressoes();
+    document.getElementById('progressoesContainer').style.display = 'block';
+}
+
+function grauParaAcorde(grauStr, campo) {
+    // Mapeia numeral romano para acorde do campo
+    const mapa = {
+        'I':campo[0],'II':campo[1],'III':campo[2],'IV':campo[3],
+        'V':campo[4],'VI':campo[5],'VII':campo[6],
+        'IIM7': campo[1]?.replace('m','') + 'M7' || '',
+        'IVM7': campo[3]?.replace('m','') + 'M7' || '',
+        'IM7':  campo[0] + 'M7',
+        'IIm7': campo[1] + '7',
+        'VIm7': campo[5] + '7',
+        'V7':   campo[4]?.replace('dim','') + '7',
+        'IV7':  campo[3] + '7',
+        'I7':   campo[0] + '7',
+        'IVM7': campo[3] + '7M',
+        'VIM':  campo[5],
+        'VIM7': campo[5] + '7',
+    };
+    return mapa[grauStr] || grauStr;
+}
+
+function renderizarProgressoes() {
+    const lista = document.getElementById('progressoesLista');
+    if (!lista) return;
+    lista.innerHTML = '';
+    const generoData = progressoesPorGenero[generoAtivo];
+    const campo = campoHarmonicoAtual;
+
+    generoData.prog.forEach(prog => {
+        const row = document.createElement('div');
+        row.className = 'progressao-row';
+
+        const nome = document.createElement('div');
+        nome.className = 'progressao-nome';
+        nome.textContent = prog.nome;
+
+        const acordesDiv = document.createElement('div');
+        acordesDiv.className = 'progressao-acordes';
+
+        const acordesReais = prog.acordes.map(g => campo.length > 0 ? (grauParaAcorde(g, campo) || g) : g);
+        acordesReais.forEach(a => {
+            const chip = document.createElement('span');
+            chip.className = 'prog-acorde-chip';
+            chip.textContent = a;
+            acordesDiv.appendChild(chip);
+        });
+
+        const btn = document.createElement('button');
+        btn.className = 'btn-usar-progressao';
+        btn.textContent = '← Usar';
+        btn.onclick = (e) => {
+            e.stopPropagation();
+            const input = document.getElementById('inputAcordes');
+            if (input) input.value = acordesReais.join(', ');
+        };
+
+        row.appendChild(nome);
+        row.appendChild(acordesDiv);
+        row.appendChild(btn);
+        lista.appendChild(row);
+    });
+}
+
+// ==========================================
+// MODO PERFORMANCE
+// ==========================================
+let fonteSizePerf = 18;
+
+function abrirModoPerformance() {
+    const cifraSource = document.getElementById('cifraRenderizada');
+    const perfEl = document.getElementById('perfCifra');
+    const overlay = document.getElementById('modoPerformance');
+    const tomEl = document.getElementById('perfTom');
+
+    if (!cifraSource || !cifraSource.innerHTML.trim()) {
+        alert('Renderize a cifra primeiro!');
+        return;
+    }
+
+    // Copia o conteúdo renderizado para o modo performance
+    perfEl.innerHTML = cifraSource.innerHTML;
+    perfEl.style.fontSize = fonteSizePerf + 'px';
+
+    // Mostra o tom atual se disponível
+    const tomResultado = document.getElementById('resultado');
+    if (tomResultado && tomResultado.style.display !== 'none') {
+        const tomEl2 = tomResultado.querySelector('b');
+        if (tomEl2) tomEl.textContent = '🎸 ' + tomEl2.textContent;
+    }
+
+    overlay.classList.add('ativo');
+    document.body.style.overflow = 'hidden';
+}
+
+function fecharModoPerformance() {
+    document.getElementById('modoPerformance').classList.remove('ativo');
+    document.body.style.overflow = '';
+}
+
+function ajustarFontePerf(delta) {
+    fonteSizePerf = Math.max(12, Math.min(48, fonteSizePerf + delta));
+    document.getElementById('perfCifra').style.fontSize = fonteSizePerf + 'px';
+}
+
+function atualizarScrollPerf() {
+    const el = document.getElementById('perfCifra');
+    const prog = document.getElementById('perfScrollProgress');
+    if (!el || !prog) return;
+    const pct = el.scrollTop / (el.scrollHeight - el.clientHeight) * 100;
+    prog.style.width = Math.min(100, pct) + '%';
+}
+
+// Fechar com ESC
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') fecharModoPerformance();
+});
+
+// ==========================================
+// EXPORTAR CIFRA COMO PDF
+// ==========================================
+function exportarPDF() {
+    const cifraEl = document.getElementById('cifraRenderizada');
+    if (!cifraEl || !cifraEl.innerHTML.trim()) {
+        alert('Renderize a cifra primeiro!');
+        return;
+    }
+
+    const tom = (() => {
+        const r = document.getElementById('resultado');
+        if (r && r.style.display !== 'none') {
+            const b = r.querySelector('b');
+            return b ? b.textContent : 'Cifra';
+        }
+        return 'Cifra';
+    })();
+
+    // Gera HTML limpo para impressão
+    const printHTML = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>${tom}</title>
+<style>
+  body { font-family: 'Courier New', monospace; background: white; color: #111; padding: 20px 30px; font-size: 14px; line-height: 2; }
+  h1 { font-family: Arial, sans-serif; color: #333; margin-bottom: 20px; font-size: 20px; }
+  .cifra-linha-acordes { display: block; color: #c07800; font-weight: bold; white-space: pre; }
+  .cifra-acorde-inline { color: #c07800; font-weight: bold; }
+  .cifra-linha-letra { display: block; color: #111; white-space: pre; }
+  .cifra-linha-vazia { display: block; height: 8px; }
+  @media print { body { margin: 0; } }
+</style>
+</head>
+<body>
+<h1>🎸 ${tom}</h1>
+${cifraEl.innerHTML}
+</body>
+</html>`;
+
+    const win = window.open('', '_blank');
+    if (!win) { alert('Permita popups para exportar o PDF.'); return; }
+    win.document.write(printHTML);
+    win.document.close();
+    win.onload = () => { win.focus(); win.print(); };
+}
+
+// ==========================================
+// DETECTOR DE ACORDE POR MICROFONE
+// ==========================================
+let detectorAtivo = false;
+let detectorAudioCtx = null;
+let detectorAnalyser = null;
+let detectorStream = null;
+let detectorAnimId = null;
+const notasCromDetector = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+
+// Fórmulas para identificar acordes a partir de notas detectadas
+const formulasDetector = {
+    '':    [0,4,7],
+    'm':   [0,3,7],
+    '7':   [0,4,7,10],
+    'm7':  [0,3,7,10],
+    '7M':  [0,4,7,11],
+    'dim': [0,3,6],
+};
+
+async function toggleDetectorAcorde() {
+    const btn = document.getElementById('btnDetector');
+    const container = document.getElementById('detectorContainer');
+
+    if (detectorAtivo) {
+        detectorAtivo = false;
+        if (detectorStream) detectorStream.getTracks().forEach(t => t.stop());
+        if (detectorAudioCtx) detectorAudioCtx.close();
+        cancelAnimationFrame(detectorAnimId);
+        btn.textContent = '🎸 Detectar Acorde';
+        btn.classList.remove('ativo');
+        container.style.display = 'none';
+        return;
+    }
+
+    try {
+        detectorStream = await navigator.mediaDevices.getUserMedia({audio:true});
+        detectorAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        detectorAnalyser = detectorAudioCtx.createAnalyser();
+        detectorAnalyser.fftSize = 8192;
+        const src = detectorAudioCtx.createMediaStreamSource(detectorStream);
+        src.connect(detectorAnalyser);
+
+        detectorAtivo = true;
+        btn.textContent = '■ Parar Detector';
+        btn.classList.add('ativo');
+        container.style.display = 'block';
+        detectarAcordeContinuo();
+    } catch(e) {
+        alert('Erro ao acessar microfone: ' + e.message);
+    }
+}
+
+const notasDetectadas = [];
+const JANELA = 20; // frames de histórico
+
+function detectarAcordeContinuo() {
+    if (!detectorAtivo) return;
+
+    const buf = new Float32Array(detectorAnalyser.fftSize);
+    detectorAnalyser.getFloatFrequencyData(buf);
+    const sr = detectorAudioCtx.sampleRate;
+    const binSize = sr / detectorAnalyser.fftSize;
+
+    // Pega os picos de frequência mais fortes
+    const picos = [];
+    for (let i = 1; i < buf.length - 1; i++) {
+        const freq = i * binSize;
+        if (freq < 60 || freq > 1400) continue;
+        if (buf[i] > buf[i-1] && buf[i] > buf[i+1] && buf[i] > -50) {
+            picos.push({freq, amp: buf[i]});
+        }
+    }
+
+    // Ordena por amplitude e pega top 6
+    picos.sort((a,b) => b.amp - a.amp);
+    const topPicos = picos.slice(0, 6);
+
+    // Converte frequências em notas
+    const notasFrame = new Set();
+    topPicos.forEach(p => {
+        const midi = Math.round(12 * Math.log2(p.freq / 440) + 69);
+        if (midi >= 40 && midi <= 88) {
+            notasFrame.add(midi % 12);
+        }
+    });
+
+    if (notasFrame.size >= 2) {
+        notasDetectadas.push([...notasFrame]);
+        if (notasDetectadas.length > JANELA) notasDetectadas.shift();
+    }
+
+    // Analisa as notas mais frequentes nos últimos frames
+    if (notasDetectadas.length >= 5) {
+        const freq = {};
+        notasDetectadas.flat().forEach(n => freq[n] = (freq[n]||0) + 1);
+        const notasFrequentes = Object.entries(freq)
+            .filter(([,v]) => v >= notasDetectadas.length * 0.4)
+            .map(([k]) => parseInt(k))
+            .sort((a,b) => freq[b]-freq[a]);
+
+        if (notasFrequentes.length >= 2) {
+            const acorde = identificarAcordeDeNotas(notasFrequentes);
+            if (acorde) {
+                document.getElementById('detectorAcorde').textContent = acorde;
+                document.getElementById('detectorNotas').textContent =
+                    notasFrequentes.slice(0,4).map(n => notasCromDetector[n]).join(' · ');
+                document.getElementById('detectorConfianca').textContent =
+                    `${Math.min(99, Math.round(notasFrequentes.length / 6 * 100))}% confiança`;
+            }
+        }
+    }
+
+    detectorAnimId = requestAnimationFrame(detectarAcordeContinuo);
+}
+
+function identificarAcordeDeNotas(notas) {
+    let melhorAcorde = null, melhorScore = 0;
+
+    for (let tonica = 0; tonica < 12; tonica++) {
+        for (const [sufixo, formula] of Object.entries(formulasDetector)) {
+            const notasAcorde = formula.map(s => (tonica + s) % 12);
+            const matches = notasAcorde.filter(n => notas.includes(n)).length;
+            const score = matches / notasAcorde.length;
+            if (score > melhorScore && score >= 0.6) {
+                melhorScore = score;
+                melhorAcorde = notasCromDetector[tonica] + sufixo;
+            }
+        }
+    }
+    return melhorAcorde;
+}

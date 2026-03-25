@@ -42,6 +42,18 @@
                     <button id="btnAfinador" onclick="iniciarAfinador()">Ligar Microfone</button>
                     <div id="notaDetectada">--</div>
                     <div id="frequenciaDetectada">-- Hz</div>
+                    <!-- Detector de Acorde -->
+                    <button id="btnDetector" onclick="toggleDetectorAcorde()" style="margin-top:8px;">🎸 Detectar Acorde</button>
+                    <div class="detector-container" id="detectorContainer">
+                        <p class="detector-titulo">🎸 Acorde Detectado</p>
+                        <div class="detector-resultado">
+                            <div class="detector-acorde" id="detectorAcorde">--</div>
+                            <div>
+                                <div class="detector-notas" id="detectorNotas"></div>
+                                <div class="detector-confianca" id="detectorConfianca"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- 2. Círculo de Quintas -->
@@ -64,6 +76,25 @@
                     <input type="text" id="inputAcordes" placeholder="Ex: C, F, G">
                     <button onclick="identificarTom()">Descobrir Tom</button>
                     <div id="resultado" class="resultado-box" style="display:none;margin-top:12px;"></div>
+                    <!-- Graus do Campo Harmônico -->
+                    <div class="graus-container" id="grausContainer">
+                        <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">
+                            <span style="color:#e74c3c">■</span> Tônica &nbsp;
+                            <span style="color:#3498db">■</span> Subdominante &nbsp;
+                            <span style="color:#e67e22">■</span> Dominante
+                        </div>
+                        <div class="graus-grid" id="grausGrid"></div>
+                    </div>
+                </div>
+
+                <!-- Progressões por Gênero -->
+                <div class="progressoes-container modulo-container" id="progressoesContainer">
+                    <div class="modulo-titulo-row">
+                        <h3 class="modulo-titulo">🎵 Progressões por Gênero</h3>
+                        <button class="btn-tooltip" onclick="mostrarTooltip('campo-harmonico')">?</button>
+                    </div>
+                    <div class="genero-tabs" id="generoTabs"></div>
+                    <div class="progressoes-lista" id="progressoesLista"></div>
                 </div>
 
             </div>
@@ -157,7 +188,11 @@
                     </div>
                     <p class="cifra-subtitulo">Cole sua cifra. Clique em qualquer acorde para ver o diagrama.</p>
                     <textarea id="inputCifra" class="cifra-textarea" placeholder="Am          Dm       E7&#10;Hoje eu quero te dizer&#10;      Am       G        C&#10;Que o amor que sinto é real"></textarea>
-                    <button id="btnRenderCifra" onclick="renderizarCifra()">Renderizar Cifra</button>
+                    <div style="display:flex;gap:8px;margin-bottom:10px;">
+                        <button id="btnRenderCifra" onclick="renderizarCifra()" style="flex:1;margin:0;">Renderizar Cifra</button>
+                        <button onclick="abrirModoPerformance()" style="width:auto;margin:0;padding:10px 14px;background:#9b59b6;" title="Modo Performance">⛶</button>
+                        <button onclick="exportarPDF()" style="width:auto;margin:0;padding:10px 14px;background:#e74c3c;" title="Exportar PDF">📄</button>
+                    </div>
                     <div id="cifraRenderizada" class="cifra-renderizada"></div>
                 </div>
 
@@ -177,6 +212,20 @@
 
             </div>
         </div>
+    </div>
+
+    <!-- MODO PERFORMANCE -->
+    <div class="modo-performance" id="modoPerformance">
+        <div class="perf-header">
+            <div class="perf-tom" id="perfTom">🎸 Modo Performance</div>
+            <div class="perf-controles">
+                <button class="perf-fonte-btn" onclick="ajustarFontePerf(-2)">A−</button>
+                <button class="perf-fonte-btn" onclick="ajustarFontePerf(2)">A+</button>
+                <button class="btn-fechar-perf" onclick="fecharModoPerformance()">✕ Fechar</button>
+            </div>
+        </div>
+        <div class="perf-scroll-bar"><div class="perf-scroll-progress" id="perfScrollProgress"></div></div>
+        <div class="perf-cifra" id="perfCifra" onscroll="atualizarScrollPerf()"></div>
     </div>
 
     <!-- POPUP DIAGRAMA -->

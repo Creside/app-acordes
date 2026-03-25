@@ -972,3 +972,236 @@ button.botao-variacao.tipo-nona.ativo  { background:#1abc9c22; border-color:#1ab
     height: 10px;
     border-radius: 50%;
 }
+
+/* ==========================================
+   PROGRESSÕES POR GÊNERO
+   ========================================== */
+.progressoes-container { display:none; }
+.genero-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+button.genero-btn {
+    width: auto; margin: 0;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: 0.2s;
+    background: var(--bg-input-dark);
+    color: var(--text-muted);
+}
+button.genero-btn:hover { color: var(--text); border-color: var(--accent); }
+button.genero-btn.ativo { color: #111; border-color: transparent; }
+.progressoes-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.progressao-row {
+    background: var(--bg-input-dark);
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+    border: 1px solid transparent;
+}
+.progressao-row:hover { border-color: var(--accent); }
+.progressao-nome { font-size: 12px; color: var(--text-muted); min-width: 90px; }
+.progressao-acordes {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    flex: 1;
+}
+.prog-acorde-chip {
+    padding: 3px 9px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    background: var(--bg-modulo);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+.btn-usar-progressao {
+    background: var(--accent);
+    color: #111;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    white-space: nowrap;
+    width: auto;
+    margin: 0;
+    transition: 0.2s;
+}
+.btn-usar-progressao:hover { background: var(--accent-dark); }
+
+/* ==========================================
+   GRAUS DO CAMPO HARMÔNICO
+   ========================================== */
+.graus-container {
+    margin-top: 10px;
+    display: none;
+}
+.graus-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-top: 8px;
+}
+.grau-item {
+    background: var(--bg-input-dark);
+    border-radius: 6px;
+    padding: 6px 4px;
+    text-align: center;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: 0.2s;
+}
+.grau-item:hover { border-color: var(--accent); }
+.grau-item.tonica-grau { border-color: #e74c3c; background: #e74c3c22; }
+.grau-item.dominante-grau { border-color: #e67e22; background: #e67e2222; }
+.grau-item.subdominante-grau { border-color: #3498db; background: #3498db22; }
+.grau-numeral {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 2px;
+}
+.grau-acorde {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--text);
+}
+.grau-funcao {
+    font-size: 9px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+/* ==========================================
+   MODO PERFORMANCE
+   ========================================== */
+.modo-performance {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 2000;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+}
+.modo-performance.ativo { display: flex; }
+.perf-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    background: #111;
+    border-bottom: 1px solid #333;
+    flex-shrink: 0;
+}
+.perf-tom {
+    color: var(--accent);
+    font-size: 18px;
+    font-weight: bold;
+}
+.perf-controles { display: flex; gap: 10px; align-items: center; }
+.perf-fonte-btn {
+    background: #333; border: 1px solid #555; color: #fff;
+    width: 32px; height: 32px; border-radius: 6px; cursor: pointer;
+    font-size: 16px; font-weight: bold; width: auto; padding: 4px 10px; margin: 0;
+}
+.btn-fechar-perf {
+    background: #e74c3c; color: white; border: none;
+    padding: 6px 14px; border-radius: 6px; cursor: pointer;
+    font-size: 14px; font-weight: bold; width: auto; margin: 0;
+}
+.perf-cifra {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 32px;
+    font-family: "Courier New", monospace;
+    line-height: 2.2;
+    white-space: pre;
+    -webkit-overflow-scrolling: touch;
+}
+.perf-cifra .cifra-linha-acordes {
+    color: var(--accent);
+    font-weight: bold;
+    display: block;
+}
+.perf-cifra .cifra-linha-letra {
+    color: #ddd;
+    display: block;
+}
+.perf-cifra .cifra-linha-vazia { display: block; height: 12px; }
+.perf-scroll-bar {
+    height: 4px;
+    background: #333;
+    flex-shrink: 0;
+}
+.perf-scroll-progress {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 0.1s;
+}
+
+/* ==========================================
+   DETECTOR DE ACORDE
+   ========================================== */
+.detector-container {
+    margin-top: 12px;
+    padding: 12px;
+    background: var(--bg-input-dark);
+    border-radius: 8px;
+    border: 1px solid #e67e2255;
+    display: none;
+}
+.detector-titulo {
+    color: #e67e22;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0 0 8px 0;
+}
+.detector-resultado {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.detector-acorde {
+    font-size: 36px;
+    font-weight: bold;
+    color: var(--accent);
+    min-width: 60px;
+}
+.detector-notas {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+.detector-confianca {
+    font-size: 11px;
+    color: #2ecc71;
+}
+button#btnDetector {
+    background: #e67e22;
+    font-size: 13px;
+    padding: 7px 14px;
+    width: auto;
+    margin: 0;
+}
+button#btnDetector:hover { background: #ca6f1e; }
+button#btnDetector.ativo { background: #e74c3c; }
