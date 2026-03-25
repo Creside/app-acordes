@@ -2750,8 +2750,22 @@ function renderizarProgressoes() {
         btn.textContent = '← Usar';
         btn.onclick = (e) => {
             e.stopPropagation();
+            // Preenche o campo
             const input = document.getElementById('inputAcordes');
-            if (input) input.value = acordesReais.join(', ');
+            if (input) {
+                input.value = acordesReais.join(', ');
+                // Scroll suave até o identificador
+                input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Destaca o input brevemente
+                input.style.borderColor = 'var(--accent)';
+                input.style.boxShadow = '0 0 8px var(--accent)';
+                setTimeout(() => {
+                    input.style.borderColor = '';
+                    input.style.boxShadow = '';
+                }, 1000);
+            }
+            // Dispara o identificador automaticamente
+            identificarTom();
         };
 
         row.appendChild(nome);
