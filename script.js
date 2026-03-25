@@ -60,7 +60,14 @@ function identificarTom() {
         for (let i = 0; i < 12; i++) {
             const tonica = notasCromaticas[i];
             const campo = gerarCampoHarmonicoMenor(tonica);
-            if (acordes.every(a => campo.map(c => c.toLowerCase()).includes(a.toLowerCase()))) {
+            // Aceita também V7 como substituto do Vm (menor harmônico)
+            // Ex: Em → E7 em La menor
+            const campoExpandido = [...campo];
+            const grauV = campo[4]; // 5º grau (ex: "Em")
+            if (grauV && grauV.endsWith('m')) {
+                campoExpandido.push(grauV.replace('m', '7')); // adiciona E7
+            }
+            if (acordes.every(a => campoExpandido.map(c => c.toLowerCase()).includes(a.toLowerCase()))) {
                 resultado = { modo: "menor", tonica, campo };
                 break;
             }
