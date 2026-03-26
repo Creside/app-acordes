@@ -2058,34 +2058,7 @@ function desenharCirculoDeQuintas() {
     wrapper.appendChild(svg);
 }
 
-function selecionarTomCirculo(idx, tipo) {
-    const tonica = tipo === "maior" ? circuloMaior[idx] : circuloMenor[idx].replace("m","");
-    const modo = tipo;
-    const nomeDisplay = tipo === "maior" ? circuloMaior[idx] + " Maior" : circuloMenor[idx];
-
-    const campo = tipo === "maior"
-        ? gerarCampoHarmonicoMaior(tonica)
-        : gerarCampoHarmonicoMenor(tonica);
-
-    // Quintas vizinhas
-    const idxAnterior = (idx + N_CIRCULO - 1) % N_CIRCULO;
-    const idxProximo  = (idx + 1) % N_CIRCULO;
-    const vizMaior = [circuloMaior[idxAnterior], circuloMaior[idxProximo]];
-
-    const infoDiv = document.getElementById('circulo-info');
-    infoDiv.style.display = 'block';
-    infoDiv.innerHTML = `
-        <div class="circulo-info-tom">🎵 ${nomeDisplay}</div>
-        <b>Campo Harmônico:</b> ${campo.join(" — ")}<br>
-        <b>Quintas vizinhas:</b> ${vizMaior[0]} ◀ ${circuloMaior[idx]} ▶ ${vizMaior[1]}
-    `;
-
-    // Preenche o input do identificador com os acordes do campo para facilitar
-    document.getElementById('inputAcordes').value = campo.slice(0,4).join(", ");
-}
-
-// Inicializa o círculo quando a página carrega
-window.addEventListener('DOMContentLoaded', desenharCirculoDeQuintas);
+// selecionarTomCirculo definida acima (versão com suporte à aba Explorar)
 
 // ==========================================
 // MODO CLARO / ESCURO
