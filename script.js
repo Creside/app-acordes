@@ -1130,6 +1130,8 @@ function _renderPopupConteudo() {
         desenharTecladoEm(popupNomeAtual, svgArea);
         tmp.remove();
     }
+}
+
 function desenharTecladoEm(nomeAcorde, targetArea) {
     const piano = getPiano(nomeAcorde);
     if (!piano) {
@@ -1140,87 +1142,84 @@ function desenharTecladoEm(nomeAcorde, targetArea) {
         return;
     }
 
+    // Layout fixo em pixels — 2 oitavas (C3 a B4)
+    const WB = 28, WP = 16, HB = 110, HP = 68, GAP = 2;
+
+    // Mapeamento exato de cada tecla branca com seu índice e preta à direita
+    const brancas = [
+        {idx:0,  nome:'C',  preta:{idx:1,  nome:'C#'}},
+        {idx:2,  nome:'D',  preta:{idx:3,  nome:'D#'}},
+        {idx:4,  nome:'E',  preta:null},
+        {idx:5,  nome:'F',  preta:{idx:6,  nome:'F#'}},
+        {idx:7,  nome:'G',  preta:{idx:8,  nome:'G#'}},
+        {idx:9,  nome:'A',  preta:{idx:10, nome:'A#'}},
+        {idx:11, nome:'B',  preta:null},
+        {idx:12, nome:'C',  preta:{idx:13, nome:'C#'}},
+        {idx:14, nome:'D',  preta:{idx:15, nome:'D#'}},
+        {idx:16, nome:'E',  preta:null},
+        {idx:17, nome:'F',  preta:{idx:18, nome:'F#'}},
+        {idx:19, nome:'G',  preta:{idx:20, nome:'G#'}},
+        {idx:21, nome:'A',  preta:{idx:22, nome:'A#'}},
+        {idx:23, nome:'B',  preta:null},
+    ];
+
+    const totalW = brancas.length * (WB + GAP);
+
     const wrapper = document.createElement('div');
-    wrapper.className = 'teclado-wrapper';
-    
+    wrapper.style.cssText = 'overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;';
+
     const teclado = document.createElement('div');
-    teclado.className = 'teclado-container';
+    teclado.style.cssText = `position:relative;width:${totalW}px;height:${HB}px;` +
+        'background:#111;border:2px solid #333;border-radius:4px;box-sizing:border-box;flex-shrink:0;';
 
-    const notasAtivas = piano;
-    const nomesBrancas = ["C","D","E","F","G","A","B","C","D","E","F","G","A","B"];
-    // Mapeamento do índice real (semitons) das 14 teclas brancas (2 oitavas completas)
-    const offsetsBrancas = [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19, 21, 23];
-    const nomesPretas = {1:"C#", 3:"D#", 6:"F#", 8:"G#", 10:"A#", 13:"C#", 15:"D#", 18:"F#", 20:"G#", 22:"A#"};
+    brancas.forEach((b, i) => {
+        const x = i * (WB + GAP);
 
-    let posX = 0; // Posição em pixels para calcular onde as teclas pretas caem
-    const WB = 28; // Largura total de cada tecla branca (26px + 2px margin)
-
-    for (let i = 0; i < 14; i++) {
-        const idxBranca = offsetsBrancas[i];
-        
-        const branca = document.createElement('div');
-        branca.className = 'tecla-branca';
-        if (notasAtivas.includes(idxBranca)) {
-            const marca = document.createElement('div');
-            marca.className = 'marca-tecla ' + getIntervaloNota(nomeAcorde, idxBranca);
-            branca.appendChild(marca);
+        // Tecla branca
+        const tw = document.createElement('div');
+        const marcaW = piano.includes(b.idx);
+        tw.style.cssText = `position:absolute;left:${x}px;top:0;width:${WB}px;height:${HB}px;` +
+            'background:#f0f0f0;border:1px solid #aaa;border-radius:0 0 4px 4px;box-sizing:border-box;';
+        if (marcaW) {
+            const m = document.createElement('div');
+            m.className = 'marca-tecla ' + getIntervaloNota(nomeAcorde, b.idx);
+            m.style.cssText = `position:absolute;bottom:12px;left:50%;transform:translateX(-50%);
+                width:18px;height:18px;border-radius:50%;`;
+            tw.appendChild(m);
         }
-        const lb = document.createElement('div');
-        lb.className = 'nota-tecla-label';
-        lb.textContent = nomesBrancas[i];
-        branca.appendChild(lb);
-        teclado.appendChild(branca);
+        const lb = document.createElement('span');
+        lb.textContent = b.nome;
+        lb.style.cssText = 'position:absolute;bottom:3px;left:50%;transform:translateX(-50%);' +
+            'font-size:8px;font-weight:bold;color:#555;pointer-events:none;';
+        tw.appendChild(lb);
+        teclado.appendChild(tw);
 
-        // Se existir uma tecla preta logo à direita desta branca
-        const idxPreta = idxBranca + 1;
-        if (nomesPretas[idxPreta]) {
-            const preta = document.createElement('div');
-            preta.className = 'tecla-preta';
-            preta.style.left = `${posX + WB - 9}px`; // Calcula exato o meio entre as teclas
-            
-            if (notasAtivas.includes(idxPreta)) {
-                const marca = document.createElement('div');
-                marca.className = 'marca-tecla ' + getIntervaloNota(nomeAcorde, idxPreta);
-                preta.appendChild(marca);
+        // Tecla preta
+        if (b.preta) {
+            const xP = x + WB - WP / 2;
+            const tp = document.createElement('div');
+            const marcaP = piano.includes(b.preta.idx);
+            tp.style.cssText = `position:absolute;left:${xP}px;top:0;width:${WP}px;height:${HP}px;` +
+                'background:#1a1a1a;border:1px solid #000;border-radius:0 0 3px 3px;' +
+                'box-sizing:border-box;z-index:2;';
+            if (marcaP) {
+                const m = document.createElement('div');
+                m.className = 'marca-tecla ' + getIntervaloNota(nomeAcorde, b.preta.idx);
+                m.style.cssText = `position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
+                    width:14px;height:14px;border-radius:50%;`;
+                tp.appendChild(m);
             }
-            const lp = document.createElement('div');
-            lp.className = 'nota-tecla-label';
-            lp.textContent = nomesPretas[idxPreta];
-            preta.appendChild(lp);
-            teclado.appendChild(preta);
+            const lp = document.createElement('span');
+            lp.textContent = b.preta.nome;
+            lp.style.cssText = 'position:absolute;bottom:2px;left:50%;transform:translateX(-50%);' +
+                'font-size:7px;color:#ccc;pointer-events:none;white-space:nowrap;';
+            tp.appendChild(lp);
+            teclado.appendChild(tp);
         }
-        posX += WB;
-    }
+    });
 
     wrapper.appendChild(teclado);
     targetArea.appendChild(wrapper);
-
-    // Legenda de cores
-    const legenda = document.createElement('div');
-    legenda.className = 'teclado-legenda';
-    const items = [
-        {cls:'tonica',nome:'Tônica',cor:'#e74c3c'},
-        {cls:'terca',nome:'Terça',cor:'#3498db'},
-        {cls:'quinta',nome:'Quinta',cor:'#2ecc71'},
-        {cls:'setima',nome:'7ª',cor:'#f39c12'},
-        {cls:'nona',nome:'9ª',cor:'#9b59b6'},
-    ];
-    // Mostra só os intervalos que de fato existem no acorde
-    const semitonsAcorde = piano.map(p => p % 12);
-    items.filter(it => {
-        if (it.cls === 'tonica') return true;
-        if (it.cls === 'terca') return semitonsAcorde.some(s => s===3||s===4);
-        if (it.cls === 'quinta') return semitonsAcorde.includes(7);
-        if (it.cls === 'setima') return semitonsAcorde.some(s => s===10||s===11);
-        if (it.cls === 'nona') return semitonsAcorde.some(s => s===2||s===14%12);
-        return false;
-    }).forEach(it => {
-        legenda.innerHTML += `<span class="teclado-legenda-item">
-            <span class="teclado-legenda-cor" style="background:${it.cor}"></span>${it.nome}
-        </span>`;
-    });
-    targetArea.appendChild(legenda);
-}
 
     // Legenda
     const semis = piano.map(p => p % 12);
