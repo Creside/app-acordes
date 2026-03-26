@@ -160,7 +160,12 @@ function mapearNomeParaBanco(tonicaSigla, modo = "maior") {
 }
 
 function atualizarBraco() {
-    if (notasEscalaAtual.length > 0) desenharBracoMelhorado();
+    // Works even if notasEscalaAtual is empty — uses current tonica
+    if (tonicaBracoAtual) {
+        atualizarBracoComEscala();
+    } else if (notasEscalaAtual.length > 0) {
+        desenharBracoMelhorado();
+    }
 }
 
 function desenharBraco() {
@@ -756,7 +761,9 @@ function getPosicaoRange(posicao, tonicaIdx) {
 
 function selecionarEscala(escala, btn) {
     escalaBracoAtual = escala;
-    document.querySelectorAll('.escala-btn').forEach(b => b.classList.remove('ativo'));
+    // Update only the clicked button's group (not all escala-btns across tabs)
+    const parent = btn.closest('.escala-selector-row');
+    if (parent) parent.querySelectorAll('.escala-btn').forEach(b => b.classList.remove('ativo'));
     btn.classList.add('ativo');
     atualizarBracoComEscala();
 }
@@ -1583,7 +1590,9 @@ function getPosicaoRange(posicao, tonicaIdx) {
 
 function selecionarEscala(escala, btn) {
     escalaBracoAtual = escala;
-    document.querySelectorAll('.escala-btn').forEach(b => b.classList.remove('ativo'));
+    // Update only the clicked button's group (not all escala-btns across tabs)
+    const parent = btn.closest('.escala-selector-row');
+    if (parent) parent.querySelectorAll('.escala-btn').forEach(b => b.classList.remove('ativo'));
     btn.classList.add('ativo');
     atualizarBracoComEscala();
 }
@@ -3104,6 +3113,10 @@ function mostrarAcordeBusca(nomeAcorde) {
         );
         desenharBracoMelhorado();
 
+        // Mostra o container do braço
+        const fc = document.getElementById('fretboard-container');
+        if (fc) fc.style.display = 'block';
+
         // Atualiza botões de escala na aba acorde
         document.querySelectorAll('#tela-acorde .escala-btn').forEach((b,i) => {
             b.classList.toggle('ativo', i === (ehMenor ? 1 : 0));
@@ -3146,9 +3159,9 @@ explorarSelecionarTom = function(tonica, modo) {
     const campo = modo === 'maior' ? gerarCampoHarmonicoMaior(tonica) : gerarCampoHarmonicoMenor(tonica);
     const label = tonica + ' ' + (modo === 'maior' ? 'Maior' : 'menor');
 
-    // Atualiza input explorInputTom com os acordes do campo
+    // Atualiza input explorInputTom com somente a tônica clicada
     const inputExplor = document.getElementById('explorInputTom');
-    if (inputExplor) inputExplor.value = campo.slice(0,4).join(', ');
+    if (inputExplor) inputExplor.value = tonica + (modo === 'menor' ? 'm' : '');
 
     // Atualiza label
     const lbl = document.getElementById('explorTomAtual');
