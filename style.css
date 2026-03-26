@@ -1797,7 +1797,7 @@ button.metro-compasso-btn.ativo {
 }
 @media (min-width: 1024px) {
     .tela { padding-top: 20px; }
-    .app-body { padding-top: 100px; } /* header + nav */
+    .app-body { padding-top: 0; }
 }
 
 /* Tela Acorde — busca de acorde */
