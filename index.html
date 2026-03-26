@@ -30,17 +30,17 @@
 
     <!-- NAVEGAÇÃO POR ABAS -->
     <nav class="nav-tabs">
-        <button class="nav-tab ativa" onclick="mudarTela('tom')" id="nav-tom">
+        <button class="nav-tab ativa" onclick="mudarTela('explorar')" id="nav-explorar">
+            <span class="nav-tab-icon">⭕</span>
+            <span class="nav-tab-label">Explorar</span>
+        </button>
+        <button class="nav-tab" onclick="mudarTela('tom')" id="nav-tom">
             <span class="nav-tab-icon">🎵</span>
             <span class="nav-tab-label">Tom</span>
         </button>
         <button class="nav-tab" onclick="mudarTela('acorde')" id="nav-acorde">
             <span class="nav-tab-icon">🎸</span>
             <span class="nav-tab-label">Acorde</span>
-        </button>
-        <button class="nav-tab" onclick="mudarTela('explorar')" id="nav-explorar">
-            <span class="nav-tab-icon">⭕</span>
-            <span class="nav-tab-label">Explorar</span>
         </button>
         <button class="nav-tab" onclick="mudarTela('tools')" id="nav-tools">
             <span class="nav-tab-icon">🛠️</span>
@@ -162,14 +162,6 @@
 
                 <!-- Solo + Braço -->
                 <div>
-                    <div class="solo-container modulo-container" id="soloContainer">
-                        <div class="modulo-titulo-row">
-                            <h3 class="modulo-titulo solo-titulo">🎸 Sugestão de Solo</h3>
-                            <button class="btn-tooltip" onclick="mostrarTooltip('pentatonica')">?</button>
-                        </div>
-                        <div class="solo-escalas" id="soloEscalas"></div>
-                    </div>
-
                     <div id="fretboard-container" style="display:none;margin-top:14px;" class="modulo-container">
                         <div class="braco-header">
                             <h3 class="braco-titulo">🎸 Escala no Braço</h3>
@@ -368,7 +360,10 @@
     <button onclick="document.getElementById('iosBanner').style.display='none'" style="background:none;border:none;color:#aaa;font-size:20px;cursor:pointer;width:auto;padding:4px;">✕</button>
 </div>
 
-<!-- POPUP DIAGRAMA -->
+<!-- soloContainer hidden (used by Tom tab) -->
+    <div id="soloContainer" style="display:none;"><div id="soloEscalas"></div></div>
+
+    <!-- POPUP DIAGRAMA -->
 <div id="cifra-popup" class="cifra-popup">
     <button class="cifra-popup-fechar" onclick="fecharPopup()">✕</button>
     <div class="cifra-popup-nome" id="popup-nome"></div>

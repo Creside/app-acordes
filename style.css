@@ -1726,46 +1726,56 @@ button.metro-compasso-btn.ativo {
 
 /* Layout desktop dentro das telas */
 @media (min-width: 1024px) {
+    /* Nav fica logo abaixo do header, como parte do fluxo normal */
     .nav-tabs {
-        top: 52px;
-        bottom: auto;
+        position: static;
         border-top: none;
         border-bottom: 1px solid var(--border);
         height: 48px;
         box-shadow: 0 2px 8px var(--shadow);
+        flex-shrink: 0;
     }
     .nav-tab {
         flex-direction: row;
         gap: 6px;
         font-size: 13px;
         border-top: none;
-        border-bottom: 2px solid transparent;
+        border-bottom: 3px solid transparent;
+        padding: 0 20px;
     }
     .nav-tab.ativa { border-bottom-color: var(--accent); border-top: none; }
     .nav-tab-icon { font-size: 16px; }
     .nav-tab-label { font-size: 13px; }
     .tela { padding: 20px; }
+    /* Telas wrapper ocupa o restante */
+    .telas-wrapper { flex: 1; overflow: hidden; }
+    .tela { height: 100%; }
 
-    /* Grid 3 colunas apenas na tela Explorar */
+    /* Grid 3 colunas — Explorar */
     .tela-explorar .explor-grid-desktop {
         display: grid;
         grid-template-columns: 320px 1fr 1fr;
         gap: 16px;
         align-items: start;
     }
-    /* Grid 2 colunas nas outras telas */
+    /* Grid 2 colunas */
     .tela-2col {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 16px;
         align-items: start;
     }
+    /* Grid 3 colunas */
     .tela-3col {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         gap: 16px;
         align-items: start;
     }
+    /* Remove padding bottom no desktop */
+    .tela { padding-bottom: 20px; }
+    /* App body não precisa de padding-top extra */
+    .app-body { padding-top: 0; }
 }
 
 /* Ajuste do app-header para não sobrepor nav */

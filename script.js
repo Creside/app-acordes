@@ -3014,7 +3014,7 @@ function identificarAcordeDeNotas(notas) {
 // ==========================================
 // NAVEGAÇÃO POR ABAS
 // ==========================================
-let telaAtiva = 'tom';
+let telaAtiva = 'explorar';
 
 function mudarTela(tela) {
     // Esconde todas as telas
@@ -3043,9 +3043,9 @@ const acordesMaisUsados = ['C','G','D','A','E','F','Am','Em','Dm','Gm','Bm','F#m
 function gerarSugestoesAcorde() {
     const cont = document.getElementById('sugestoesAcorde');
     if (!cont || cont.children.length > 0) return;
-    acordesMaisUsados.slice(0, 16).forEach(ac => {
+    acordesMaisUsados.slice(0, 24).forEach(ac => {
         const btn = document.createElement('button');
-        btn.className = 'botao-variacao tipo-' + tipoAcorde(ac).replace('tipo-','');
+        btn.className = 'botao-variacao ' + tipoAcorde(ac);
         btn.textContent = ac;
         btn.onclick = () => {
             document.getElementById('inputBuscarAcorde').value = ac;
@@ -3064,16 +3064,37 @@ function buscarAcordeInput() {
 }
 
 function mostrarAcordeBusca(nomeAcorde) {
-    // Mostra diagrama direto
+    if (!nomeAcorde) return;
+
+    // Highlight botão selecionado nas sugestões
+    document.querySelectorAll('#sugestoesAcorde .botao-variacao').forEach(b => {
+        b.classList.toggle('ativo', b.textContent === nomeAcorde);
+    });
+
+    // Garante que o container do diagrama está visível
+    const viz = document.getElementById('acorde-viz-container');
+    if (viz) viz.style.display = 'block';
+
+    // Força modo violão ao abrir
+    visaoDiagramaAtual = 'guitarra';
+    const tg = document.getElementById('tab-guitarra');
+    const tt = document.getElementById('tab-teclado');
+    if (tg) tg.classList.add('ativo');
+    if (tt) tt.classList.remove('ativo');
+    const toggleRow = document.getElementById('toggleRow');
+    if (toggleRow) toggleRow.style.display = 'flex';
+
+    // Mostra diagrama
     acordeAtualSelecionado = nomeAcorde;
     posicaoAtual = 0;
     _renderDiagramaComPosicao(nomeAcorde, 0);
 
-    // Tenta deduzir tom para solo e braço
+    // Deduz tom para o braço
     const match = nomeAcorde.match(/^([A-G][#b]?)/);
     if (match) {
         const tonica = match[1];
-        const ehMenor = /m/.test(nomeAcorde.replace('M','').replace('maj',''));
+        const sufixo = nomeAcorde.slice(tonica.length);
+        const ehMenor = /^m(?!a)/.test(sufixo) || /dim/.test(sufixo);
         const modo = ehMenor ? 'menor' : 'maior';
         tonicaBracoAtual = tonica;
         modoBracoAtual = modo;
@@ -3081,10 +3102,9 @@ function mostrarAcordeBusca(nomeAcorde) {
         notasEscalaAtual = formulasEscalaBraco[escalaBracoAtual].map(
             s => notasCromaticas[(notasCromaticas.indexOf(tonica)+s)%12]
         );
-        mostrarSugestoesSolo(tonica, modo);
         desenharBracoMelhorado();
 
-        // Atualiza escala btn
+        // Atualiza botões de escala na aba acorde
         document.querySelectorAll('#tela-acorde .escala-btn').forEach((b,i) => {
             b.classList.toggle('ativo', i === (ehMenor ? 1 : 0));
         });
@@ -3125,6 +3145,10 @@ explorarSelecionarTom = function(tonica, modo) {
     explorTonicaAtual = tonica;
     const campo = modo === 'maior' ? gerarCampoHarmonicoMaior(tonica) : gerarCampoHarmonicoMenor(tonica);
     const label = tonica + ' ' + (modo === 'maior' ? 'Maior' : 'menor');
+
+    // Atualiza input explorInputTom com os acordes do campo
+    const inputExplor = document.getElementById('explorInputTom');
+    if (inputExplor) inputExplor.value = campo.slice(0,4).join(', ');
 
     // Atualiza label
     const lbl = document.getElementById('explorTomAtual');
@@ -3185,8 +3209,9 @@ explorarTabAcorde = function(tab) {
 window.addEventListener('DOMContentLoaded', () => {
     initMetroVisual();
     gerarSugestoesAcorde();
-    // Desenha círculo na aba explorar ao carregar
-    setTimeout(() => desenharCirculoDeQuintas(), 100);
+    // Começa na aba Explorar
+    mudarTela('explorar');
+    setTimeout(() => desenharCirculoDeQuintas(), 150);
 });
 
 // ==========================================
