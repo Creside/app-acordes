@@ -1321,26 +1321,38 @@ function selecionarTomCirculo(idx, tipo) {
     const tonica = tipo === "maior" ? circuloMaior[idx] : circuloMenor[idx].replace("m","");
     const modo = tipo;
     const nomeDisplay = tipo === "maior" ? circuloMaior[idx] + " Maior" : circuloMenor[idx];
+    const notaExibida = tipo === "maior" ? circuloMaior[idx] : circuloMenor[idx];
 
     const campo = tipo === "maior"
         ? gerarCampoHarmonicoMaior(tonica)
         : gerarCampoHarmonicoMenor(tonica);
 
-    // Quintas vizinhas
+    // Se estiver na aba Explorar, usa explorarSelecionarTom
+    if (telaAtiva === 'explorar') {
+        explorarSelecionarTom(tonica, modo);
+        // Atualiza o input com só a nota clicada
+        const inp = document.getElementById('explorInputTom');
+        if (inp) inp.value = notaExibida;
+        return;
+    }
+
+    // Quintas vizinhas (aba Tom)
     const idxAnterior = (idx + N_CIRCULO - 1) % N_CIRCULO;
     const idxProximo  = (idx + 1) % N_CIRCULO;
     const vizMaior = [circuloMaior[idxAnterior], circuloMaior[idxProximo]];
 
     const infoDiv = document.getElementById('circulo-info');
-    infoDiv.style.display = 'block';
-    infoDiv.innerHTML = `
-        <div class="circulo-info-tom">🎵 ${nomeDisplay}</div>
-        <b>Campo Harmônico:</b> ${campo.join(" — ")}<br>
-        <b>Quintas vizinhas:</b> ${vizMaior[0]} ◀ ${circuloMaior[idx]} ▶ ${vizMaior[1]}
-    `;
-
-    // Preenche o input do identificador com os acordes do campo para facilitar
-    document.getElementById('inputAcordes').value = campo.slice(0,4).join(", ");
+    if (infoDiv) {
+        infoDiv.style.display = 'block';
+        infoDiv.innerHTML = `
+            <div class="circulo-info-tom">🎵 ${nomeDisplay}</div>
+            <b>Campo Harmônico:</b> ${campo.join(" — ")}<br>
+            <b>Quintas vizinhas:</b> ${vizMaior[0]} ◀ ${circuloMaior[idx]} ▶ ${vizMaior[1]}
+        `;
+    }
+    // Preenche o input do identificador
+    const inp = document.getElementById('inputAcordes');
+    if (inp) inp.value = campo.slice(0,4).join(", ");
 }
 
 // Inicializa o círculo quando a página carrega
@@ -1555,7 +1567,11 @@ function _renderDiagramaComPosicao(nomeAcorde, posIdx) {
         area.appendChild(tabsDiv);
     }
 
-    area.appendChild(criarSVGAcorde(nomeAcorde, 1, posIdx));
+    if (visaoDiagramaAtual === 'teclado') {
+        desenharTecladoEm(nomeAcorde, area);
+    } else {
+        area.appendChild(criarSVGAcorde(nomeAcorde, 1, posIdx));
+    }
 }
 
 
@@ -2416,11 +2432,16 @@ criarSVGAcorde = function(nomeAcorde, escala, posicaoIdx) {
 const _mudarVisaoOrig = mudarVisaoDiagrama;
 mudarVisaoDiagrama = function(visao) {
     visaoDiagramaAtual = visao;
-    document.getElementById('tab-guitarra').classList.toggle('ativo', visao==='guitarra');
-    document.getElementById('tab-teclado').classList.toggle('ativo', visao==='teclado');
+    const tg = document.getElementById('tab-guitarra');
+    const tt = document.getElementById('tab-teclado');
+    if (tg) tg.classList.toggle('ativo', visao==='guitarra');
+    if (tt) tt.classList.toggle('ativo', visao==='teclado');
     const toggleRow = document.getElementById('toggleRow');
     if (toggleRow) toggleRow.style.display = visao === 'guitarra' ? 'flex' : 'none';
-    renderizarVisualizacao();
+    // Re-render current chord preserving the mode
+    if (acordeAtualSelecionado) {
+        _renderDiagramaComPosicao(acordeAtualSelecionado, posicaoAtual || 0);
+    }
 };
 
 // ==========================================
@@ -3045,22 +3066,41 @@ function mudarTela(tela) {
 // ==========================================
 // TELA ACORDE — BUSCA INDEPENDENTE
 // ==========================================
-const acordesMaisUsados = ['C','G','D','A','E','F','Am','Em','Dm','Gm','Bm','F#m',
-    'C7','G7','D7','A7','E7','B7','F7','Am7','Em7','Dm7','Gm7','Bm7',
-    'C7M','G7M','D7M','A7M','E7M','F7M','Cm','Fm','C#m','G#m'];
+// Acordes organizados por grupo
+const acordesGrupos = [
+    { label: 'Maiores',  acordes: ['C','D','E','F','G','A','B'] },
+    { label: 'Menores',  acordes: ['Am','Bm','Cm','Dm','Em','Fm','Gm'] },
+    { label: 'Dom 7',    acordes: ['C7','D7','E7','F7','G7','A7','B7'] },
+    { label: 'Maj 7',    acordes: ['C7M','D7M','E7M','F7M','G7M','A7M','B7M'] },
+    { label: 'Men 7',    acordes: ['Am7','Bm7','Cm7','Dm7','Em7','F#m7','Gm7'] },
+    { label: 'C# / #',  acordes: ['C#','D#','F#','G#','A#','C#m','F#m','G#m','A#m'] },
+];
+const acordesMaisUsados = acordesGrupos.flatMap(g => g.acordes);
 
 function gerarSugestoesAcorde() {
     const cont = document.getElementById('sugestoesAcorde');
     if (!cont || cont.children.length > 0) return;
-    acordesMaisUsados.slice(0, 24).forEach(ac => {
-        const btn = document.createElement('button');
-        btn.className = 'botao-variacao ' + tipoAcorde(ac);
-        btn.textContent = ac;
-        btn.onclick = () => {
-            document.getElementById('inputBuscarAcorde').value = ac;
-            mostrarAcordeBusca(ac);
-        };
-        cont.appendChild(btn);
+    acordesGrupos.forEach(grupo => {
+        // Label do grupo
+        const lbl = document.createElement('div');
+        lbl.style.cssText = 'width:100%;font-size:10px;font-weight:bold;color:var(--text-muted);margin:6px 0 2px;letter-spacing:1px;text-transform:uppercase;';
+        lbl.textContent = grupo.label;
+        cont.appendChild(lbl);
+        // Botões do grupo
+        const row = document.createElement('div');
+        row.style.cssText = 'display:flex;flex-wrap:wrap;gap:5px;width:100%;';
+        grupo.acordes.forEach(ac => {
+            const btn = document.createElement('button');
+            btn.className = 'botao-variacao ' + tipoAcorde(ac);
+            btn.textContent = ac;
+            btn.style.cssText = 'margin:0;';
+            btn.onclick = () => {
+                document.getElementById('inputBuscarAcorde').value = ac;
+                mostrarAcordeBusca(ac);
+            };
+            row.appendChild(btn);
+        });
+        cont.appendChild(row);
     });
 }
 
@@ -3084,14 +3124,14 @@ function mostrarAcordeBusca(nomeAcorde) {
     const viz = document.getElementById('acorde-viz-container');
     if (viz) viz.style.display = 'block';
 
-    // Força modo violão ao abrir
-    visaoDiagramaAtual = 'guitarra';
+    // Preserva a visão atual (não força violão)
+    // Apenas garante que os tabs estão corretos visualmente
     const tg = document.getElementById('tab-guitarra');
     const tt = document.getElementById('tab-teclado');
-    if (tg) tg.classList.add('ativo');
-    if (tt) tt.classList.remove('ativo');
+    if (tg) tg.classList.toggle('ativo', visaoDiagramaAtual === 'guitarra');
+    if (tt) tt.classList.toggle('ativo', visaoDiagramaAtual === 'teclado');
     const toggleRow = document.getElementById('toggleRow');
-    if (toggleRow) toggleRow.style.display = 'flex';
+    if (toggleRow) toggleRow.style.display = visaoDiagramaAtual === 'guitarra' ? 'flex' : 'none';
 
     // Mostra diagrama
     acordeAtualSelecionado = nomeAcorde;
