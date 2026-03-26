@@ -2,13 +2,10 @@
 <html lang="pt-BR" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <title>Acordes - App</title>
-    <link rel="stylesheet" href="style.css?v=1774531047">
-    <!-- PWA -->
+    <link rel="stylesheet" href="style.css?v=20250326">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#f1c40f">
     <meta name="mobile-web-app-capable" content="yes">
@@ -18,54 +15,45 @@
     <link rel="apple-touch-icon" href="icon-192.png">
 </head>
 <body>
+<div class="app-body">
 
+    <!-- HEADER -->
     <div class="app-header">
         <h1 class="app-titulo">🎸 Identificador de Tom</h1>
         <div class="header-acoes">
             <button class="btn-icone" onclick="abrirAjuda()" title="Ajuda">❓</button>
             <button class="btn-icone" id="btnCompartilhar" onclick="compartilharResultado()" title="Compartilhar" style="display:none">📤</button>
-            <button class="btn-icone" id="btnInstalar" onclick="instalarApp()" title="Instalar no celular" style="display:none">📲</button>
-            <button class="btn-icone" onclick="abrirModoExploracao()" title="Modo Exploração — tudo numa tela">🔭</button>
-            <button class="btn-icone" id="btnTema" onclick="alternarTema()" title="Modo claro/escuro">🌙</button>
+            <button class="btn-icone" id="btnInstalar" onclick="instalarApp()" title="Instalar" style="display:none">📲</button>
+            <button class="btn-icone" id="btnTema" onclick="alternarTema()" title="Tema">🌙</button>
         </div>
     </div>
 
-    <div class="container">
-        <div class="layout-grid">
+    <!-- NAVEGAÇÃO POR ABAS -->
+    <nav class="nav-tabs">
+        <button class="nav-tab ativa" onclick="mudarTela('tom')" id="nav-tom">
+            <span class="nav-tab-icon">🎵</span>
+            <span class="nav-tab-label">Tom</span>
+        </button>
+        <button class="nav-tab" onclick="mudarTela('acorde')" id="nav-acorde">
+            <span class="nav-tab-icon">🎸</span>
+            <span class="nav-tab-label">Acorde</span>
+        </button>
+        <button class="nav-tab" onclick="mudarTela('explorar')" id="nav-explorar">
+            <span class="nav-tab-icon">⭕</span>
+            <span class="nav-tab-label">Explorar</span>
+        </button>
+        <button class="nav-tab" onclick="mudarTela('tools')" id="nav-tools">
+            <span class="nav-tab-icon">🛠️</span>
+            <span class="nav-tab-label">Tools</span>
+        </button>
+    </nav>
 
-            <!-- ======================== COLUNA 1 — INPUT ======================== -->
-            <div class="coluna coluna-1">
+    <!-- TELAS -->
+    <div class="telas-wrapper">
 
-                <!-- Afinador -->
-                <div class="afinador-container modulo-container">
-                    <div class="modulo-titulo-row">
-                        <h3 class="afinador-titulo">🎤 Afinador</h3>
-                        <button class="btn-tooltip" onclick="mostrarTooltip('afinador')">?</button>
-                    </div>
-                    <p class="afinador-subtitulo">Cante uma nota ou toque uma corda.</p>
-                    <button id="btnAfinador" onclick="iniciarAfinador()">Ligar Microfone</button>
-                    <div id="notaDetectada">--</div>
-                    <div id="frequenciaDetectada">-- Hz</div>
-                </div>
-
-                <!-- Detector de Acorde -->
-                <div class="modulo-container" style="border-color:#e67e2255;">
-                    <div class="modulo-titulo-row">
-                        <h3 class="modulo-titulo" style="color:#e67e22;">🎸 Detector de Acorde</h3>
-                        <button class="btn-tooltip" onclick="mostrarTooltip('afinador')">?</button>
-                    </div>
-                    <p class="afinador-subtitulo">Toque um acorde no instrumento para detectar em tempo real.</p>
-                    <button id="btnDetector" onclick="toggleDetectorAcorde()" style="background-color:#e67e22;color:white;border:none;padding:12px 20px;border-radius:5px;cursor:pointer;font-size:16px;width:100%;font-weight:bold;margin-bottom:0;">Ligar Detector</button>
-                    <div class="detector-container" id="detectorContainer">
-                        <div class="detector-resultado">
-                            <div class="detector-acorde" id="detectorAcorde">--</div>
-                            <div>
-                                <div class="detector-notas" id="detectorNotas"></div>
-                                <div class="detector-confianca" id="detectorConfianca"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- ==================== TELA: TOM ==================== -->
+        <div class="tela tela-tom ativa" id="tela-tom">
+            <div class="tela-3col">
 
                 <!-- Identificador de Tom -->
                 <div class="modulo-container">
@@ -73,12 +61,11 @@
                         <h3 class="modulo-titulo">🎵 Identificador de Tom</h3>
                         <button class="btn-tooltip" onclick="mostrarTooltip('campo-harmonico')">?</button>
                     </div>
-                    <input type="text" id="inputAcordes" placeholder="Ex: C, F, G">
+                    <input type="text" id="inputAcordes" placeholder="Ex: C, F, G, Am">
                     <button onclick="identificarTom()">Descobrir Tom</button>
                     <div id="resultado" class="resultado-box" style="display:none;margin-top:12px;"></div>
-                    <!-- Graus do Campo Harmônico -->
                     <div class="graus-container" id="grausContainer">
-                        <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">
+                        <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">
                             <span style="color:#e74c3c">■</span> Tônica &nbsp;
                             <span style="color:#3498db">■</span> Subdominante &nbsp;
                             <span style="color:#e67e22">■</span> Dominante
@@ -90,30 +77,24 @@
                 <!-- Progressões por Gênero -->
                 <div class="progressoes-container modulo-container" id="progressoesContainer">
                     <div class="modulo-titulo-row">
-                        <h3 class="modulo-titulo">🎵 Progressões por Gênero</h3>
+                        <h3 class="modulo-titulo">🎼 Progressões por Gênero</h3>
                         <button class="btn-tooltip" onclick="mostrarTooltip('campo-harmonico')">?</button>
                     </div>
                     <div class="genero-tabs" id="generoTabs"></div>
                     <div class="progressoes-lista" id="progressoesLista"></div>
                 </div>
 
-            </div>
-
-            <!-- ======================== COLUNA 2 — VISUAL ======================== -->
-            <div class="coluna coluna-2">
-
                 <!-- Metrônomo -->
                 <div class="modulo-container metronomo-container">
                     <div class="modulo-titulo-row">
                         <h3 class="modulo-titulo">🥁 Metrônomo</h3>
-                        <button class="btn-tooltip" onclick="mostrarTooltip('afinador')">?</button>
                     </div>
                     <div class="metronomo-bpm-row">
                         <button class="metro-bpm-btn" onclick="ajustarBPM(-10)">−10</button>
                         <button class="metro-bpm-btn" onclick="ajustarBPM(-1)">−</button>
-                        <div>
+                        <div style="text-align:center;">
                             <div class="metro-bpm-display" id="metroBPM">80</div>
-                            <div class="metro-bpm-label" style="text-align:center;">BPM</div>
+                            <div class="metro-bpm-label">BPM</div>
                         </div>
                         <button class="metro-bpm-btn" onclick="ajustarBPM(1)">+</button>
                         <button class="metro-bpm-btn" onclick="ajustarBPM(10)">+10</button>
@@ -121,245 +102,323 @@
                     <input type="range" class="metro-bpm-slider" id="metroBPMSlider"
                         min="40" max="240" value="80" oninput="setBPMSlider(this.value)">
                     <div class="metro-compasso-row">
-                        <button class="metro-compasso-btn ativo" onclick="setCompasso(4, this)">4/4</button>
-                        <button class="metro-compasso-btn" onclick="setCompasso(3, this)">3/4</button>
-                        <button class="metro-compasso-btn" onclick="setCompasso(2, this)">2/4</button>
-                        <button class="metro-compasso-btn" onclick="setCompasso(6, this)">6/8</button>
+                        <button class="metro-compasso-btn ativo" onclick="setCompasso(4,this)">4/4</button>
+                        <button class="metro-compasso-btn" onclick="setCompasso(3,this)">3/4</button>
+                        <button class="metro-compasso-btn" onclick="setCompasso(2,this)">2/4</button>
+                        <button class="metro-compasso-btn" onclick="setCompasso(6,this)">6/8</button>
                     </div>
                     <div class="metro-visual" id="metroVisual"></div>
                     <button id="btnMetronomo" onclick="toggleMetronomo()">▶ Iniciar</button>
                     <button id="btnTapTempo" onclick="tapTempo()">👆 Tap Tempo</button>
                 </div>
 
-                <!-- Círculo de Quintas -->
-                <div class="circulo-container modulo-container">
+            </div>
+        </div>
+
+        <!-- ==================== TELA: ACORDE ==================== -->
+        <div class="tela tela-acorde" id="tela-acorde">
+            <div class="tela-2col">
+
+                <!-- Busca e Visualização -->
+                <div>
+                    <div class="modulo-container">
+                        <div class="modulo-titulo-row">
+                            <h3 class="modulo-titulo">🎼 Buscar Acorde</h3>
+                        </div>
+                        <div class="acorde-busca">
+                            <input type="text" id="inputBuscarAcorde" placeholder="Ex: Am7, G, F#m" oninput="buscarAcordeInput()">
+                        </div>
+                        <!-- Sugestões rápidas -->
+                        <div class="grade-botoes" id="sugestoesAcorde" style="margin-top:4px;"></div>
+                    </div>
+
+                    <!-- Visualização -->
+                    <div class="modulo-container" id="acorde-viz-container" style="margin-top:14px;">
+                        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                            <h3 id="nomeAcordeDestaque" class="diagrama-titulo" style="margin:0;font-size:22px;">--</h3>
+                            <div class="diagrama-tabs">
+                                <button id="tab-guitarra" class="tab-btn ativo" onclick="mudarVisaoDiagrama('guitarra')">🎸 Violão</button>
+                                <button id="tab-teclado" class="tab-btn" onclick="mudarVisaoDiagrama('teclado')">🎹 Teclado</button>
+                            </div>
+                        </div>
+                        <div id="variacoes-container-inner" style="display:none;margin-bottom:10px;">
+                            <div class="legenda-tipos" id="legendaTipos"></div>
+                            <div id="gradeVariacoes" class="grade-botoes"></div>
+                        </div>
+                        <div class="diagrama-toggle-row" id="toggleRow" style="display:none;">
+                            <span>Dedos</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="toggleNotasDedos" onchange="alternarModoNotas()">
+                                <div class="toggle-track"></div>
+                                <div class="toggle-thumb"></div>
+                            </label>
+                            <span>Notas</span>
+                        </div>
+                        <div class="chord-card" id="chord-card-box">
+                            <div id="chord-visual-area"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Solo + Braço -->
+                <div>
+                    <div class="solo-container modulo-container" id="soloContainer">
+                        <div class="modulo-titulo-row">
+                            <h3 class="modulo-titulo solo-titulo">🎸 Sugestão de Solo</h3>
+                            <button class="btn-tooltip" onclick="mostrarTooltip('pentatonica')">?</button>
+                        </div>
+                        <div class="solo-escalas" id="soloEscalas"></div>
+                    </div>
+
+                    <div id="fretboard-container" style="display:none;margin-top:14px;" class="modulo-container">
+                        <div class="braco-header">
+                            <h3 class="braco-titulo">🎸 Escala no Braço</h3>
+                            <select id="seletorInstrumento" onchange="atualizarBraco()">
+                                <option value="guitarra">Violão</option>
+                                <option value="baixo">Baixo</option>
+                            </select>
+                        </div>
+                        <div class="escala-selector-row">
+                            <button class="escala-btn ativo" onclick="selecionarEscala('penta_maior',this)">Penta M</button>
+                            <button class="escala-btn" onclick="selecionarEscala('penta_menor',this)">Penta m</button>
+                            <button class="escala-btn" onclick="selecionarEscala('maior',this)">Maior</button>
+                            <button class="escala-btn" onclick="selecionarEscala('menor',this)">Menor</button>
+                            <button class="escala-btn" onclick="selecionarEscala('menor_harm',this)">M.Harm</button>
+                            <button class="escala-btn" onclick="selecionarEscala('blues',this)">Blues</button>
+                        </div>
+                        <div class="posicao-selector-row">
+                            <span class="posicao-label">Pos:</span>
+                            <button class="posicao-braco-btn ativo" onclick="selecionarPosicao(0,this)">Todas</button>
+                            <button class="posicao-braco-btn" onclick="selecionarPosicao(1,this)">1ª</button>
+                            <button class="posicao-braco-btn" onclick="selecionarPosicao(2,this)">2ª</button>
+                            <button class="posicao-braco-btn" onclick="selecionarPosicao(3,this)">3ª</button>
+                            <button class="posicao-braco-btn" onclick="selecionarPosicao(4,this)">4ª</button>
+                            <button class="posicao-braco-btn" onclick="selecionarPosicao(5,this)">5ª</button>
+                        </div>
+                        <div class="fretboard-wrapper">
+                            <div class="fretboard" id="fretboard"></div>
+                        </div>
+                        <div class="braco-legenda">
+                            <span class="braco-legenda-item"><span class="braco-legenda-cor" style="background:#e74c3c"></span>Tônica</span>
+                            <span class="braco-legenda-item"><span class="braco-legenda-cor" style="background:#3498db"></span>Escala</span>
+                            <span class="braco-legenda-item"><span class="braco-legenda-cor" style="background:#e67e22;border-radius:3px"></span>Solta</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ==================== TELA: EXPLORAR ==================== -->
+        <div class="tela tela-explorar" id="tela-explorar">
+            <!-- Input de tom livre -->
+            <div class="modulo-container" style="margin-bottom:14px;">
+                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                    <h3 style="margin:0;color:var(--accent);font-size:16px;">⭕ Explorar por Tom</h3>
+                    <input type="text" id="explorInputTom" placeholder="Ex: Am, C, G" style="flex:1;margin:0;min-width:150px;" oninput="explorarPorTom()">
+                    <span id="explorTomAtual" style="font-size:14px;font-weight:bold;color:var(--accent);white-space:nowrap;"></span>
+                </div>
+            </div>
+
+            <div class="explor-grid-desktop">
+
+                <!-- Círculo de Quintas (coluna larga) -->
+                <div class="modulo-container" style="grid-row:1/3;">
                     <div class="modulo-titulo-row">
                         <h3 class="circulo-titulo">⭕ Círculo de Quintas</h3>
                         <button class="btn-tooltip" onclick="mostrarTooltip('circulo')">?</button>
                     </div>
-                    <p class="circulo-subtitulo">Clique num tom para ver o campo harmônico.</p>
+                    <p class="circulo-subtitulo">Clique num tom para explorar.</p>
                     <div class="circulo-svg-wrapper" id="circulo-svg-wrapper"></div>
                     <div id="circulo-info" class="circulo-info"></div>
                 </div>
 
-                <!-- Visualização do Acorde -->
-                <div id="chord-diagram-container" style="display:none;" class="modulo-container">
-                    <div class="modulo-titulo-row" style="margin-bottom:10px;">
-                        <h3 class="modulo-titulo">🎼 Visualização do Acorde</h3>
-                        <button class="btn-tooltip" onclick="mostrarTooltip('cifra')">?</button>
-                    </div>
-                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;">
-                        <h3 id="nomeAcordeDestaque" class="diagrama-titulo" style="margin:0;font-size:22px;"></h3>
+                <!-- Acorde -->
+                <div class="modulo-container">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                        <h3 id="nomeAcordeDestaqueExplor" class="diagrama-titulo" style="margin:0;font-size:18px;">--</h3>
                         <div class="diagrama-tabs">
-                            <button id="tab-guitarra" class="tab-btn ativo" onclick="mudarVisaoDiagrama('guitarra')">🎸 Violão</button>
-                            <button id="tab-teclado" class="tab-btn" onclick="mudarVisaoDiagrama('teclado')">🎹 Teclado</button>
+                            <button class="tab-btn ativo" id="explor-tab-v" onclick="explorarTabAcorde('violao')">🎸</button>
+                            <button class="tab-btn" id="explor-tab-t" onclick="explorarTabAcorde('teclado')">🎹</button>
                         </div>
                     </div>
-                    <div id="variacoes-container-inner" style="display:none;margin-bottom:10px;">
-                        <div class="legenda-tipos" id="legendaTipos"></div>
-                        <div id="gradeVariacoes" class="grade-botoes"></div>
-                    </div>
-                    <div class="diagrama-toggle-row" id="toggleRow" style="display:none;">
-                        <span>Dedos</span>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="toggleNotasDedos" onchange="alternarModoNotas()">
-                            <div class="toggle-track"></div>
-                            <div class="toggle-thumb"></div>
-                        </label>
-                        <span>Notas</span>
-                    </div>
-                    <div class="chord-card" id="chord-card-box">
-                        <div id="chord-visual-area"></div>
+                    <div class="grade-botoes" id="explor-grade-acordes" style="margin-bottom:10px;"></div>
+                    <div class="chord-card">
+                        <div id="explor-acorde-visual"></div>
                     </div>
                 </div>
 
-                <!-- Sugestão de Solo -->
-                <div class="solo-container modulo-container" id="soloContainer">
+                <!-- Solo -->
+                <div class="modulo-container">
                     <div class="modulo-titulo-row">
-                        <h3 class="modulo-titulo solo-titulo">🎸 Sugestão de Solo</h3>
-                        <button class="btn-tooltip" onclick="mostrarTooltip('pentatonica')">?</button>
+                        <h3 class="modulo-titulo">🎸 Sugestão de Solo</h3>
                     </div>
-                    <div class="solo-escalas" id="soloEscalas"></div>
+                    <div id="explor-solo"></div>
                 </div>
 
-                <!-- Transpositor -->
-                <div class="transpositor-container modulo-container">
-                    <div class="modulo-titulo-row">
-                        <h3 class="transpositor-titulo">🔀 Transpositor</h3>
-                        <button class="btn-tooltip" onclick="mostrarTooltip('transpositor')">?</button>
-                    </div>
-                    <p class="transpositor-subtitulo">Digite os acordes e escolha quantos semitons transpor.</p>
-                    <input type="text" id="inputTranspor" placeholder="Ex: Am, Dm, G7, C">
-                    <div class="transpor-controles">
-                        <button class="btn-semitons" onclick="alterarSemitons(-1)">−</button>
-                        <span class="semitons-display" id="semitonsDisplay">0 semitons</span>
-                        <button class="btn-semitons" onclick="alterarSemitons(1)">+</button>
-                        <button id="btnTranspor" onclick="transpor()">Transpor</button>
-                    </div>
-                    <div id="resultadoTransposicao" class="resultado-transposicao"></div>
-                </div>
-
-            </div>
-
-            <!-- ======================== COLUNA 3 — CONTEÚDO ======================== -->
-            <div class="coluna coluna-3">
-
-                <!-- GPS Harmônico -->
-                <div id="rotas-container" class="gps-container modulo-container">
-                    <div class="modulo-titulo-row">
-                        <h3 class="gps-titulo">🧭 GPS Harmônico</h3>
-                        <button class="btn-tooltip" onclick="mostrarTooltip('gps')">?</button>
-                    </div>
-                    <p class="gps-subtitulo">Trace a melhor rota de rearmonização entre dois acordes.</p>
-                    <div class="gps-inputs">
-                        <input type="text" id="acordeOrigem" placeholder="Acorde Atual (ex: C)" class="gps-input">
-                        <span class="gps-seta">➔</span>
-                        <input type="text" id="acordeDestino" placeholder="Acorde Alvo (ex: F)" class="gps-input">
-                    </div>
-                    <button id="btnTracaRotas" onclick="gerarRotas()">Traçar Caminhos</button>
-                    <div id="resultado-rotas" style="margin-top:16px;display:flex;flex-direction:column;gap:14px;"></div>
-                </div>
-
-                <!-- Cifra Completa -->
-                <div class="cifra-container modulo-container">
-                    <div class="modulo-titulo-row">
-                        <h3 class="cifra-titulo">📄 Cifra Completa</h3>
-                        <button class="btn-tooltip" onclick="mostrarTooltip('cifra')">?</button>
-                    </div>
-                    <p class="cifra-subtitulo">Cole sua cifra. Clique em qualquer acorde para ver o diagrama.</p>
-                    <textarea id="inputCifra" class="cifra-textarea" placeholder="Am          Dm       E7&#10;Hoje eu quero te dizer&#10;      Am       G        C&#10;Que o amor que sinto é real"></textarea>
-                    <div style="display:flex;gap:8px;margin-bottom:10px;">
-                        <button id="btnRenderCifra" onclick="renderizarCifra()" style="flex:1;margin:0;">Renderizar Cifra</button>
-                        <button onclick="abrirModoPerformance()" style="width:auto;margin:0;padding:10px 14px;background:#9b59b6;" title="Modo Performance">⛶</button>
-                        <button onclick="exportarPDF()" style="width:auto;margin:0;padding:10px 14px;background:#e74c3c;" title="Exportar PDF">📄</button>
-                    </div>
-                    <div id="cifraRenderizada" class="cifra-renderizada"></div>
-                </div>
-
-                <!-- Escala no Braço -->
-                <div id="fretboard-container" style="display:none;" class="modulo-container">
-                    <div class="braco-header">
+                <!-- Braço -->
+                <div class="modulo-container" style="grid-column:2/4;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
                         <h3 class="braco-titulo">🎸 Escala no Braço</h3>
-                        <select id="seletorInstrumento" onchange="atualizarBraco()">
-                            <option value="guitarra">Violão (6 Cordas)</option>
-                            <option value="baixo">Baixo (4 Cordas)</option>
-                        </select>
+                        <div style="display:flex;gap:8px;align-items:center;">
+                            <select id="explorInstrumento" onchange="explorarBraco()" style="background:var(--bg-input);color:var(--text);border:1px solid var(--border-light);border-radius:5px;padding:4px 8px;font-size:12px;">
+                                <option value="guitarra">Violão</option>
+                                <option value="baixo">Baixo</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="escala-selector-row">
-                        <button class="escala-btn ativo" onclick="selecionarEscala('penta_maior', this)">Penta Maior</button>
-                        <button class="escala-btn" onclick="selecionarEscala('penta_menor', this)">Penta Menor</button>
-                        <button class="escala-btn" onclick="selecionarEscala('maior', this)">Maior</button>
-                        <button class="escala-btn" onclick="selecionarEscala('menor', this)">Menor</button>
-                        <button class="escala-btn" onclick="selecionarEscala('menor_harm', this)">M. Harm.</button>
-                        <button class="escala-btn" onclick="selecionarEscala('blues', this)">Blues</button>
-                    </div>
-                    <div class="posicao-selector-row">
-                        <span class="posicao-label">Posição:</span>
-                        <button class="posicao-braco-btn ativo" onclick="selecionarPosicao(0, this)">Todas</button>
-                        <button class="posicao-braco-btn" onclick="selecionarPosicao(1, this)">1ª</button>
-                        <button class="posicao-braco-btn" onclick="selecionarPosicao(2, this)">2ª</button>
-                        <button class="posicao-braco-btn" onclick="selecionarPosicao(3, this)">3ª</button>
-                        <button class="posicao-braco-btn" onclick="selecionarPosicao(4, this)">4ª</button>
-                        <button class="posicao-braco-btn" onclick="selecionarPosicao(5, this)">5ª</button>
+                        <button class="escala-btn ativo" onclick="explorarEscala('penta_maior',this)">Penta M</button>
+                        <button class="escala-btn" onclick="explorarEscala('penta_menor',this)">Penta m</button>
+                        <button class="escala-btn" onclick="explorarEscala('maior',this)">Maior</button>
+                        <button class="escala-btn" onclick="explorarEscala('menor',this)">Menor</button>
+                        <button class="escala-btn" onclick="explorarEscala('blues',this)">Blues</button>
                     </div>
                     <div class="fretboard-wrapper">
-                        <div class="fretboard" id="fretboard"></div>
-                    </div>
-                    <div class="braco-legenda">
-                        <span class="braco-legenda-item"><span class="braco-legenda-cor" style="background:#e74c3c"></span>Tônica</span>
-                        <span class="braco-legenda-item"><span class="braco-legenda-cor" style="background:#3498db"></span>Escala</span>
-                        <span class="braco-legenda-item"><span class="braco-legenda-cor" style="background:#e67e22;border-radius:3px"></span>Corda Solta</span>
+                        <div class="fretboard" id="explor-fretboard"></div>
                     </div>
                 </div>
 
             </div>
         </div>
-    </div>
 
-    <!-- BANNER iOS -->
-    <div id="iosBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1c1c21;border-top:2px solid var(--accent);padding:14px 16px;z-index:3000;align-items:center;gap:12px;box-shadow:0 -4px 20px rgba(0,0,0,0.5);">
-        <span style="font-size:28px;">📲</span>
-        <div style="flex:1;">
-            <div style="font-weight:bold;color:var(--accent);font-size:14px;">Instalar no iPhone/iPad</div>
-            <div style="font-size:12px;color:#aaa;margin-top:2px;">Toque em <b>Compartilhar</b> <span style="font-size:16px;">⬆️</span> e depois <b>"Adicionar à Tela de Início"</b></div>
+        <!-- ==================== TELA: TOOLS ==================== -->
+        <div class="tela tela-tools" id="tela-tools">
+            <div class="tela-2col">
+
+                <!-- Afinador + Detector -->
+                <div>
+                    <div class="afinador-container modulo-container">
+                        <div class="modulo-titulo-row">
+                            <h3 class="afinador-titulo">🎤 Afinador</h3>
+                            <button class="btn-tooltip" onclick="mostrarTooltip('afinador')">?</button>
+                        </div>
+                        <p class="afinador-subtitulo">Cante uma nota ou toque uma corda.</p>
+                        <button id="btnAfinador" onclick="iniciarAfinador()">Ligar Microfone</button>
+                        <div id="notaDetectada">--</div>
+                        <div id="frequenciaDetectada">-- Hz</div>
+                    </div>
+
+                    <div class="modulo-container" style="margin-top:14px;border-color:#e67e2255;">
+                        <div class="modulo-titulo-row">
+                            <h3 class="modulo-titulo" style="color:#e67e22;">🎸 Detector de Acorde</h3>
+                        </div>
+                        <p class="afinador-subtitulo">Toque um acorde para detectar em tempo real.</p>
+                        <button id="btnDetector" onclick="toggleDetectorAcorde()" style="background-color:#e67e22;color:white;border:none;padding:12px 20px;border-radius:5px;cursor:pointer;font-size:16px;width:100%;font-weight:bold;">Ligar Detector</button>
+                        <div class="detector-container" id="detectorContainer">
+                            <div class="detector-resultado">
+                                <div class="detector-acorde" id="detectorAcorde">--</div>
+                                <div>
+                                    <div class="detector-notas" id="detectorNotas"></div>
+                                    <div class="detector-confianca" id="detectorConfianca"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transpositor + GPS -->
+                <div>
+                    <div class="transpositor-container modulo-container">
+                        <div class="modulo-titulo-row">
+                            <h3 class="transpositor-titulo">🔀 Transpositor</h3>
+                            <button class="btn-tooltip" onclick="mostrarTooltip('transpositor')">?</button>
+                        </div>
+                        <p class="transpositor-subtitulo">Digite os acordes e escolha quantos semitons transpor.</p>
+                        <input type="text" id="inputTranspor" placeholder="Ex: Am, Dm, G7, C">
+                        <div class="transpor-controles">
+                            <button class="btn-semitons" onclick="alterarSemitons(-1)">−</button>
+                            <span class="semitons-display" id="semitonsDisplay">0 semitons</span>
+                            <button class="btn-semitons" onclick="alterarSemitons(1)">+</button>
+                            <button id="btnTranspor" onclick="transpor()">Transpor</button>
+                        </div>
+                        <div id="resultadoTransposicao" class="resultado-transposicao"></div>
+                    </div>
+
+                    <div id="rotas-container" class="gps-container modulo-container" style="margin-top:14px;">
+                        <div class="modulo-titulo-row">
+                            <h3 class="gps-titulo">🧭 GPS Harmônico</h3>
+                            <button class="btn-tooltip" onclick="mostrarTooltip('gps')">?</button>
+                        </div>
+                        <p class="gps-subtitulo">Trace a melhor rota de rearmonização entre dois acordes.</p>
+                        <div class="gps-inputs">
+                            <input type="text" id="acordeOrigem" placeholder="Acorde Atual (ex: C)" class="gps-input">
+                            <span class="gps-seta">➔</span>
+                            <input type="text" id="acordeDestino" placeholder="Acorde Alvo (ex: F)" class="gps-input">
+                        </div>
+                        <button id="btnTracaRotas" onclick="gerarRotas()">Traçar Caminhos</button>
+                        <div id="resultado-rotas" style="margin-top:16px;display:flex;flex-direction:column;gap:14px;"></div>
+                    </div>
+                </div>
+
+            </div>
         </div>
-        <button onclick="document.getElementById('iosBanner').style.display='none'" style="background:none;border:none;color:#aaa;font-size:20px;cursor:pointer;width:auto;padding:4px;">✕</button>
+
+    </div><!-- fim telas-wrapper -->
+
+</div><!-- fim app-body -->
+
+<!-- BANNER iOS -->
+<div id="iosBanner" style="display:none;position:fixed;bottom:60px;left:0;right:0;background:#1c1c21;border-top:2px solid var(--accent);padding:14px 16px;z-index:3000;align-items:center;gap:12px;box-shadow:0 -4px 20px rgba(0,0,0,0.5);">
+    <span style="font-size:28px;">📲</span>
+    <div style="flex:1;">
+        <div style="font-weight:bold;color:var(--accent);font-size:14px;">Instalar no iPhone/iPad</div>
+        <div style="font-size:12px;color:#aaa;margin-top:2px;">Toque em <b>Compartilhar</b> ⬆️ e depois <b>"Adicionar à Tela de Início"</b></div>
     </div>
+    <button onclick="document.getElementById('iosBanner').style.display='none'" style="background:none;border:none;color:#aaa;font-size:20px;cursor:pointer;width:auto;padding:4px;">✕</button>
+</div>
 
-    <!-- POPUP DIAGRAMA -->
-    <div id="cifra-popup" class="cifra-popup">
-        <button class="cifra-popup-fechar" onclick="fecharPopup()">✕</button>
-        <div class="cifra-popup-nome" id="popup-nome"></div>
-        <div class="popup-tabs">
-            <button class="popup-tab-btn ativo" id="popup-tab-violao" onclick="popupMudarTab('violao')">🎸 Violão</button>
-            <button class="popup-tab-btn" id="popup-tab-teclado" onclick="popupMudarTab('teclado')">🎹 Teclado</button>
-        </div>
-        <div id="popup-svg"></div>
+<!-- POPUP DIAGRAMA -->
+<div id="cifra-popup" class="cifra-popup">
+    <button class="cifra-popup-fechar" onclick="fecharPopup()">✕</button>
+    <div class="cifra-popup-nome" id="popup-nome"></div>
+    <div class="popup-tabs">
+        <button class="popup-tab-btn ativo" id="popup-tab-violao" onclick="popupMudarTab('violao')">🎸 Violão</button>
+        <button class="popup-tab-btn" id="popup-tab-teclado" onclick="popupMudarTab('teclado')">🎹 Teclado</button>
     </div>
+    <div id="popup-svg"></div>
+</div>
 
-    <!-- MODAL ONBOARDING -->
-    <div id="tooltip-overlay" class="tooltip-overlay" onclick="fecharTooltip()">
-        <div class="tooltip-modal" onclick="event.stopPropagation()">
-            <button class="tooltip-fechar" onclick="fecharTooltip()">✕</button>
-            <div id="tooltip-conteudo"></div>
-        </div>
+<!-- MODAL ONBOARDING -->
+<div id="tooltip-overlay" class="tooltip-overlay" onclick="fecharTooltip()">
+    <div class="tooltip-modal" onclick="event.stopPropagation()">
+        <button class="tooltip-fechar" onclick="fecharTooltip()">✕</button>
+        <div id="tooltip-conteudo"></div>
     </div>
+</div>
 
-    <!-- MODAL COMPARTILHAR -->
-    <div id="share-overlay" class="tooltip-overlay" onclick="fecharShare()">
-        <div class="tooltip-modal" onclick="event.stopPropagation()">
-            <button class="tooltip-fechar" onclick="fecharShare()">✕</button>
-            <h3 style="color:var(--accent);margin-top:0">📤 Compartilhar Resultado</h3>
-            <div id="share-conteudo"></div>
-        </div>
+<!-- MODAL COMPARTILHAR -->
+<div id="share-overlay" class="tooltip-overlay" onclick="fecharShare()">
+    <div class="tooltip-modal" onclick="event.stopPropagation()">
+        <button class="tooltip-fechar" onclick="fecharShare()">✕</button>
+        <h3 style="color:var(--accent);margin-top:0">📤 Compartilhar</h3>
+        <div id="share-conteudo"></div>
     </div>
+</div>
 
-    <script src="script.js?v=1774531047"></script>
-    <script>
-    // Service Worker
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
-                .then(() => console.log('SW registrado'))
-                .catch(e => console.log('SW erro:', e));
-        });
-    }
-
-    // Android Chrome — prompt de instalação nativo
-    let deferredPrompt = null;
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        document.getElementById('btnInstalar').style.display = 'flex';
-    });
-    window.addEventListener('appinstalled', () => {
-        document.getElementById('btnInstalar').style.display = 'none';
-        document.getElementById('iosBanner').style.display = 'none';
-        deferredPrompt = null;
-    });
-
-    function instalarApp() {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
-            return;
-        }
-        // iOS Safari: mostra instruções manuais
-        const banner = document.getElementById('iosBanner');
-        if (banner) banner.style.display = banner.style.display === 'none' ? 'flex' : 'none';
-    }
-
-    // iOS: detecta se é Safari no iPhone/iPad e não está em standalone
-    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-    const isStandalone = window.navigator.standalone === true;
-    const isSafari = /safari/i.test(navigator.userAgent) && !/chrome/i.test(navigator.userAgent);
-
-    if (isIOS && !isStandalone) {
-        // Sempre mostra o botão no iOS
-        setTimeout(() => {
-            document.getElementById('btnInstalar').style.display = 'flex';
-        }, 2000);
-    }
-    </script>
+<script src="script.js?v=20250326"></script>
+<script>
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+}
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault(); deferredPrompt = e;
+    document.getElementById('btnInstalar').style.display = 'flex';
+});
+window.addEventListener('appinstalled', () => {
+    document.getElementById('btnInstalar').style.display = 'none';
+    deferredPrompt = null;
+});
+function instalarApp() {
+    if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(()=>{deferredPrompt=null;}); return; }
+    const b = document.getElementById('iosBanner');
+    if (b) b.style.display = b.style.display==='none'?'flex':'none';
+}
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+if (isIOS && !window.navigator.standalone) {
+    setTimeout(()=>{ document.getElementById('btnInstalar').style.display='flex'; }, 2000);
+}
+</script>
 </body>
 </html>

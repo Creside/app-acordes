@@ -1662,3 +1662,146 @@ button.metro-compasso-btn.ativo {
     flex: 1;
     overflow: auto;
 }
+
+/* ==========================================
+   NAVEGAÇÃO POR ABAS (TELAS)
+   ========================================== */
+
+/* Barra de navegação inferior (mobile) / superior (desktop) */
+.nav-tabs {
+    display: flex;
+    background: var(--bg-container);
+    border-top: 1px solid var(--border);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 500;
+    height: 60px;
+    box-shadow: 0 -2px 10px var(--shadow);
+}
+.nav-tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: bold;
+    padding: 0;
+    margin: 0;
+    width: auto;
+    transition: 0.2s;
+    border-top: 2px solid transparent;
+}
+.nav-tab:hover { color: var(--text); background: none; }
+.nav-tab.ativa {
+    color: var(--accent);
+    border-top-color: var(--accent);
+    background: none;
+}
+.nav-tab-icon { font-size: 20px; line-height: 1; }
+.nav-tab-label { font-size: 10px; }
+
+/* Container de telas */
+.telas-wrapper {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+.tela {
+    display: none;
+    overflow-y: auto;
+    height: 100%;
+    padding: 16px;
+    box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
+}
+.tela.ativa { display: block; }
+
+/* Layout desktop dentro das telas */
+@media (min-width: 1024px) {
+    .nav-tabs {
+        top: 52px;
+        bottom: auto;
+        border-top: none;
+        border-bottom: 1px solid var(--border);
+        height: 48px;
+        box-shadow: 0 2px 8px var(--shadow);
+    }
+    .nav-tab {
+        flex-direction: row;
+        gap: 6px;
+        font-size: 13px;
+        border-top: none;
+        border-bottom: 2px solid transparent;
+    }
+    .nav-tab.ativa { border-bottom-color: var(--accent); border-top: none; }
+    .nav-tab-icon { font-size: 16px; }
+    .nav-tab-label { font-size: 13px; }
+    .tela { padding: 20px; }
+
+    /* Grid 3 colunas apenas na tela Explorar */
+    .tela-explorar .explor-grid-desktop {
+        display: grid;
+        grid-template-columns: 320px 1fr 1fr;
+        gap: 16px;
+        align-items: start;
+    }
+    /* Grid 2 colunas nas outras telas */
+    .tela-2col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        align-items: start;
+    }
+    .tela-3col {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 16px;
+        align-items: start;
+    }
+}
+
+/* Ajuste do app-header para não sobrepor nav */
+.app-body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+.app-header {
+    flex-shrink: 0;
+    position: relative;
+    top: auto;
+}
+
+/* Padding bottom para não ficar atrás da nav mobile */
+@media (max-width: 1023px) {
+    .tela { padding-bottom: 80px; }
+}
+@media (min-width: 1024px) {
+    .tela { padding-top: 20px; }
+    .app-body { padding-top: 100px; } /* header + nav */
+}
+
+/* Tela Acorde — busca de acorde */
+.acorde-busca {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+.acorde-busca input {
+    flex: 1;
+    margin: 0;
+}
+.acorde-busca button {
+    width: auto;
+    margin: 0;
+    padding: 10px 16px;
+}

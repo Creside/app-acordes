@@ -3010,6 +3010,185 @@ function identificarAcordeDeNotas(notas) {
     return melhorAcorde;
 }
 
+
+// ==========================================
+// NAVEGAÇÃO POR ABAS
+// ==========================================
+let telaAtiva = 'tom';
+
+function mudarTela(tela) {
+    // Esconde todas as telas
+    document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('ativa'));
+    // Mostra a tela selecionada
+    const telaEl = document.getElementById('tela-' + tela);
+    const navEl = document.getElementById('nav-' + tela);
+    if (telaEl) telaEl.classList.add('ativa');
+    if (navEl) navEl.classList.add('ativa');
+    telaAtiva = tela;
+    // Inicializa se necessário
+    if (tela === 'explorar' && !document.getElementById('circulo-svg-wrapper').children.length) {
+        desenharCirculoDeQuintas();
+    }
+    if (tela === 'acorde') gerarSugestoesAcorde();
+}
+
+// ==========================================
+// TELA ACORDE — BUSCA INDEPENDENTE
+// ==========================================
+const acordesMaisUsados = ['C','G','D','A','E','F','Am','Em','Dm','Gm','Bm','F#m',
+    'C7','G7','D7','A7','E7','B7','F7','Am7','Em7','Dm7','Gm7','Bm7',
+    'C7M','G7M','D7M','A7M','E7M','F7M','Cm','Fm','C#m','G#m'];
+
+function gerarSugestoesAcorde() {
+    const cont = document.getElementById('sugestoesAcorde');
+    if (!cont || cont.children.length > 0) return;
+    acordesMaisUsados.slice(0, 16).forEach(ac => {
+        const btn = document.createElement('button');
+        btn.className = 'botao-variacao tipo-' + tipoAcorde(ac).replace('tipo-','');
+        btn.textContent = ac;
+        btn.onclick = () => {
+            document.getElementById('inputBuscarAcorde').value = ac;
+            mostrarAcordeBusca(ac);
+        };
+        cont.appendChild(btn);
+    });
+}
+
+function buscarAcordeInput() {
+    const val = document.getElementById('inputBuscarAcorde').value.trim();
+    if (!val) return;
+    // Normaliza
+    const norm = val[0].toUpperCase() + val.slice(1);
+    mostrarAcordeBusca(norm);
+}
+
+function mostrarAcordeBusca(nomeAcorde) {
+    // Mostra diagrama direto
+    acordeAtualSelecionado = nomeAcorde;
+    posicaoAtual = 0;
+    _renderDiagramaComPosicao(nomeAcorde, 0);
+
+    // Tenta deduzir tom para solo e braço
+    const match = nomeAcorde.match(/^([A-G][#b]?)/);
+    if (match) {
+        const tonica = match[1];
+        const ehMenor = /m/.test(nomeAcorde.replace('M','').replace('maj',''));
+        const modo = ehMenor ? 'menor' : 'maior';
+        tonicaBracoAtual = tonica;
+        modoBracoAtual = modo;
+        escalaBracoAtual = ehMenor ? 'penta_menor' : 'penta_maior';
+        notasEscalaAtual = formulasEscalaBraco[escalaBracoAtual].map(
+            s => notasCromaticas[(notasCromaticas.indexOf(tonica)+s)%12]
+        );
+        mostrarSugestoesSolo(tonica, modo);
+        desenharBracoMelhorado();
+
+        // Atualiza escala btn
+        document.querySelectorAll('#tela-acorde .escala-btn').forEach((b,i) => {
+            b.classList.toggle('ativo', i === (ehMenor ? 1 : 0));
+        });
+    }
+}
+
+// ==========================================
+// TELA EXPLORAR — INDEPENDENTE
+// ==========================================
+function explorarPorTom() {
+    const val = document.getElementById('explorInputTom')?.value.trim();
+    if (!val) return;
+    // Tenta identificar o tom a partir dos acordes digitados
+    const acordes = val.split(',').map(a => a.trim()).filter(Boolean);
+    // Testa maior
+    for (let i = 0; i < 12; i++) {
+        const tonica = notasCromaticas[i];
+        const campo = gerarCampoHarmonicoMaior(tonica);
+        if (acordes.every(a => campo.map(c=>c.toLowerCase()).includes(a.toLowerCase()))) {
+            explorarSelecionarTom(tonica, 'maior');
+            return;
+        }
+    }
+    // Testa menor
+    for (let i = 0; i < 12; i++) {
+        const tonica = notasCromaticas[i];
+        const campo = gerarCampoHarmonicoMenor(tonica);
+        if (acordes.every(a => campo.map(c=>c.toLowerCase()).includes(a.toLowerCase()))) {
+            explorarSelecionarTom(tonica, 'menor');
+            return;
+        }
+    }
+}
+
+// Override explorarSelecionarTom to use new HTML ids
+const _explorarSelOrig = explorarSelecionarTom;
+explorarSelecionarTom = function(tonica, modo) {
+    explorTonicaAtual = tonica;
+    const campo = modo === 'maior' ? gerarCampoHarmonicoMaior(tonica) : gerarCampoHarmonicoMenor(tonica);
+    const label = tonica + ' ' + (modo === 'maior' ? 'Maior' : 'menor');
+
+    // Atualiza label
+    const lbl = document.getElementById('explorTomAtual');
+    if (lbl) lbl.textContent = '🎵 ' + label;
+
+    // Atualiza grade de acordes
+    const grade = document.getElementById('explor-grade-acordes');
+    if (grade) {
+        grade.innerHTML = '';
+        campo.forEach((ac, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'botao-variacao ' + tipoAcorde(ac);
+            btn.textContent = ac;
+            btn.onclick = () => {
+                grade.querySelectorAll('.botao-variacao').forEach(b => b.classList.remove('ativo'));
+                btn.classList.add('ativo');
+                explorarMostrarAcorde(ac);
+            };
+            if (idx === 0) { btn.classList.add('ativo'); explorarMostrarAcorde(ac); }
+            grade.appendChild(btn);
+        });
+    }
+
+    // Solo
+    explorarMostrarSolo(tonica, modo);
+
+    // Braço
+    explorNotasAtual = formulasEscalaBraco[explorEscalaAtual].map(
+        s => notasCromaticas[(notasCromaticas.indexOf(tonica)+s)%12]
+    );
+    explorarBraco();
+};
+
+// Override explorarMostrarAcorde to use new HTML id
+explorarMostrarAcorde = function(nomeAcorde) {
+    const nomeEl = document.getElementById('nomeAcordeDestaqueExplor');
+    if (nomeEl) nomeEl.textContent = nomeAcorde;
+    const area = document.getElementById('explor-acorde-visual');
+    if (!area) return;
+    area.innerHTML = '';
+    if (explorTabAcordeAtual === 'violao') {
+        area.appendChild(criarSVGAcorde(nomeAcorde, 1));
+    } else {
+        desenharTecladoEm(nomeAcorde, area);
+    }
+};
+
+// Override explorarTabAcorde for new ids
+explorarTabAcorde = function(tab) {
+    explorTabAcordeAtual = tab;
+    document.getElementById('explor-tab-v').classList.toggle('ativo', tab==='violao');
+    document.getElementById('explor-tab-t').classList.toggle('ativo', tab==='teclado');
+    const nome = document.getElementById('nomeAcordeDestaqueExplor')?.textContent;
+    if (nome && nome !== '--') explorarMostrarAcorde(nome);
+};
+
+// Init on load
+window.addEventListener('DOMContentLoaded', () => {
+    initMetroVisual();
+    gerarSugestoesAcorde();
+    // Desenha círculo na aba explorar ao carregar
+    setTimeout(() => desenharCirculoDeQuintas(), 100);
+});
+
 // ==========================================
 // METRÔNOMO
 // ==========================================
