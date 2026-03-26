@@ -298,30 +298,30 @@ function detectarPitch() {
 // MELHORIA 1: BANCO DE ACORDES — 12 TONS MAIORES + 12 MENORES
 // ==========================================
 const bancoDeAcordes = {
-    "Dó Maior (C)":     ["C","C7M","C9","F","F7M","G","G7"],
-    "Ré Maior (D)":     ["D","D7M","D9","G","G7M","A","A7"],
-    "Mi Maior (E)":     ["E","E7M","E9","A","A7M","B","B7"],
-    "Fá Maior (F)":     ["F","F7M","C","C7M","G","G7","Am"],
-    "Sol Maior (G)":    ["G","G7M","G9","C","C7M","D","D7"],
-    "Lá Maior (A)":     ["A","A7M","A9","D","D7M","E","E7"],
-    "Si Maior (B)":     ["B","B7M","E","E7M","F#7","F#m","G#m"],
+    "Dó Maior (C)":     ["C","Cm","C7","C7M","C9","F","F7M","G","G7","Am","Am7","Em7"],
+    "Ré Maior (D)":     ["D","Dm","D7","D7M","D9","G","G7M","A","A7","Bm","Bm7","F#m7"],
+    "Mi Maior (E)":     ["E","Em","E7","E7M","E9","A","A7M","B","B7","C#m","C#m7","G#m7"],
+    "Fá Maior (F)":     ["F","Fm","F7","F7M","C","C7M","G","G7","Am","Am7","Dm","Dm7"],
+    "Sol Maior (G)":    ["G","Gm","G7","G7M","G9","C","C7M","D","D7","Em","Em7","Bm7"],
+    "Lá Maior (A)":     ["A","Am","A7","A7M","A9","D","D7M","E","E7","F#m","F#m7","C#m7"],
+    "Si Maior (B)":     ["B","Bm","B7","B7M","E","E7M","F#7","F#m","F#m7","G#m","G#m7","C#m7"],
     "Dó# Maior (C#)":   ["C#","F#","F#7M","G#7","G#m","A#m","C#7M"],
     "Fá# Maior (F#)":   ["F#","F#7M","B","B7M","C#7","C#m","D#m"],
     "Sol# Maior (G#)":  ["G#","G#7M","C#","C#7M","D#7","D#m","Fm"],
     "Lá# Maior (A#)":   ["A#","A#7M","D#","D#7M","F7","Fm","Gm"],
     "Ré# Maior (D#)":   ["D#","D#7M","G#","G#7M","A#7","A#m","Cm"],
-    "Lá menor (Am)":    ["Am","Am7","Dm","Dm7","E7","G","C"],
-    "Mi menor (Em)":    ["Em","Em7","Am","Am7","B7","D","G"],
-    "Ré menor (Dm)":    ["Dm","Dm7","Gm","Gm7","A7","C","F"],
-    "Sol menor (Gm)":   ["Gm","Gm7","Cm","Cm7","D7","F","A#"],
-    "Si menor (Bm)":    ["Bm","Bm7","Em","Em7","F#7","A","D"],
-    "Dó menor (Cm)":    ["Cm","Cm7","Fm","Fm7","G7","A#","D#"],
-    "Fá menor (Fm)":    ["Fm","Fm7","A#m","A#m7","C7","D#","G#"],
-    "Dó# menor (C#m)":  ["C#m","C#m7","F#m","F#m7","G#7","B","E"],
-    "Fá# menor (F#m)":  ["F#m","F#m7","Bm","Bm7","C#7","A","D"],
-    "Sol# menor (G#m)": ["G#m","G#m7","C#m","C#m7","D#7","B","E"],
-    "Lá# menor (A#m)":  ["A#m","A#m7","D#m","D#m7","F7","C#","F#"],
-    "Ré# menor (D#m)":  ["D#m","D#m7","G#m","G#m7","A#7","F#","B"],
+    "Lá menor (Am)":    ["Am","Am7","Dm","Dm7","E","E7","G","G7","C","C7M","Bdim","F7M"],
+    "Mi menor (Em)":    ["Em","Em7","Am","Am7","B","B7","D","D7","G","G7M","F#dim","C7M"],
+    "Ré menor (Dm)":    ["Dm","Dm7","Gm","Gm7","A","A7","C","C7","F","F7M","Edim","A#7M"],
+    "Sol menor (Gm)":   ["Gm","Gm7","Cm","Cm7","D","D7","F","F7","A#","A#7M","Adim","D#7M"],
+    "Si menor (Bm)":    ["Bm","Bm7","Em","Em7","F#","F#7","A","A7","D","D7M","C#dim","G7M"],
+    "Dó menor (Cm)":    ["Cm","Cm7","Fm","Fm7","G","G7","A#","A#7","D#","D#7M","Bdim","G#7M"],
+    "Fá menor (Fm)":    ["Fm","Fm7","A#m","A#m7","C","C7","D#","D#7","G#","G#7M","Edim","C#7M"],
+    "Dó# menor (C#m)":  ["C#m","C#m7","F#m","F#m7","G#","G#7","B","B7","E","E7M","D#dim","A7M"],
+    "Fá# menor (F#m)":  ["F#m","F#m7","Bm","Bm7","C#","C#7","A","A7","D","D7M","A#dim","E7M"],
+    "Sol# menor (G#m)": ["G#m","G#m7","C#m","C#m7","D#","D#7","B","B7","E","E7M","Fdim","B7M"],
+    "Lá# menor (A#m)":  ["A#m","A#m7","D#m","D#m7","F","F7","C#","C#7","F#","F#7M","Gdim","C#7M"],
+    "Ré# menor (D#m)":  ["D#m","D#m7","G#m","G#m7","A#","A#7","F#","F#7","B","B7M","Cdim","F#7M"],
 };
 
 // MELHORIA 1: Dicionário de shapes expandido
@@ -3008,4 +3008,350 @@ function identificarAcordeDeNotas(notas) {
         }
     }
     return melhorAcorde;
+}
+
+// ==========================================
+// METRÔNOMO
+// ==========================================
+let metroBPM = 80;
+let metroCompasso = 4;
+let metroAtivo = false;
+let metroBeatAtual = 0;
+let metroIntervalId = null;
+let metroAudioCtx = null;
+let tapTempos = [];
+
+function initMetroVisual() {
+    const vis = document.getElementById('metroVisual');
+    if (!vis) return;
+    vis.innerHTML = '';
+    for (let i = 0; i < metroCompasso; i++) {
+        const beat = document.createElement('div');
+        beat.className = 'metro-beat';
+        beat.id = `metro-beat-${i}`;
+        vis.appendChild(beat);
+    }
+}
+
+function ajustarBPM(delta) {
+    metroBPM = Math.max(40, Math.min(240, metroBPM + delta));
+    document.getElementById('metroBPM').textContent = metroBPM;
+    document.getElementById('metroBPMSlider').value = metroBPM;
+    if (metroAtivo) { pararMetronomo(); iniciarMetronomo(); }
+}
+
+function setBPMSlider(val) {
+    metroBPM = parseInt(val);
+    document.getElementById('metroBPM').textContent = metroBPM;
+    if (metroAtivo) { pararMetronomo(); iniciarMetronomo(); }
+}
+
+function setCompasso(n, btn) {
+    metroCompasso = n;
+    metroBeatAtual = 0;
+    document.querySelectorAll('.metro-compasso-btn').forEach(b => b.classList.remove('ativo'));
+    btn.classList.add('ativo');
+    initMetroVisual();
+    if (metroAtivo) { pararMetronomo(); iniciarMetronomo(); }
+}
+
+function toggleMetronomo() {
+    if (metroAtivo) pararMetronomo(); else iniciarMetronomo();
+}
+
+function iniciarMetronomo() {
+    metroAtivo = true;
+    metroBeatAtual = 0;
+    document.getElementById('btnMetronomo').textContent = '■ Parar';
+    document.getElementById('btnMetronomo').classList.add('tocando');
+    if (!metroAudioCtx) metroAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    initMetroVisual();
+    const intervalo = (60 / metroBPM) * 1000;
+    tocarBeat();
+    metroIntervalId = setInterval(tocarBeat, intervalo);
+}
+
+function pararMetronomo() {
+    metroAtivo = false;
+    clearInterval(metroIntervalId);
+    document.getElementById('btnMetronomo').textContent = '▶ Iniciar';
+    document.getElementById('btnMetronomo').classList.remove('tocando');
+    // Apaga todos os beats
+    for (let i = 0; i < metroCompasso; i++) {
+        const el = document.getElementById(`metro-beat-${i}`);
+        if (el) el.className = 'metro-beat';
+    }
+}
+
+function tocarBeat() {
+    // Visual
+    for (let i = 0; i < metroCompasso; i++) {
+        const el = document.getElementById(`metro-beat-${i}`);
+        if (!el) continue;
+        el.className = 'metro-beat' + (i === metroBeatAtual ? (metroBeatAtual === 0 ? ' tempo' : ' ativo') : '');
+    }
+    // Som
+    if (metroAudioCtx) {
+        const osc = metroAudioCtx.createOscillator();
+        const gain = metroAudioCtx.createGain();
+        osc.connect(gain); gain.connect(metroAudioCtx.destination);
+        osc.frequency.value = metroBeatAtual === 0 ? 1000 : 800; // tempo forte
+        gain.gain.setValueAtTime(0.3, metroAudioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, metroAudioCtx.currentTime + 0.08);
+        osc.start(); osc.stop(metroAudioCtx.currentTime + 0.08);
+    }
+    metroBeatAtual = (metroBeatAtual + 1) % metroCompasso;
+}
+
+// Tap Tempo
+function tapTempo() {
+    const agora = Date.now();
+    tapTempos.push(agora);
+    if (tapTempos.length > 8) tapTempos.shift();
+    if (tapTempos.length < 2) return;
+    // Remove taps muito antigos (>3s)
+    tapTempos = tapTempos.filter(t => agora - t < 3000);
+    if (tapTempos.length < 2) return;
+    const intervals = [];
+    for (let i = 1; i < tapTempos.length; i++) intervals.push(tapTempos[i] - tapTempos[i-1]);
+    const mediaMs = intervals.reduce((a,b) => a+b, 0) / intervals.length;
+    metroBPM = Math.round(60000 / mediaMs);
+    metroBPM = Math.max(40, Math.min(240, metroBPM));
+    document.getElementById('metroBPM').textContent = metroBPM;
+    document.getElementById('metroBPMSlider').value = metroBPM;
+}
+
+// Init visual ao carregar
+window.addEventListener('DOMContentLoaded', () => {
+    initMetroVisual();
+});
+
+// ==========================================
+// MODO EXPLORAÇÃO
+// ==========================================
+let explorEscalaAtual = 'penta_maior';
+let explorTabAcordeAtual = 'violao';
+let explorTonicaAtual = 'C';
+let explorNotasAtual = [];
+
+function abrirModoExploracao() {
+    const overlay = document.getElementById('modoExploracao');
+    overlay.classList.add('ativo');
+    document.body.style.overflow = 'hidden';
+    // Desenha o círculo de quintas no modo exploração
+    desenharCirculoExploracao();
+    // Se já tem um tom identificado, usa ele
+    const input = document.getElementById('inputAcordes');
+    if (input && input.value) {
+        document.getElementById('explorInput').value = input.value;
+        explorarTom();
+    }
+}
+
+function fecharModoExploracao() {
+    document.getElementById('modoExploracao').classList.remove('ativo');
+    document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+        fecharModoExploracao();
+        fecharModoPerformance();
+    }
+});
+
+function desenharCirculoExploracao() {
+    const wrapper = document.getElementById('explor-circulo');
+    if (!wrapper) return;
+    // Cria versão menor do círculo (tamanho se adapta ao container)
+    const SIZE = 300;
+    const cx = SIZE/2, cy = SIZE/2;
+    const RE = 138, RM = 96, RI = 55;
+    const N = N_CIRCULO;
+    const ang0 = -Math.PI/2;
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg","svg");
+    svg.setAttribute("viewBox", `0 0 ${SIZE} ${SIZE}`);
+    svg.setAttribute("width","100%");
+    svg.setAttribute("height","100%");
+    svg.style.maxWidth = "300px";
+
+    const coresMaior = ["#c0392b","#e67e22","#f1c40f","#2ecc71","#1abc9c","#3498db",
+        "#2980b9","#9b59b6","#8e44ad","#d35400","#e74c3c","#27ae60"];
+
+    function arco(ro, ri, i) {
+        const g = 0.018;
+        const a1 = ang0 + (i/N)*2*Math.PI + g;
+        const a2 = ang0 + ((i+1)/N)*2*Math.PI - g;
+        const x1=cx+ro*Math.cos(a1),y1=cy+ro*Math.sin(a1);
+        const x2=cx+ro*Math.cos(a2),y2=cy+ro*Math.sin(a2);
+        const x3=cx+ri*Math.cos(a2),y3=cy+ri*Math.sin(a2);
+        const x4=cx+ri*Math.cos(a1),y4=cy+ri*Math.sin(a1);
+        return `M${x1} ${y1} A${ro} ${ro} 0 0 1 ${x2} ${y2} L${x3} ${y3} A${ri} ${ri} 0 0 0 ${x4} ${y4}Z`;
+    }
+    function txtPos(r, i) {
+        const a = ang0 + ((i+0.5)/N)*2*Math.PI;
+        return {x: cx+r*Math.cos(a), y: cy+r*Math.sin(a)};
+    }
+
+    for (let i=0; i<N; i++) {
+        const cor = coresMaior[i];
+        // Maior
+        const pm = document.createElementNS("http://www.w3.org/2000/svg","path");
+        pm.setAttribute("d", arco(RE,RM,i));
+        pm.setAttribute("fill", cor); pm.setAttribute("opacity","0.85");
+        pm.setAttribute("cursor","pointer");
+        pm.addEventListener("click", () => explorarSelecionarTom(circuloMaior[i],"maior"));
+        svg.appendChild(pm);
+        const tp = txtPos(RM+(RE-RM)/2, i);
+        const tm = document.createElementNS("http://www.w3.org/2000/svg","text");
+        tm.setAttribute("x",tp.x); tm.setAttribute("y",tp.y);
+        tm.setAttribute("fill","#fff"); tm.setAttribute("font-size","12px");
+        tm.setAttribute("font-weight","bold"); tm.setAttribute("text-anchor","middle");
+        tm.setAttribute("dominant-baseline","central"); tm.setAttribute("pointer-events","none");
+        tm.textContent = circuloMaior[i]; svg.appendChild(tm);
+        // Menor
+        const pn = document.createElementNS("http://www.w3.org/2000/svg","path");
+        pn.setAttribute("d", arco(RM,RI,i));
+        pn.setAttribute("fill", cor+"88"); pn.setAttribute("cursor","pointer");
+        pn.addEventListener("click", () => explorarSelecionarTom(circuloMenor[i].replace("m",""),"menor"));
+        svg.appendChild(pn);
+        const tn2 = txtPos(RI+(RM-RI)/2, i);
+        const tn = document.createElementNS("http://www.w3.org/2000/svg","text");
+        tn.setAttribute("x",tn2.x); tn.setAttribute("y",tn2.y);
+        tn.setAttribute("fill","#fff"); tn.setAttribute("font-size","9px");
+        tn.setAttribute("font-weight","bold"); tn.setAttribute("text-anchor","middle");
+        tn.setAttribute("dominant-baseline","central"); tn.setAttribute("pointer-events","none");
+        tn.textContent = circuloMenor[i]; svg.appendChild(tn);
+    }
+    // Centro
+    const c = document.createElementNS("http://www.w3.org/2000/svg","circle");
+    c.setAttribute("cx",cx); c.setAttribute("cy",cy); c.setAttribute("r",RI-2);
+    c.setAttribute("fill","#1a1a24"); svg.appendChild(c);
+
+    wrapper.innerHTML = '';
+    wrapper.appendChild(svg);
+}
+
+function explorarSelecionarTom(tonica, modo) {
+    explorTonicaAtual = tonica;
+    const campo = modo === "maior" ? gerarCampoHarmonicoMaior(tonica) : gerarCampoHarmonicoMenor(tonica);
+    const label = `${tonica} ${modo === "maior" ? "Maior" : "menor"}`;
+    document.getElementById('explorTomLabel').textContent = `🎵 ${label}`;
+    document.getElementById('explorInput').value = campo.slice(0,4).join(", ");
+    // Mostra primeiro acorde do campo
+    explorarMostrarAcorde(campo[0]);
+    // Solo
+    explorarMostrarSolo(tonica, modo);
+    // Braço
+    explorarNotasAtual = formulasEscalaBraco[explorEscalaAtual].map(s => notasCromaticas[(notasCromaticas.indexOf(tonica)+s)%12]);
+    explorarBraco();
+}
+
+function explorarTom() {
+    const val = document.getElementById('explorInput').value;
+    if (!val.trim()) return;
+    const acordes = val.split(',').map(a => a.trim()).filter(Boolean);
+    if (acordes.length > 0) explorarMostrarAcorde(acordes[0]);
+}
+
+function explorarMostrarAcorde(nomeAcorde) {
+    document.getElementById('explor-acorde-nome').textContent = nomeAcorde;
+    const area = document.getElementById('explor-acorde-visual');
+    area.innerHTML = '';
+    if (explorTabAcordeAtual === 'violao') {
+        area.appendChild(criarSVGAcorde(nomeAcorde, 1.2));
+    } else {
+        desenharTecladoEm(nomeAcorde, area);
+    }
+}
+
+function explorarTabAcorde(tab) {
+    explorTabAcordeAtual = tab;
+    document.getElementById('explor-tab-violao').classList.toggle('ativo', tab==='violao');
+    document.getElementById('explor-tab-teclado').classList.toggle('ativo', tab==='teclado');
+    const nome = document.getElementById('explor-acorde-nome').textContent;
+    if (nome) explorarMostrarAcorde(nome);
+}
+
+function explorarMostrarSolo(tonica, modo) {
+    const soloDiv = document.getElementById('explor-solo');
+    const notasCrom = notasCromaticas;
+    const eq = {'Db':'C#','Eb':'D#','Gb':'F#','Ab':'G#','Bb':'A#'};
+    const tonicaNorm = eq[tonica]||tonica;
+    const ti = notasCrom.indexOf(tonicaNorm);
+    const escalas = escalasParaSolo[modo]||escalasParaSolo.maior;
+    soloDiv.innerHTML = '';
+    escalas.forEach(escala => {
+        const notas = escala.formula.map(s => notasCrom[(ti+s)%12]);
+        const row = document.createElement('div');
+        row.className = 'solo-escala-row';
+        row.style.marginBottom = '8px';
+        row.innerHTML = `<div class="solo-escala-header">
+            <span class="solo-escala-nome">${escala.nome}</span>
+            <span class="solo-escala-desc">${escala.desc}</span>
+        </div>
+        <div class="solo-notas-horizontal">${notas.map((n,i) =>
+            `<span class="solo-nota-chip${i===0?' tonica':''}">${n}</span>`).join('')}
+        </div>`;
+        soloDiv.appendChild(row);
+    });
+}
+
+function explorarEscala(escala, btn) {
+    explorEscalaAtual = escala;
+    document.querySelectorAll('#modoExploracao .escala-btn').forEach(b => b.classList.remove('ativo'));
+    btn.classList.add('ativo');
+    if (explorTonicaAtual) {
+        explorNotasAtual = formulasEscalaBraco[escala].map(s => notasCromaticas[(notasCromaticas.indexOf(explorTonicaAtual)+s)%12]);
+        explorarBraco();
+    }
+}
+
+function explorarBraco() {
+    const fretboard = document.getElementById('explor-fretboard');
+    if (!fretboard) return;
+    const instrumento = document.getElementById('explorInstrumento').value;
+    fretboard.innerHTML = '';
+    const afinacao = instrumento === 'guitarra' ? ['E','B','G','D','A','E'] : ['G','D','A','E'];
+    const espessuras = instrumento === 'guitarra' ? [1,1.5,2,2.5,3,3.5] : [1.5,2,2.5,3];
+
+    for (let c=0; c<afinacao.length; c++) {
+        const cordaDiv = document.createElement('div');
+        cordaDiv.className = 'corda';
+        cordaDiv.style.setProperty('--corda-espessura', espessuras[c]+'px');
+        let ni = notasCromaticas.indexOf(afinacao[c]);
+        for (let t=0; t<=12; t++) {
+            const td = document.createElement('div');
+            td.className = 'traste';
+            if (t===0) {
+                td.classList.add('corda-solta');
+                const nc = document.createElement('div');
+                nc.className = 'nome-corda-solta';
+                nc.textContent = afinacao[c];
+                td.appendChild(nc);
+            }
+            if (t===1) td.classList.add('pestana');
+            if (t>0&&[3,5,7,9,12].includes(t)&&c===Math.floor((afinacao.length-1)/2)) {
+                const m = document.createElement('div'); m.className='marcador-fundo'; td.appendChild(m);
+            }
+            const nota = notasCromaticas[(ni+t)%12];
+            if (explorNotasAtual.includes(nota)) {
+                const b = document.createElement('div');
+                b.className = (t===0?'bolinha-nota nota-solta-destaque':'bolinha-nota') + (nota===explorTonicaAtual?' tonica':'');
+                b.textContent = nota;
+                td.appendChild(b);
+            }
+            cordaDiv.appendChild(td);
+        }
+        fretboard.appendChild(cordaDiv);
+    }
+    const reg = document.createElement('div'); reg.className='regua-casas';
+    for (let t=0; t<=12; t++) {
+        const n = document.createElement('div'); n.className='numero-casa';
+        if(t===0) n.classList.add('corda-solta-num');
+        else { n.textContent=t; if([3,5,7,9,12].includes(t)) n.style.color='#c8a850'; }
+        reg.appendChild(n);
+    }
+    fretboard.appendChild(reg);
 }

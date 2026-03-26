@@ -7,7 +7,7 @@
     <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acordes - App</title>
-    <link rel="stylesheet" href="style.css?v=1774461492">
+    <link rel="stylesheet" href="style.css?v=1774531047">
     <!-- PWA -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#f1c40f">
@@ -25,6 +25,7 @@
             <button class="btn-icone" onclick="abrirAjuda()" title="Ajuda">❓</button>
             <button class="btn-icone" id="btnCompartilhar" onclick="compartilharResultado()" title="Compartilhar" style="display:none">📤</button>
             <button class="btn-icone" id="btnInstalar" onclick="instalarApp()" title="Instalar no celular" style="display:none">📲</button>
+            <button class="btn-icone" onclick="abrirModoExploracao()" title="Modo Exploração — tudo numa tela">🔭</button>
             <button class="btn-icone" id="btnTema" onclick="alternarTema()" title="Modo claro/escuro">🌙</button>
         </div>
     </div>
@@ -100,6 +101,35 @@
 
             <!-- ======================== COLUNA 2 — VISUAL ======================== -->
             <div class="coluna coluna-2">
+
+                <!-- Metrônomo -->
+                <div class="modulo-container metronomo-container">
+                    <div class="modulo-titulo-row">
+                        <h3 class="modulo-titulo">🥁 Metrônomo</h3>
+                        <button class="btn-tooltip" onclick="mostrarTooltip('afinador')">?</button>
+                    </div>
+                    <div class="metronomo-bpm-row">
+                        <button class="metro-bpm-btn" onclick="ajustarBPM(-10)">−10</button>
+                        <button class="metro-bpm-btn" onclick="ajustarBPM(-1)">−</button>
+                        <div>
+                            <div class="metro-bpm-display" id="metroBPM">80</div>
+                            <div class="metro-bpm-label" style="text-align:center;">BPM</div>
+                        </div>
+                        <button class="metro-bpm-btn" onclick="ajustarBPM(1)">+</button>
+                        <button class="metro-bpm-btn" onclick="ajustarBPM(10)">+10</button>
+                    </div>
+                    <input type="range" class="metro-bpm-slider" id="metroBPMSlider"
+                        min="40" max="240" value="80" oninput="setBPMSlider(this.value)">
+                    <div class="metro-compasso-row">
+                        <button class="metro-compasso-btn ativo" onclick="setCompasso(4, this)">4/4</button>
+                        <button class="metro-compasso-btn" onclick="setCompasso(3, this)">3/4</button>
+                        <button class="metro-compasso-btn" onclick="setCompasso(2, this)">2/4</button>
+                        <button class="metro-compasso-btn" onclick="setCompasso(6, this)">6/8</button>
+                    </div>
+                    <div class="metro-visual" id="metroVisual"></div>
+                    <button id="btnMetronomo" onclick="toggleMetronomo()">▶ Iniciar</button>
+                    <button id="btnTapTempo" onclick="tapTempo()">👆 Tap Tempo</button>
+                </div>
 
                 <!-- Círculo de Quintas -->
                 <div class="circulo-container modulo-container">
@@ -284,7 +314,7 @@
         </div>
     </div>
 
-    <script src="script.js?v=1774461492"></script>
+    <script src="script.js?v=1774531047"></script>
     <script>
     // Service Worker
     if ('serviceWorker' in navigator) {
