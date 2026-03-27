@@ -522,6 +522,7 @@ button.tab-btn.ativo { background: #444; color: var(--text); border-color: var(-
     box-shadow: 0 8px 25px var(--shadow);
     margin-bottom: 16px;
     overflow: hidden;
+    overflow-x: auto;
 }
 /* SVG do violão centralizado dentro do card */
 #chord-visual-area svg {
@@ -948,6 +949,8 @@ button.botao-variacao.tipo-nona.ativo  { background:#1abc9c22; border-color:#1ab
     width: 100%;
     box-sizing: border-box;
     box-shadow: 0 4px 15px var(--shadow);
+    overflow: hidden;
+    overflow-x: auto;
 }
 
 /* Seletor de posições inline */

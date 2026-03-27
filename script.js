@@ -1143,7 +1143,9 @@ function desenharTecladoEm(nomeAcorde, targetArea) {
     }
 
     // Layout fixo em pixels — 2 oitavas (C3 a B4)
+    // GAP é o espaço entre teclas brancas; a tecla preta deve ficar centrada na divisa
     const WB = 28, WP = 16, HB = 110, HP = 68, GAP = 2;
+    const PASSO = WB + GAP; // 30px por tecla branca
 
     // Mapeamento exato de cada tecla branca com seu índice e preta à direita
     const brancas = [
@@ -1163,17 +1165,19 @@ function desenharTecladoEm(nomeAcorde, targetArea) {
         {idx:23, nome:'B',  preta:null},
     ];
 
-    const totalW = brancas.length * (WB + GAP);
+    // totalW: soma de todos os passos (28px tecla + 2px gap), sem gap após a última
+    const totalW = brancas.length * PASSO - GAP;
 
     const wrapper = document.createElement('div');
-    wrapper.style.cssText = 'overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;';
+    wrapper.style.cssText = 'overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;width:100%;';
 
     const teclado = document.createElement('div');
     teclado.style.cssText = `position:relative;width:${totalW}px;height:${HB}px;` +
         'background:#111;border:2px solid #333;border-radius:4px;box-sizing:border-box;flex-shrink:0;';
 
     brancas.forEach((b, i) => {
-        const x = i * (WB + GAP);
+        // x: posição absoluta do lado esquerdo da tecla branca
+        const x = i * PASSO;
 
         // Tecla branca
         const tw = document.createElement('div');
@@ -1194,9 +1198,10 @@ function desenharTecladoEm(nomeAcorde, targetArea) {
         tw.appendChild(lb);
         teclado.appendChild(tw);
 
-        // Tecla preta
+        // Tecla preta: centralizada na divisa entre esta tecla e a próxima
+        // Divisa = x + WB + GAP/2; a tecla preta se centra aí → left = divisa - WP/2
         if (b.preta) {
-            const xP = x + WB - WP / 2;
+            const xP = x + WB + GAP / 2 - WP / 2;
             const tp = document.createElement('div');
             const marcaP = piano.includes(b.preta.idx);
             tp.style.cssText = `position:absolute;left:${xP}px;top:0;width:${WP}px;height:${HP}px;` +
