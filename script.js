@@ -2607,7 +2607,8 @@ function tipoAcorde(nome) {
     if (/maj7|7M/.test(nome)) return 'tipo-maj7';
     if (/m7/.test(nome)) return 'tipo-min7';
     if (/^[A-G][#b]?7/.test(nome)) return 'tipo-dom7';
-    if (/9/.test(nome)) return 'tipo-nona';
+    if (/9|add9/.test(nome)) return 'tipo-nona';
+    if (/aug|sus[24]|[mb]?6$|7b5/.test(nome)) return 'tipo-maior';
     if (/m/.test(nome)) return 'tipo-menor';
     return 'tipo-maior';
 }
@@ -3369,40 +3370,121 @@ function mudarTela(tela) {
 // TELA ACORDE — BUSCA INDEPENDENTE
 // ==========================================
 // Acordes organizados por grupo
-const acordesGrupos = [
-    { label: 'Maiores',  acordes: ['C','D','E','F','G','A','B'] },
-    { label: 'Menores',  acordes: ['Am','Bm','Cm','Dm','Em','Fm','Gm'] },
-    { label: 'Dom 7',    acordes: ['C7','D7','E7','F7','G7','A7','B7'] },
-    { label: 'Maj 7',    acordes: ['C7M','D7M','E7M','F7M','G7M','A7M','B7M'] },
-    { label: 'Men 7',    acordes: ['Am7','Bm7','Cm7','Dm7','Em7','F#m7','Gm7'] },
-    { label: 'C# / #',  acordes: ['C#','D#','F#','G#','A#','C#m','F#m','G#m','A#m'] },
+// Categorias de acordes com abas — layout compacto e não poluído
+const acordesCategorias = [
+    {
+        id: 'basicos', label: '♩ Básicos', ativo: true,
+        grupos: [
+            { label: 'Maiores',  acordes: ['C','D','E','F','G','A','B','C#','D#','F#','G#','A#'] },
+            { label: 'Menores',  acordes: ['Cm','Dm','Em','Fm','Gm','Am','Bm','C#m','D#m','F#m','G#m','A#m'] },
+        ]
+    },
+    {
+        id: 'setimas', label: '♭7 Sétimas', ativo: false,
+        grupos: [
+            { label: 'Dom 7',  acordes: ['C7','D7','E7','F7','G7','A7','B7','C#7','D#7','F#7','G#7','A#7'] },
+            { label: 'Maj 7',  acordes: ['C7M','D7M','E7M','F7M','G7M','A7M','B7M','C#7M','D#7M','F#7M','G#7M','A#7M'] },
+            { label: 'Men 7',  acordes: ['Cm7','Dm7','Em7','Fm7','Gm7','Am7','Bm7','C#m7','D#m7','F#m7','G#m7','A#m7'] },
+        ]
+    },
+    {
+        id: 'extendidos', label: '9+ Ext.', ativo: false,
+        grupos: [
+            { label: '9ª',    acordes: ['C9','D9','E9','F9','G9','A9','B9','C#9','D#9','F#9','G#9','A#9'] },
+            { label: 'add9',  acordes: ['Cadd9','Dadd9','Eadd9','Fadd9','Gadd9','Aadd9','Badd9','C#add9','D#add9','F#add9','G#add9','A#add9'] },
+            { label: 'm9',    acordes: ['Cm9','Dm9','Em9','Fm9','Gm9','Am9','Bm9','C#m9','D#m9','F#m9','G#m9','A#m9'] },
+        ]
+    },
+    {
+        id: 'especiais', label: '✦ Especiais', ativo: false,
+        grupos: [
+            { label: 'Sus2',  acordes: ['Csus2','Dsus2','Esus2','Fsus2','Gsus2','Asus2','Bsus2','C#sus2','D#sus2','F#sus2','G#sus2','A#sus2'] },
+            { label: 'Sus4',  acordes: ['Csus4','Dsus4','Esus4','Fsus4','Gsus4','Asus4','Bsus4','C#sus4','D#sus4','F#sus4','G#sus4','A#sus4'] },
+            { label: 'Aug',   acordes: ['Caug','Daug','Eaug','Faug','Gaug','Aaug','Baug','C#aug','D#aug','F#aug','G#aug','A#aug'] },
+            { label: '6ª',    acordes: ['C6','D6','E6','F6','G6','A6','B6','C#6','D#6','F#6','G#6','A#6'] },
+            { label: 'm6',    acordes: ['Cm6','Dm6','Em6','Fm6','Gm6','Am6','Bm6','C#m6','D#m6','F#m6','G#m6','A#m6'] },
+        ]
+    },
+    {
+        id: 'diminutos', label: '° Dim', ativo: false,
+        grupos: [
+            { label: 'Dim',   acordes: ['Cdim','Ddim','Edim','Fdim','Gdim','Adim','Bdim','C#dim','D#dim','F#dim','G#dim','A#dim'] },
+            { label: 'Dim7',  acordes: ['Cdim7','Ddim7','Edim7','Fdim7','Gdim7','Adim7','Bdim7','C#dim7','D#dim7','F#dim7','G#dim7','A#dim7'] },
+            { label: '7b5',   acordes: ['C7b5','D7b5','E7b5','F7b5','G7b5','A7b5','B7b5','C#7b5','D#7b5','F#7b5','G#7b5','A#7b5'] },
+        ]
+    },
 ];
-const acordesMaisUsados = acordesGrupos.flatMap(g => g.acordes);
+const acordesMaisUsados = acordesCategorias.flatMap(c => c.grupos.flatMap(g => g.acordes));
+
+let _categoriaAtivaAcorde = 'basicos';
 
 function gerarSugestoesAcorde() {
     const cont = document.getElementById('sugestoesAcorde');
-    if (!cont || cont.children.length > 0) return;
-    acordesGrupos.forEach(grupo => {
-        // Label do grupo
+    if (!cont) return;
+    cont.innerHTML = '';
+
+    // Barra de abas de categoria
+    const tabBar = document.createElement('div');
+    tabBar.id = 'acorde-cat-tabs';
+    tabBar.style.cssText = 'display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px;';
+
+    acordesCategorias.forEach(cat => {
+        const tab = document.createElement('button');
+        tab.className = 'acorde-cat-tab' + (cat.id === _categoriaAtivaAcorde ? ' ativa' : '');
+        tab.textContent = cat.label;
+        tab.dataset.catId = cat.id;
+        tab.onclick = () => {
+            _categoriaAtivaAcorde = cat.id;
+            document.querySelectorAll('.acorde-cat-tab').forEach(t => t.classList.remove('ativa'));
+            tab.classList.add('ativa');
+            renderGruposAcorde(cont, cat);
+        };
+        tabBar.appendChild(tab);
+    });
+    cont.appendChild(tabBar);
+
+    // Área dos grupos (abaixo das abas)
+    const gruposArea = document.createElement('div');
+    gruposArea.id = 'acorde-grupos-area';
+    cont.appendChild(gruposArea);
+
+    // Renderizar a categoria ativa
+    const catAtiva = acordesCategorias.find(c => c.id === _categoriaAtivaAcorde) || acordesCategorias[0];
+    renderGruposAcorde(cont, catAtiva);
+}
+
+function renderGruposAcorde(cont, cat) {
+    let area = cont.querySelector('#acorde-grupos-area');
+    if (!area) return;
+    area.innerHTML = '';
+
+    cat.grupos.forEach(grupo => {
+        const wrap = document.createElement('div');
+        wrap.style.cssText = 'margin-bottom:8px;';
+
         const lbl = document.createElement('div');
-        lbl.style.cssText = 'width:100%;font-size:10px;font-weight:bold;color:var(--text-muted);margin:6px 0 2px;letter-spacing:1px;text-transform:uppercase;';
+        lbl.style.cssText = 'font-size:9px;font-weight:bold;color:var(--text-muted);margin-bottom:4px;letter-spacing:1.2px;text-transform:uppercase;';
         lbl.textContent = grupo.label;
-        cont.appendChild(lbl);
-        // Botões do grupo
+        wrap.appendChild(lbl);
+
         const row = document.createElement('div');
-        row.style.cssText = 'display:flex;flex-wrap:wrap;gap:5px;width:100%;';
+        row.style.cssText = 'display:flex;flex-wrap:wrap;gap:3px;';
+
         grupo.acordes.forEach(ac => {
             const btn = document.createElement('button');
-            btn.className = 'botao-variacao ' + tipoAcorde(ac);
+            btn.className = 'acorde-chip ' + tipoAcorde(ac);
             btn.textContent = ac;
-            btn.style.cssText = 'margin:0;';
             btn.onclick = () => {
                 document.getElementById('inputBuscarAcorde').value = ac;
                 mostrarAcordeBusca(ac);
+                // highlight
+                area.querySelectorAll('.acorde-chip.ativo').forEach(b => b.classList.remove('ativo'));
+                btn.classList.add('ativo');
             };
             row.appendChild(btn);
         });
-        cont.appendChild(row);
+        wrap.appendChild(row);
+        area.appendChild(wrap);
     });
 }
 
