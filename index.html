@@ -19,7 +19,7 @@
 
     <!-- HEADER -->
     <div class="app-header">
-        <h1 class="app-titulo">🎸 Identificador de Tom</h1>
+        <h1 class="app-titulo">🎓 Estudo Musical</h1>
         <div class="header-acoes">
             <button class="btn-icone" onclick="abrirAjuda()" title="Ajuda">❓</button>
             <button class="btn-icone" id="btnCompartilhar" onclick="compartilharResultado()" title="Compartilhar" style="display:none">📤</button>
@@ -32,7 +32,7 @@
     <nav class="nav-tabs">
         <button class="nav-tab ativa" onclick="mudarTela('explorar')" id="nav-explorar">
             <span class="nav-tab-icon">⭕</span>
-            <span class="nav-tab-label">Explorar</span>
+            <span class="nav-tab-label">Quintas</span>
         </button>
         <button class="nav-tab" onclick="mudarTela('tom')" id="nav-tom">
             <span class="nav-tab-icon">🎵</span>
@@ -44,7 +44,7 @@
         </button>
         <button class="nav-tab" onclick="mudarTela('tools')" id="nav-tools">
             <span class="nav-tab-icon">🛠️</span>
-            <span class="nav-tab-label">Tools</span>
+            <span class="nav-tab-label">Ferramentas</span>
         </button>
     </nav>
 
@@ -256,7 +256,7 @@
 
         <!-- ==================== TELA: TOOLS ==================== -->
         <div class="tela tela-tools" id="tela-tools">
-            <div class="tela-2col">
+            <div class="tela-ferramentas-grid">
 
                 <!-- Afinador + Detector -->
                 <div>

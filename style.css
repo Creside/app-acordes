@@ -1825,6 +1825,14 @@ button.metro-compasso-btn.ativo {
     .tela { height: 100%; }
 
     /* Grid 3 colunas — Explorar */
+    /* Grid de Ferramentas desktop — 3 colunas balanceadas */
+    .tela-ferramentas-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 16px;
+        align-items: start;
+    }
+
     .tela-explorar .explor-grid-desktop {
         display: grid;
         grid-template-columns: 320px 1fr 1fr;
@@ -1888,3 +1896,84 @@ button.metro-compasso-btn.ativo {
     margin: 0;
     padding: 10px 16px;
 }
+
+/* ============================================
+   PAINEL DE INFO DO CÍRCULO DE QUINTAS
+   ============================================ */
+.circulo-info {
+    display: none;
+    margin-top: 12px;
+    background: var(--bg-input-dark);
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    padding: 14px;
+    animation: fadeIn 0.2s ease;
+}
+.circulo-info-tom {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--accent);
+    margin-bottom: 10px;
+}
+.circulo-info-campo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+.circulo-info-acorde {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: bold;
+    background: var(--bg-input);
+    border: 1px solid var(--border-light);
+    color: var(--text);
+    cursor: pointer;
+    transition: 0.15s;
+}
+.circulo-info-acorde:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+.circulo-info-acorde.tonica-destaque {
+    background: var(--accent);
+    color: #1a1a1a;
+    border-color: var(--accent);
+}
+.circulo-info-vizinhas {
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+.circulo-viz-chip {
+    padding: 3px 8px;
+    border-radius: 5px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--text);
+    cursor: pointer;
+    transition: 0.15s;
+}
+.circulo-viz-chip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+.circulo-info-label {
+    font-size: 10px;
+    font-weight: bold;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+

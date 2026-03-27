@@ -1747,30 +1747,92 @@ function selecionarTomCirculo(idx, tipo) {
         ? gerarCampoHarmonicoMaior(tonica)
         : gerarCampoHarmonicoMenor(tonica);
 
-    // Se estiver na aba Explorar, usa explorarSelecionarTom
+    // Se estiver na aba Quintas/Explorar, usa explorarSelecionarTom
     if (telaAtiva === 'explorar') {
         explorarSelecionarTom(tonica, modo);
-        // Atualiza o input com só a nota clicada
         const inp = document.getElementById('explorInputTom');
         if (inp) inp.value = notaExibida;
         return;
     }
 
-    // Quintas vizinhas (aba Tom)
+    // Quintas vizinhas
     const idxAnterior = (idx + N_CIRCULO - 1) % N_CIRCULO;
     const idxProximo  = (idx + 1) % N_CIRCULO;
     const vizMaior = [circuloMaior[idxAnterior], circuloMaior[idxProximo]];
+    const vizMenor = [circuloMenor[idxAnterior], circuloMenor[idxProximo]];
 
     const infoDiv = document.getElementById('circulo-info');
     if (infoDiv) {
         infoDiv.style.display = 'block';
-        infoDiv.innerHTML = `
-            <div class="circulo-info-tom">🎵 ${nomeDisplay}</div>
-            <b>Campo Harmônico:</b> ${campo.join(" — ")}<br>
-            <b>Quintas vizinhas:</b> ${vizMaior[0]} ◀ ${circuloMaior[idx]} ▶ ${vizMaior[1]}
-        `;
+        infoDiv.innerHTML = '';
+
+        // Título do tom selecionado
+        const titulo = document.createElement('div');
+        titulo.className = 'circulo-info-tom';
+        titulo.textContent = '🎵 ' + nomeDisplay;
+        infoDiv.appendChild(titulo);
+
+        // Label campo harmônico
+        const lblCampo = document.createElement('div');
+        lblCampo.className = 'circulo-info-label';
+        lblCampo.textContent = 'Campo Harmônico';
+        infoDiv.appendChild(lblCampo);
+
+        // Acordes do campo clicáveis
+        const campoDiv = document.createElement('div');
+        campoDiv.className = 'circulo-info-campo';
+        campo.forEach((ac, i) => {
+            const chip = document.createElement('button');
+            chip.className = 'circulo-info-acorde' + (i === 0 ? ' tonica-destaque' : '');
+            chip.textContent = ac;
+            chip.onclick = () => {
+                // Navega para aba Acorde e mostra o acorde
+                mudarTela('acorde');
+                document.getElementById('inputBuscarAcorde').value = ac;
+                mostrarAcordeBusca(ac);
+            };
+            campoDiv.appendChild(chip);
+        });
+        infoDiv.appendChild(campoDiv);
+
+        // Label quintas vizinhas
+        const lblViz = document.createElement('div');
+        lblViz.className = 'circulo-info-label';
+        lblViz.style.marginTop = '8px';
+        lblViz.textContent = 'Quintas Vizinhas';
+        infoDiv.appendChild(lblViz);
+
+        // Chips das quintas vizinhas
+        const vizDiv = document.createElement('div');
+        vizDiv.className = 'circulo-info-vizinhas';
+
+        [vizMaior[0], circuloMaior[idx], vizMaior[1]].forEach((v, i) => {
+            if (i === 1) {
+                const sep = document.createElement('span');
+                sep.textContent = '◀';
+                sep.style.cssText = 'color:var(--accent);font-size:14px;';
+                vizDiv.appendChild(sep);
+            }
+            const chip = document.createElement('button');
+            chip.className = 'circulo-viz-chip' + (i === 1 ? ' tonica-destaque' : '');
+            chip.textContent = v;
+            chip.onclick = () => {
+                // Clica no círculo para selecionar aquela quinta
+                const newIdx = circuloMaior.indexOf(v);
+                if (newIdx !== -1) selecionarTomCirculo(newIdx, 'maior');
+            };
+            vizDiv.appendChild(chip);
+            if (i === 1) {
+                const sep2 = document.createElement('span');
+                sep2.textContent = '▶';
+                sep2.style.cssText = 'color:var(--accent);font-size:14px;';
+                vizDiv.appendChild(sep2);
+            }
+        });
+        infoDiv.appendChild(vizDiv);
     }
-    // Preenche o input do identificador
+
+    // Preenche o input do identificador de tom
     const inp = document.getElementById('inputAcordes');
     if (inp) inp.value = campo.slice(0,4).join(", ");
 }
