@@ -132,13 +132,11 @@ function identificarTom() {
 
         // Aba Tom: não interfere no estado do braço da aba Acorde
         // (cada aba tem estado independente)
-        gerarBotoesDeVariacao(mapearNomeParaBanco(tonica, modo));
+        // Aba Tom: não interfere nos elementos da aba Acorde
     } else {
         resultadoDiv.style.display = 'block';
         resultadoDiv.innerHTML = "Tom não identificado. Tente digitar outros acordes da música (ex: Am, F, C).";
-        ['fretboard-container','variacoes-container','chord-diagram-container'].forEach(id => {
-            document.getElementById(id).style.display = 'none';
-        });
+        // Aba Tom: não esconde elementos da aba Acorde
         notasEscalaAtual = [];
     }
 }
