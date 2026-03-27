@@ -591,34 +591,7 @@ const dicionarioShapes = {
 let acordeAtualSelecionado = "";
 let visaoDiagramaAtual = "guitarra";
 
-function gerarBotoesDeVariacao(nomeDoTom) {
-    const container = document.getElementById('variacoes-container-inner') || document.getElementById('variacoes-container');
-    const grade = document.getElementById('gradeVariacoes');
-    if (!grade) return;
-    grade.innerHTML = '';
-    const lista = bancoDeAcordes[nomeDoTom];
-    if (!lista) { if(container) container.style.display = 'none'; return; }
-    if(container) container.style.display = 'block';
-    lista.forEach((acorde, idx) => {
-        const btn = document.createElement('button');
-        btn.className = 'botao-variacao';
-        btn.innerText = acorde;
-        btn.onclick = () => {
-            document.querySelectorAll('.botao-variacao').forEach(b => b.classList.remove('ativo'));
-            btn.classList.add('ativo');
-            acordeAtualSelecionado = acorde;
-            renderizarVisualizacao();
-        };
-        grade.appendChild(btn);
-        if (idx === 0) {
-            btn.classList.add('ativo');
-            if (telaAtiva === 'acorde') {
-                acordeAtualSelecionado = acorde;
-                renderizarVisualizacao();
-            }
-        }
-    });
-}
+// gerarBotoesDeVariacao: definição completa abaixo
 
 function mudarVisaoDiagrama(visao) {
     visaoDiagramaAtual = visao;
@@ -2264,8 +2237,7 @@ function corTipo(tipo) {
 }
 
 // Aplica classes de tipo aos botões de variação
-const _gerarBotoesOrig = gerarBotoesDeVariacao;
-function gerarBotoesDeVariacao(nomeDoTom) {
+gerarBotoesDeVariacao = function(nomeDoTom) {
     const container = document.getElementById('variacoes-container-inner') || document.getElementById('variacoes-container');
     const grade = document.getElementById('gradeVariacoes');
     if (!grade) return;
