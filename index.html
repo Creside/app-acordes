@@ -84,7 +84,13 @@
                     <div class="progressoes-lista" id="progressoesLista"></div>
                 </div>
 
-
+                <!-- Sugestão de Solo (só aparece após identificar tom) -->
+                <div id="soloContainer" class="modulo-container" style="display:none;">
+                    <div class="modulo-titulo-row">
+                        <h3 class="modulo-titulo">🎸 Sugestão de Solo</h3>
+                    </div>
+                    <div id="soloEscalas"></div>
+                </div>
 
             </div>
         </div>
@@ -362,8 +368,6 @@
     <button onclick="document.getElementById('iosBanner').style.display='none'" style="background:none;border:none;color:#aaa;font-size:20px;cursor:pointer;width:auto;padding:4px;">✕</button>
 </div>
 
-<!-- soloContainer: mantido fora do fluxo mas visibilidade controlada pela tela Tom -->
-    <div id="soloContainer" style="display:none;"><div id="soloEscalas"></div></div>
 
     <!-- POPUP DIAGRAMA -->
 <div id="cifra-popup" class="cifra-popup">

@@ -134,7 +134,7 @@ function identificarTom() {
 modoBracoAtual = modo;
 // Seleciona escala padrão baseada no modo
 escalaBracoAtual = modo === "menor" ? "penta_menor" : "penta_maior";
-document.querySelectorAll(".escala-btn").forEach((b,i) => b.classList.toggle("ativo", i === (modo === "menor" ? 1 : 0)));
+document.querySelectorAll('#tela-acorde .escala-btn').forEach((b,i) => b.classList.toggle("ativo", i === (modo === "menor" ? 1 : 0)));
 desenharBracoMelhorado();
         gerarBotoesDeVariacao(mapearNomeParaBanco(tonica, modo));
     } else {
@@ -2558,8 +2558,7 @@ function mostrarSugestoesSolo(tonica, modo) {
     });
 
     container.dataset.visivel = '1';
-    // Só exibe se a tela Tom estiver ativa no momento
-    container.style.display = (telaAtiva === 'tom') ? 'block' : 'none';
+    container.style.display = 'block';
 }
 
 // tocarEscala removido (botão de play eliminado)
@@ -2998,9 +2997,6 @@ function mudarTela(tela) {
     if (telaEl) telaEl.classList.add('ativa');
     if (navEl) navEl.classList.add('ativa');
     telaAtiva = tela;
-    // Esconde soloContainer se não estiver na aba Tom
-    const soloEl = document.getElementById('soloContainer');
-    if (soloEl) soloEl.style.display = tela === 'tom' ? soloEl.dataset.visivel === '1' ? 'block' : 'none' : 'none';
     // Inicializa se necessário
     if (tela === 'explorar' && !document.getElementById('circulo-svg-wrapper').children.length) {
         desenharCirculoDeQuintas();
@@ -3502,7 +3498,8 @@ function explorarMostrarSolo(tonica, modo) {
 
 function explorarEscala(escala, btn) {
     explorEscalaAtual = escala;
-    document.querySelectorAll('#modoExploracao .escala-btn').forEach(b => b.classList.remove('ativo'));
+    const parent = btn.closest('.escala-selector-row');
+    if (parent) parent.querySelectorAll('.escala-btn').forEach(b => b.classList.remove('ativo'));
     btn.classList.add('ativo');
     if (explorTonicaAtual) {
         explorNotasAtual = formulasEscalaBraco[escala].map(s => notasCromaticas[(notasCromaticas.indexOf(explorTonicaAtual)+s)%12]);
