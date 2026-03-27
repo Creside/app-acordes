@@ -130,12 +130,8 @@ function identificarTom() {
                 <p style="margin-bottom:0"><b>🛤️ ${labelCampo}:</b><br>${campo.join(" - ")}</p>
             </div>`;
 
-        tonicaBracoAtual = tonica;
-modoBracoAtual = modo;
-// Seleciona escala padrão baseada no modo
-escalaBracoAtual = modo === "menor" ? "penta_menor" : "penta_maior";
-document.querySelectorAll('#tela-acorde .escala-btn').forEach((b,i) => b.classList.toggle("ativo", i === (modo === "menor" ? 1 : 0)));
-desenharBracoMelhorado();
+        // Aba Tom: não interfere no estado do braço da aba Acorde
+        // (cada aba tem estado independente)
         gerarBotoesDeVariacao(mapearNomeParaBanco(tonica, modo));
     } else {
         resultadoDiv.style.display = 'block';
@@ -743,6 +739,13 @@ let escalaBracoAtual = 'penta_maior';
 let posicaoBracoAtual = 0; // 0 = todas
 let tonicaBracoAtual = 'C';
 let modoBracoAtual = 'maior';
+
+// Estado INDEPENDENTE da aba Acorde — não é sobrescrito pela aba Tom
+let acorde_escalaBraco = 'penta_maior';
+let acorde_posicaoBraco = 0;
+let acorde_tonicaBraco  = 'C';
+let acorde_modoBraco    = 'maior';
+let acorde_notasEscala  = [];
 
 const formulasEscalaBraco = {
     penta_maior:  [0,2,4,7,9],
@@ -1658,31 +1661,31 @@ function getPosicaoRange(posicao, tonicaIdx) {
     return { inicio: casaInicio, fim: casaInicio + 4 };
 }
 
+// Funções do braço da aba Acorde — usam estado independente (acorde_*)
 function selecionarEscala(escala, btn) {
-    escalaBracoAtual = escala;
-    // Update only the clicked button's group (not all escala-btns across tabs)
+    acorde_escalaBraco = escala;
     const parent = btn.closest('.escala-selector-row');
     if (parent) parent.querySelectorAll('.escala-btn').forEach(b => b.classList.remove('ativo'));
     btn.classList.add('ativo');
-    atualizarBracoComEscala();
+    atualizarBracoAcorde();
 }
 
 function selecionarPosicao(posicao, btn) {
-    posicaoBracoAtual = posicao;
-    document.querySelectorAll('.posicao-braco-btn').forEach(b => b.classList.remove('ativo'));
+    acorde_posicaoBraco = posicao;
+    document.querySelectorAll('#tela-acorde .posicao-braco-btn').forEach(b => b.classList.remove('ativo'));
     btn.classList.add('ativo');
-    atualizarBracoComEscala();
+    atualizarBracoAcorde();
 }
 
-function atualizarBracoComEscala() {
-    const formula = formulasEscalaBraco[escalaBracoAtual] || formulasEscalaBraco.penta_maior;
-    const tonicaIdx = notasCromaticas.indexOf(tonicaBracoAtual);
+function atualizarBracoAcorde() {
+    const formula = formulasEscalaBraco[acorde_escalaBraco] || formulasEscalaBraco.penta_maior;
+    const tonicaIdx = notasCromaticas.indexOf(acorde_tonicaBraco);
     if (tonicaIdx === -1) return;
-    notasEscalaAtual = formula.map(s => notasCromaticas[(tonicaIdx + s) % 12]);
-    desenharBracoMelhorado();
+    acorde_notasEscala = formula.map(s => notasCromaticas[(tonicaIdx + s) % 12]);
+    desenharBracoAcorde();
 }
 
-function desenharBracoMelhorado() {
+function desenharBracoAcorde() {
     const fretboard = document.getElementById('fretboard');
     const instrumento = document.getElementById('seletorInstrumento').value;
     fretboard.innerHTML = '';
@@ -1694,16 +1697,12 @@ function desenharBracoMelhorado() {
         ? [1,1.5,2,2.5,3,3.5]
         : [1.5,2,2.5,3];
 
-    const tonicaIdx = notasCromaticas.indexOf(tonicaBracoAtual);
+    const tonicaIdx = notasCromaticas.indexOf(acorde_tonicaBraco);
 
-    // Define range de casas se posição específica selecionada
     let casaMin = 0, casaMax = 12;
-    if (posicaoBracoAtual > 0) {
-        // Posições clássicas: 1=casa0-4, 2=casa2-6, 3=casa4-8, 4=casa6-10, 5=casa9-12
+    if (acorde_posicaoBraco > 0) {
         const posRanges = [[0,4],[2,6],[4,8],[6,10],[9,12]];
-        const range = posRanges[posicaoBracoAtual - 1];
-        // Ajusta baseado na tônica
-        const offset = tonicaIdx;
+        const range = posRanges[acorde_posicaoBraco - 1];
         casaMin = range[0];
         casaMax = range[1];
     }
@@ -1727,7 +1726,6 @@ function desenharBracoMelhorado() {
             }
             if (t === 1) trasteDiv.classList.add('pestana');
 
-            // Inlays
             if (t > 0 && [3,5,7,9,12].includes(t)) {
                 const cordaMeio = Math.floor((afinacao.length - 1) / 2);
                 if (c === cordaMeio) {
@@ -1737,16 +1735,14 @@ function desenharBracoMelhorado() {
                 }
             }
 
-            // Highlight de posição
-            if (posicaoBracoAtual > 0 && t >= casaMin && t <= casaMax && t > 0) {
+            if (acorde_posicaoBraco > 0 && t >= casaMin && t <= casaMax && t > 0) {
                 trasteDiv.classList.add('posicao-highlight');
             }
 
             const nota = notasCromaticas[(ni + t) % 12];
-            const ehTonica = nota === tonicaBracoAtual;
-            const ehDaEscala = notasEscalaAtual.includes(nota);
-            // Na posição específica, só mostra notas dentro do range
-            const dentroDoRange = posicaoBracoAtual === 0 || (t >= casaMin && t <= casaMax);
+            const ehTonica = nota === acorde_tonicaBraco;
+            const ehDaEscala = acorde_notasEscala.includes(nota);
+            const dentroDoRange = acorde_posicaoBraco === 0 || (t >= casaMin && t <= casaMax);
 
             if (ehDaEscala && dentroDoRange) {
                 const bolinha = document.createElement('div');
@@ -1761,7 +1757,6 @@ function desenharBracoMelhorado() {
         fretboard.appendChild(cordaDiv);
     }
 
-    // Régua
     const regua = document.createElement('div');
     regua.className = 'regua-casas';
     for (let t = 0; t <= 12; t++) {
@@ -3079,20 +3074,20 @@ function mostrarAcordeBusca(nomeAcorde) {
     posicaoAtual = 0;
     _renderDiagramaComPosicao(nomeAcorde, 0);
 
-    // Deduz tom para o braço
+    // Deduz tom para o braço da aba Acorde — usa estado INDEPENDENTE (acorde_*)
     const match = nomeAcorde.match(/^([A-G][#b]?)/);
     if (match) {
         const tonica = match[1];
         const sufixo = nomeAcorde.slice(tonica.length);
         const ehMenor = /^m(?!a)/.test(sufixo) || /dim/.test(sufixo);
-        const modo = ehMenor ? 'menor' : 'maior';
-        tonicaBracoAtual = tonica;
-        modoBracoAtual = modo;
-        escalaBracoAtual = ehMenor ? 'penta_menor' : 'penta_maior';
-        notasEscalaAtual = formulasEscalaBraco[escalaBracoAtual].map(
+        acorde_tonicaBraco  = tonica;
+        acorde_modoBraco    = ehMenor ? 'menor' : 'maior';
+        acorde_escalaBraco  = ehMenor ? 'penta_menor' : 'penta_maior';
+        acorde_notasEscala  = formulasEscalaBraco[acorde_escalaBraco].map(
             s => notasCromaticas[(notasCromaticas.indexOf(tonica)+s)%12]
         );
-        desenharBracoMelhorado();
+        acorde_posicaoBraco = 0;
+        desenharBracoAcorde();
 
         // Mostra o container do braço
         const fc = document.getElementById('fretboard-container');
