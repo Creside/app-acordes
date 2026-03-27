@@ -2,6 +2,9 @@
 // FASE 1: O MOTOR HARMÔNICO (O CÉREBRO DO APP)
 // ==========================================
 
+// Estado global da tela ativa
+let telaAtiva = 'explorar';
+
 const notasCromaticas = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 const formulaEscalaMaior = [0, 2, 4, 5, 7, 9, 11];
 const formulaEscalaMenor = [0, 2, 3, 5, 7, 8, 10];
@@ -2554,7 +2557,9 @@ function mostrarSugestoesSolo(tonica, modo) {
         escalasDiv.appendChild(row);
     });
 
-    container.style.display = 'block';
+    container.dataset.visivel = '1';
+    // Só exibe se a tela Tom estiver ativa no momento
+    container.style.display = (telaAtiva === 'tom') ? 'block' : 'none';
 }
 
 // tocarEscala removido (botão de play eliminado)
@@ -2982,7 +2987,6 @@ function identificarAcordeDeNotas(notas) {
 // ==========================================
 // NAVEGAÇÃO POR ABAS
 // ==========================================
-let telaAtiva = 'explorar';
 
 function mudarTela(tela) {
     // Esconde todas as telas
@@ -2994,6 +2998,9 @@ function mudarTela(tela) {
     if (telaEl) telaEl.classList.add('ativa');
     if (navEl) navEl.classList.add('ativa');
     telaAtiva = tela;
+    // Esconde soloContainer se não estiver na aba Tom
+    const soloEl = document.getElementById('soloContainer');
+    if (soloEl) soloEl.style.display = tela === 'tom' ? soloEl.dataset.visivel === '1' ? 'block' : 'none' : 'none';
     // Inicializa se necessário
     if (tela === 'explorar' && !document.getElementById('circulo-svg-wrapper').children.length) {
         desenharCirculoDeQuintas();

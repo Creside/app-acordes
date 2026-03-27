@@ -84,33 +84,7 @@
                     <div class="progressoes-lista" id="progressoesLista"></div>
                 </div>
 
-                <!-- Metrônomo -->
-                <div class="modulo-container metronomo-container">
-                    <div class="modulo-titulo-row">
-                        <h3 class="modulo-titulo">🥁 Metrônomo</h3>
-                    </div>
-                    <div class="metronomo-bpm-row">
-                        <button class="metro-bpm-btn" onclick="ajustarBPM(-10)">−10</button>
-                        <button class="metro-bpm-btn" onclick="ajustarBPM(-1)">−</button>
-                        <div style="text-align:center;">
-                            <div class="metro-bpm-display" id="metroBPM">80</div>
-                            <div class="metro-bpm-label">BPM</div>
-                        </div>
-                        <button class="metro-bpm-btn" onclick="ajustarBPM(1)">+</button>
-                        <button class="metro-bpm-btn" onclick="ajustarBPM(10)">+10</button>
-                    </div>
-                    <input type="range" class="metro-bpm-slider" id="metroBPMSlider"
-                        min="40" max="240" value="80" oninput="setBPMSlider(this.value)">
-                    <div class="metro-compasso-row">
-                        <button class="metro-compasso-btn ativo" onclick="setCompasso(4,this)">4/4</button>
-                        <button class="metro-compasso-btn" onclick="setCompasso(3,this)">3/4</button>
-                        <button class="metro-compasso-btn" onclick="setCompasso(2,this)">2/4</button>
-                        <button class="metro-compasso-btn" onclick="setCompasso(6,this)">6/8</button>
-                    </div>
-                    <div class="metro-visual" id="metroVisual"></div>
-                    <button id="btnMetronomo" onclick="toggleMetronomo()">▶ Iniciar</button>
-                    <button id="btnTapTempo" onclick="tapTempo()">👆 Tap Tempo</button>
-                </div>
+
 
             </div>
         </div>
@@ -343,6 +317,34 @@
                     </div>
                 </div>
 
+                <!-- Metrônomo -->
+                <div class="modulo-container metronomo-container">
+                    <div class="modulo-titulo-row">
+                        <h3 class="modulo-titulo">🥁 Metrônomo</h3>
+                    </div>
+                    <div class="metronomo-bpm-row">
+                        <button class="metro-bpm-btn" onclick="ajustarBPM(-10)">−10</button>
+                        <button class="metro-bpm-btn" onclick="ajustarBPM(-1)">−</button>
+                        <div style="text-align:center;">
+                            <div class="metro-bpm-display" id="metroBPM">80</div>
+                            <div class="metro-bpm-label">BPM</div>
+                        </div>
+                        <button class="metro-bpm-btn" onclick="ajustarBPM(1)">+</button>
+                        <button class="metro-bpm-btn" onclick="ajustarBPM(10)">+10</button>
+                    </div>
+                    <input type="range" class="metro-bpm-slider" id="metroBPMSlider"
+                        min="40" max="240" value="80" oninput="setBPMSlider(this.value)">
+                    <div class="metro-compasso-row">
+                        <button class="metro-compasso-btn ativo" onclick="setCompasso(4,this)">4/4</button>
+                        <button class="metro-compasso-btn" onclick="setCompasso(3,this)">3/4</button>
+                        <button class="metro-compasso-btn" onclick="setCompasso(2,this)">2/4</button>
+                        <button class="metro-compasso-btn" onclick="setCompasso(6,this)">6/8</button>
+                    </div>
+                    <div class="metro-visual" id="metroVisual"></div>
+                    <button id="btnMetronomo" onclick="toggleMetronomo()">▶ Iniciar</button>
+                    <button id="btnTapTempo" onclick="tapTempo()">👆 Tap Tempo</button>
+                </div>
+
             </div>
         </div>
 
@@ -360,7 +362,7 @@
     <button onclick="document.getElementById('iosBanner').style.display='none'" style="background:none;border:none;color:#aaa;font-size:20px;cursor:pointer;width:auto;padding:4px;">✕</button>
 </div>
 
-<!-- soloContainer hidden (used by Tom tab) -->
+<!-- soloContainer: mantido fora do fluxo mas visibilidade controlada pela tela Tom -->
     <div id="soloContainer" style="display:none;"><div id="soloEscalas"></div></div>
 
     <!-- POPUP DIAGRAMA -->
