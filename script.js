@@ -610,7 +610,13 @@ function gerarBotoesDeVariacao(nomeDoTom) {
             renderizarVisualizacao();
         };
         grade.appendChild(btn);
-        if (idx === 0) { btn.classList.add('ativo'); acordeAtualSelecionado = acorde; renderizarVisualizacao(); }
+        if (idx === 0) {
+            btn.classList.add('ativo');
+            if (telaAtiva === 'acorde') {
+                acordeAtualSelecionado = acorde;
+                renderizarVisualizacao();
+            }
+        }
     });
 }
 
@@ -2297,10 +2303,14 @@ function gerarBotoesDeVariacao(nomeDoTom) {
             renderizarVisualizacao();
         };
         grade.appendChild(btn);
+        // Só auto-seleciona e renderiza se estivermos NA aba Acorde.
+        // Quando chamada da aba Tom, não interfere no estado da aba Acorde.
         if (idx === 0) {
             btn.classList.add('ativo');
-            acordeAtualSelecionado = acorde;
-            renderizarVisualizacao();
+            if (telaAtiva === 'acorde') {
+                acordeAtualSelecionado = acorde;
+                renderizarVisualizacao();
+            }
         }
     });
 }
