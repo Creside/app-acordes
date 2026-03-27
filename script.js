@@ -2,9 +2,6 @@
 // FASE 1: O MOTOR HARMÔNICO (O CÉREBRO DO APP)
 // ==========================================
 
-// Estado global da tela ativa
-let telaAtiva = 'explorar';
-
 const notasCromaticas = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 const formulaEscalaMaior = [0, 2, 4, 5, 7, 9, 11];
 const formulaEscalaMenor = [0, 2, 3, 5, 7, 8, 10];
@@ -130,13 +127,19 @@ function identificarTom() {
                 <p style="margin-bottom:0"><b>🛤️ ${labelCampo}:</b><br>${campo.join(" - ")}</p>
             </div>`;
 
-        // Aba Tom: não interfere no estado do braço da aba Acorde
-        // (cada aba tem estado independente)
-        // Aba Tom: não interfere nos elementos da aba Acorde
+        tonicaBracoAtual = tonica;
+modoBracoAtual = modo;
+// Seleciona escala padrão baseada no modo
+escalaBracoAtual = modo === "menor" ? "penta_menor" : "penta_maior";
+document.querySelectorAll(".escala-btn").forEach((b,i) => b.classList.toggle("ativo", i === (modo === "menor" ? 1 : 0)));
+desenharBracoMelhorado();
+        gerarBotoesDeVariacao(mapearNomeParaBanco(tonica, modo));
     } else {
         resultadoDiv.style.display = 'block';
         resultadoDiv.innerHTML = "Tom não identificado. Tente digitar outros acordes da música (ex: Am, F, C).";
-        // Aba Tom: não esconde elementos da aba Acorde
+        ['fretboard-container','variacoes-container','chord-diagram-container'].forEach(id => {
+            document.getElementById(id).style.display = 'none';
+        });
         notasEscalaAtual = [];
     }
 }
@@ -550,392 +553,6 @@ const dicionarioShapes = {
     "G#m7": { posicoes: [
                 { label:"Barra 4ª", barra:{casa:4,de:0,ate:4}, g_frets:[4,6,4,4,4,4], g_fingers:[1,3,1,1,1,1] },
               ], piano:[8,11,15,18] },
-            "G#dim": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,5,3,4,3], g_fingers:[null,null,4,1,3,2] }
-              ], piano:[8,11,2] },
-            "Ddim": { posicoes: [
-                { label:"Aberta", g_frets:[null,null,0,1,3,1], g_fingers:[null,null,null,1,3,2] }
-              ], piano:[2,5,8] },
-            "Fdim": { posicoes: [
-                { label:"Pos 3", g_frets:[null,null,3,1,3,1], g_fingers:[null,null,3,1,4,2] }
-              ], piano:[5,8,11] },
-            "Gdim": { posicoes: [
-                { label:"Pos 5", g_frets:[null,null,5,3,5,3], g_fingers:[null,null,3,1,4,2] }
-              ], piano:[7,10,1] },
-            "Adim": { posicoes: [
-                { label:"Aberta", g_frets:[null,0,null,3,4,3], g_fingers:[null,null,null,1,3,2] }
-              ], piano:[9,0,3] },
-            "Cdim": { posicoes: [
-                { label:"Pos 3", g_frets:[null,null,3,4,1,4], g_fingers:[null,null,2,3,1,4] }
-              ], piano:[0,3,6] },
-            "Csus4": { posicoes: [
-                { label:"Pos 1", g_frets:[null,3,3,0,1,1], g_fingers:[null,3,4,null,1,1], barra:{casa:1,de:2,ate:5} }
-              ], piano:[0,5,7] },
-            "C#sus4": { posicoes: [
-                { label:"Pos 1", g_frets:[null,4,4,1,2,2], g_fingers:[null,3,4,null,1,1], barra:{casa:1,de:0,ate:5} }
-              ], piano:[1,6,8] },
-            "Dsus4": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,0,2,3,3], g_fingers:[null,null,null,1,2,3] }
-              ], piano:[2,7,9] },
-            "D#sus4": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,1,3,4,4], g_fingers:[null,null,1,3,4,4], barra:{casa:1,de:2,ate:5} }
-              ], piano:[3,8,10] },
-            "Esus4": { posicoes: [
-                { label:"Pos 1", g_frets:[0,2,2,2,0,0], g_fingers:[null,1,2,3,null,null] }
-              ], piano:[4,9,11] },
-            "Fsus4": { posicoes: [
-                { label:"Pos 1", g_frets:[1,1,3,3,1,1], g_fingers:[1,1,3,4,1,1], barra:{casa:1,de:0,ate:5} }
-              ], piano:[5,10,0] },
-            "F#sus4": { posicoes: [
-                { label:"Pos 1", g_frets:[2,2,4,4,2,2], g_fingers:[1,1,3,4,1,1], barra:{casa:2,de:0,ate:5} }
-              ], piano:[6,11,1] },
-            "Gsus4": { posicoes: [
-                { label:"Pos 1", g_frets:[3,3,0,0,3,3], g_fingers:[2,3,null,null,null,4] }
-              ], piano:[7,0,2] },
-            "G#sus4": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,1,1,2,4], g_fingers:[null,null,1,1,2,4], barra:{casa:1,de:2,ate:3} }
-              ], piano:[8,1,3] },
-            "Asus4": { posicoes: [
-                { label:"Pos 1", g_frets:[null,0,2,2,3,0], g_fingers:[null,null,1,2,3,null] }
-              ], piano:[9,2,4] },
-            "A#sus4": { posicoes: [
-                { label:"Pos 1", g_frets:[null,1,3,3,4,1], g_fingers:[null,1,3,4,4,1], barra:{casa:1,de:1,ate:5} }
-              ], piano:[10,3,5] },
-            "Bsus4": { posicoes: [
-                { label:"Pos 1", g_frets:[null,2,4,4,5,2], g_fingers:[null,1,3,4,4,1], barra:{casa:2,de:1,ate:5} }
-              ], piano:[11,4,6] },
-            "Caug": { posicoes: [
-                { label:"Pos 1", g_frets:[null,3,2,1,1,null], g_fingers:[null,4,3,1,2,null] }
-              ], piano:[0,4,8] },
-            "C#aug": { posicoes: [
-                { label:"Pos 1", g_frets:[null,4,3,2,2,null], g_fingers:[null,4,3,1,2,null] }
-              ], piano:[1,5,9] },
-            "Daug": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,0,3,3,2], g_fingers:[null,null,null,2,3,1] }
-              ], piano:[2,6,10] },
-            "D#aug": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,1,4,4,3], g_fingers:[null,null,1,3,4,2] }
-              ], piano:[3,7,11] },
-            "Eaug": { posicoes: [
-                { label:"Pos 1", g_frets:[0,3,2,1,1,0], g_fingers:[null,4,3,1,2,null] }
-              ], piano:[4,8,0] },
-            "Faug": { posicoes: [
-                { label:"Pos 1", g_frets:[null,0,3,2,2,1], g_fingers:[null,null,4,2,3,1] }
-              ], piano:[5,9,1] },
-            "F#aug": { posicoes: [
-                { label:"Pos 1", g_frets:[2,1,0,3,3,2], g_fingers:[2,1,null,4,3,2] }
-              ], piano:[6,10,2] },
-            "Gaug": { posicoes: [
-                { label:"Pos 1", g_frets:[3,2,1,0,0,3], g_fingers:[3,2,1,null,null,4] }
-              ], piano:[7,11,3] },
-            "G#aug": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,2,1,1,4], g_fingers:[null,null,2,1,1,4] }
-              ], piano:[8,0,4] },
-            "Aaug": { posicoes: [
-                { label:"Pos 1", g_frets:[null,0,3,2,2,1], g_fingers:[null,null,4,2,3,1] }
-              ], piano:[9,1,5] },
-            "A#aug": { posicoes: [
-                { label:"Pos 1", g_frets:[null,1,0,3,3,2], g_fingers:[null,1,null,4,3,2] }
-              ], piano:[10,2,6] },
-            "Baug": { posicoes: [
-                { label:"Pos 1", g_frets:[null,2,1,0,0,3], g_fingers:[null,2,1,null,null,4] }
-              ], piano:[11,3,7] },
-            "C#9": { posicoes: [
-                { label:"Pos 1", g_frets:[null,4,3,4,2,null], g_fingers:[null,3,2,4,1,null] }
-              ], piano:[1,5,8,11,3] },
-            "D9": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,0,2,1,2], g_fingers:[null,null,null,2,1,3] }
-              ], piano:[2,6,9,0,4] },
-            "D#9": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,1,3,2,3], g_fingers:[null,null,1,3,2,4] }
-              ], piano:[3,7,10,1,5] },
-            "E9": { posicoes: [
-                { label:"Pos 1", g_frets:[0,2,0,1,0,2], g_fingers:[null,2,null,1,null,3] }
-              ], piano:[4,8,11,2,6] },
-            "F9": { posicoes: [
-                { label:"Pos 1", g_frets:[1,null,1,2,1,3], g_fingers:[1,null,1,2,1,4], barra:{casa:1,de:0,ate:4} }
-              ], piano:[5,9,0,3,7] },
-            "F#9": { posicoes: [
-                { label:"Pos 1", g_frets:[2,null,2,3,2,4], g_fingers:[1,null,1,2,1,4], barra:{casa:2,de:0,ate:4} }
-              ], piano:[6,10,1,4,8] },
-            "G#9": { posicoes: [
-                { label:"Pos 1", g_frets:[4,null,4,5,4,6], g_fingers:[1,null,1,2,1,4], barra:{casa:4,de:0,ate:4} }
-              ], piano:[8,0,3,6,10] },
-            "A9": { posicoes: [
-                { label:"Pos 1", g_frets:[null,0,2,0,2,0], g_fingers:[null,null,2,null,3,null] }
-              ], piano:[9,1,4,7,11] },
-            "A#9": { posicoes: [
-                { label:"Pos 1", g_frets:[null,1,0,1,1,3], g_fingers:[null,1,null,2,2,4] }
-              ], piano:[10,2,5,8,0] },
-            "B9": { posicoes: [
-                { label:"Pos 1", g_frets:[null,2,1,2,0,2], g_fingers:[null,2,1,3,null,4] }
-              ], piano:[11,3,6,9,1] },
-            "Cm9": { posicoes: [
-                { label:"Pos 1", g_frets:[null,3,1,3,1,3], g_fingers:[null,4,1,3,1,4], barra:{casa:1,de:0,ate:5} }
-              ], piano:[0,3,7,10,2] },
-            "C#m9": { posicoes: [
-                { label:"Pos 1", g_frets:[null,4,2,4,2,4], g_fingers:[null,4,1,3,1,4], barra:{casa:2,de:0,ate:5} }
-              ], piano:[1,4,8,11,3] },
-            "Dm9": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,0,2,1,1], g_fingers:[null,null,null,3,1,2] }
-              ], piano:[2,5,9,0,4] },
-            "D#m9": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,1,3,2,2], g_fingers:[null,null,1,3,2,2] }
-              ], piano:[3,6,10,1,5] },
-            "Em9": { posicoes: [
-                { label:"Pos 1", g_frets:[0,2,0,0,0,0], g_fingers:[null,1,null,null,null,null] }
-              ], piano:[4,7,11,2,6] },
-            "Fm9": { posicoes: [
-                { label:"Pos 1", g_frets:[1,3,1,1,1,1], g_fingers:[1,3,1,1,1,1], barra:{casa:1,de:0,ate:5} }
-              ], piano:[5,8,0,3,7] },
-            "F#m9": { posicoes: [
-                { label:"Pos 1", g_frets:[2,4,2,2,2,2], g_fingers:[1,3,1,1,1,1], barra:{casa:2,de:0,ate:5} }
-              ], piano:[6,9,1,4,8] },
-            "Gm9": { posicoes: [
-                { label:"Pos 1", g_frets:[3,1,0,0,3,3], g_fingers:[3,1,null,null,4,4] }
-              ], piano:[7,10,2,5,9] },
-            "G#m9": { posicoes: [
-                { label:"Pos 1", g_frets:[4,2,1,1,4,4], g_fingers:[4,2,1,1,3,3] }
-              ], piano:[8,11,3,6,10] },
-            "Am9": { posicoes: [
-                { label:"Pos 1", g_frets:[null,0,2,0,1,0], g_fingers:[null,null,3,null,1,null] }
-              ], piano:[9,0,4,7,11] },
-            "A#m9": { posicoes: [
-                { label:"Pos 1", g_frets:[null,1,3,1,2,1], g_fingers:[null,1,3,1,2,1], barra:{casa:1,de:1,ate:5} }
-              ], piano:[10,1,5,8,0] },
-            "Bm9": { posicoes: [
-                { label:"Pos 1", g_frets:[null,2,4,2,3,2], g_fingers:[null,1,3,1,2,1], barra:{casa:2,de:1,ate:5} }
-              ], piano:[11,2,6,9,1] },
-            "Cadd9": { posicoes: [
-                { label:"Pos 1", g_frets:[null,3,2,0,3,0], g_fingers:[null,2,1,null,3,null] }
-              ], piano:[0,4,7,2] },
-            "C#add9": { posicoes: [
-                { label:"Pos 1", g_frets:[null,4,3,1,4,1], g_fingers:[null,3,2,1,4,1], barra:{casa:1,de:3,ate:5} }
-              ], piano:[1,5,8,3] },
-            "Dadd9": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,0,2,3,2], g_fingers:[null,null,null,1,3,2] }
-              ], piano:[2,6,9,4] },
-            "D#add9": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,1,3,4,3], g_fingers:[null,null,1,3,4,2] }
-              ], piano:[3,7,10,5] },
-            "Eadd9": { posicoes: [
-                { label:"Pos 1", g_frets:[0,2,2,1,0,2], g_fingers:[null,2,3,1,null,4] }
-              ], piano:[4,8,11,6] },
-            "Fadd9": { posicoes: [
-                { label:"Pos 1", g_frets:[1,null,3,2,1,3], g_fingers:[1,null,3,2,1,4], barra:{casa:1,de:0,ate:4} }
-              ], piano:[5,9,0,7] },
-            "F#add9": { posicoes: [
-                { label:"Pos 1", g_frets:[2,null,4,3,2,4], g_fingers:[1,null,3,2,1,4], barra:{casa:2,de:0,ate:4} }
-              ], piano:[6,10,1,8] },
-            "Gadd9": { posicoes: [
-                { label:"Pos 1", g_frets:[3,2,0,2,0,3], g_fingers:[2,1,null,3,null,4] }
-              ], piano:[7,11,2,9] },
-            "G#add9": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,1,3,4,4], g_fingers:[null,null,1,3,4,4], barra:{casa:1,de:2,ate:5} }
-              ], piano:[8,0,3,10] },
-            "Aadd9": { posicoes: [
-                { label:"Pos 1", g_frets:[null,0,2,2,0,2], g_fingers:[null,null,1,2,null,3] }
-              ], piano:[9,1,4,11] },
-            "A#add9": { posicoes: [
-                { label:"Pos 1", g_frets:[null,1,3,3,1,3], g_fingers:[null,1,3,4,1,4], barra:{casa:1,de:1,ate:4} }
-              ], piano:[10,2,5,0] },
-            "Badd9": { posicoes: [
-                { label:"Pos 1", g_frets:[null,2,4,4,2,4], g_fingers:[null,1,3,4,1,4], barra:{casa:2,de:1,ate:4} }
-              ], piano:[11,3,6,1] },
-            "C6": { posicoes: [
-                { label:"Pos 1", g_frets:[null,3,2,2,1,0], g_fingers:[null,3,2,2,1,null] }
-              ], piano:[0,4,7,9] },
-            "C#6": { posicoes: [
-                { label:"Pos 1", g_frets:[null,4,3,3,2,1], g_fingers:[null,4,3,3,2,1], barra:{casa:1,de:0,ate:5} }
-              ], piano:[1,5,8,10] },
-            "D6": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,0,2,0,2], g_fingers:[null,null,null,1,null,2] }
-              ], piano:[2,6,9,11] },
-            "D#6": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,1,3,1,3], g_fingers:[null,null,1,3,1,4], barra:{casa:1,de:2,ate:4} }
-              ], piano:[3,7,10,0] },
-            "E6": { posicoes: [
-                { label:"Pos 1", g_frets:[0,2,2,1,2,0], g_fingers:[null,2,3,1,4,null] }
-              ], piano:[4,8,11,1] },
-            "F6": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,3,2,1,1], g_fingers:[null,null,4,3,1,2] }
-              ], piano:[5,9,0,2] },
-            "F#6": { posicoes: [
-                { label:"Pos 1", g_frets:[2,4,4,3,4,2], g_fingers:[1,3,4,2,4,1], barra:{casa:2,de:0,ate:5} }
-              ], piano:[6,10,1,3] },
-            "G6": { posicoes: [
-                { label:"Pos 1", g_frets:[3,null,2,2,0,0], g_fingers:[3,null,1,2,null,null] }
-              ], piano:[7,11,2,4] },
-            "G#6": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,1,3,1,4], g_fingers:[null,null,1,3,1,4] }
-              ], piano:[8,0,3,5] },
-            "A6": { posicoes: [
-                { label:"Pos 1", g_frets:[null,0,2,2,2,2], g_fingers:[null,null,1,1,1,1], barra:{casa:2,de:2,ate:5} }
-              ], piano:[9,1,4,6] },
-            "A#6": { posicoes: [
-                { label:"Pos 1", g_frets:[null,1,3,3,3,3], g_fingers:[null,1,3,3,3,3], barra:{casa:3,de:2,ate:5} }
-              ], piano:[10,2,5,7] },
-            "B6": { posicoes: [
-                { label:"Pos 1", g_frets:[null,2,4,4,4,4], g_fingers:[null,1,3,3,3,3], barra:{casa:4,de:2,ate:5} }
-              ], piano:[11,3,6,8] },
-            "Cm6": { posicoes: [
-                { label:"Pos 1", g_frets:[null,3,1,2,1,0], g_fingers:[null,4,1,3,2,null] }
-              ], piano:[0,3,7,9] },
-            "C#m6": { posicoes: [
-                { label:"Pos 1", g_frets:[null,4,2,3,2,1], g_fingers:[null,4,2,3,2,1], barra:{casa:1,de:0,ate:5} }
-              ], piano:[1,4,8,10] },
-            "Dm6": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,0,2,0,1], g_fingers:[null,null,null,2,null,1] }
-              ], piano:[2,5,9,11] },
-            "D#m6": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,1,3,1,2], g_fingers:[null,null,1,4,1,2] }
-              ], piano:[3,6,10,0] },
-            "Em6": { posicoes: [
-                { label:"Pos 1", g_frets:[0,2,2,0,2,0], g_fingers:[null,1,2,null,3,null] }
-              ], piano:[4,7,11,2] },
-            "Fm6": { posicoes: [
-                { label:"Pos 1", g_frets:[1,3,3,1,1,1], g_fingers:[1,3,4,1,1,1], barra:{casa:1,de:0,ate:5} }
-              ], piano:[5,8,0,3] },
-            "F#m6": { posicoes: [
-                { label:"Pos 1", g_frets:[2,4,4,2,2,2], g_fingers:[1,3,4,1,1,1], barra:{casa:2,de:0,ate:5} }
-              ], piano:[6,9,1,4] },
-            "Gm6": { posicoes: [
-                { label:"Pos 1", g_frets:[3,1,0,0,3,3], g_fingers:[3,1,null,null,4,4] }
-              ], piano:[7,10,2,4] },
-            "G#m6": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,1,1,0,1], g_fingers:[null,null,2,3,null,1] }
-              ], piano:[8,11,3,5] },
-            "Am6": { posicoes: [
-                { label:"Pos 1", g_frets:[null,0,2,2,1,2], g_fingers:[null,null,2,3,1,4] }
-              ], piano:[9,0,4,6] },
-            "A#m6": { posicoes: [
-                { label:"Pos 1", g_frets:[null,1,3,3,2,3], g_fingers:[null,1,3,4,2,4], barra:{casa:1,de:1,ate:5} }
-              ], piano:[10,1,5,7] },
-            "Bm6": { posicoes: [
-                { label:"Pos 1", g_frets:[null,2,4,4,3,4], g_fingers:[null,1,3,4,2,4], barra:{casa:2,de:1,ate:5} }
-              ], piano:[11,2,6,8] },
-            "C7b5": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,1,2,1,2], g_fingers:[null,null,1,3,2,4] }
-              ], piano:[0,4,6,10] },
-            "C#7b5": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,2,3,2,3], g_fingers:[null,null,1,3,2,4] }
-              ], piano:[1,5,7,11] },
-            "D7b5": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,0,1,1,2], g_fingers:[null,null,null,1,1,2] }
-              ], piano:[2,6,8,0] },
-            "D#7b5": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,1,2,2,3], g_fingers:[null,null,1,2,2,3] }
-              ], piano:[3,7,9,1] },
-            "E7b5": { posicoes: [
-                { label:"Pos 1", g_frets:[0,null,0,1,0,2], g_fingers:[null,null,null,1,null,2] }
-              ], piano:[4,8,10,2] },
-            "F7b5": { posicoes: [
-                { label:"Pos 1", g_frets:[1,null,1,2,1,3], g_fingers:[1,null,1,2,1,4] }
-              ], piano:[5,9,11,3] },
-            "F#7b5": { posicoes: [
-                { label:"Pos 1", g_frets:[2,null,2,3,2,4], g_fingers:[1,null,1,2,1,4] }
-              ], piano:[6,10,0,4] },
-            "G7b5": { posicoes: [
-                { label:"Pos 1", g_frets:[3,null,3,4,3,5], g_fingers:[1,null,1,2,1,4] }
-              ], piano:[7,11,1,5] },
-            "G#7b5": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,1,2,2,3], g_fingers:[null,null,1,2,2,3] }
-              ], piano:[8,0,2,6] },
-            "A7b5": { posicoes: [
-                { label:"Pos 1", g_frets:[null,0,null,1,1,2], g_fingers:[null,null,null,1,1,2] }
-              ], piano:[9,1,3,7] },
-            "A#7b5": { posicoes: [
-                { label:"Pos 1", g_frets:[null,1,null,2,2,3], g_fingers:[null,1,null,2,2,3] }
-              ], piano:[10,2,4,8] },
-            "B7b5": { posicoes: [
-                { label:"Pos 1", g_frets:[null,2,null,3,3,4], g_fingers:[null,1,null,2,2,3] }
-              ], piano:[11,3,5,9] },
-            "Cdim7": { posicoes: [
-                { label:"Pos 1", g_frets:[null,3,1,3,2,0], g_fingers:[null,4,1,3,2,null] }
-              ], piano:[0,3,6,9] },
-            "C#dim7": { posicoes: [
-                { label:"Pos 1", g_frets:[null,4,2,4,3,1], g_fingers:[null,4,1,3,2,null] }
-              ], piano:[1,4,7,10] },
-            "Ddim7": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,0,1,0,1], g_fingers:[null,null,null,1,null,2] }
-              ], piano:[2,5,8,11] },
-            "D#dim7": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,1,2,1,2], g_fingers:[null,null,1,3,2,4] }
-              ], piano:[3,6,9,0] },
-            "Edim7": { posicoes: [
-                { label:"Pos 1", g_frets:[0,null,2,3,2,3], g_fingers:[null,null,1,3,2,4] }
-              ], piano:[4,7,10,1] },
-            "Fdim7": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,3,4,3,4], g_fingers:[null,null,1,3,2,4] }
-              ], piano:[5,8,11,2] },
-            "F#dim7": { posicoes: [
-                { label:"Pos 1", g_frets:[2,null,4,5,4,5], g_fingers:[1,null,2,4,3,4] }
-              ], piano:[6,9,0,3] },
-            "Gdim7": { posicoes: [
-                { label:"Pos 1", g_frets:[3,null,5,6,5,6], g_fingers:[1,null,2,4,3,4] }
-              ], piano:[7,10,1,4] },
-            "G#dim7": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,1,2,1,2], g_fingers:[null,null,1,3,2,4] }
-              ], piano:[8,11,2,5] },
-            "Adim7": { posicoes: [
-                { label:"Pos 1", g_frets:[null,0,null,1,0,1], g_fingers:[null,null,null,2,1,3] }
-              ], piano:[9,0,3,6] },
-            "A#dim7": { posicoes: [
-                { label:"Pos 1", g_frets:[null,1,null,2,1,2], g_fingers:[null,1,null,3,2,4] }
-              ], piano:[10,1,4,7] },
-            "Bdim7": { posicoes: [
-                { label:"Pos 1", g_frets:[null,2,null,3,2,3], g_fingers:[null,1,null,3,2,4] }
-              ], piano:[11,2,5,8] },
-            "Csus2": { posicoes: [
-                { label:"Pos 1", g_frets:[null,3,0,0,1,3], g_fingers:[null,3,null,null,1,4] }
-              ], piano:[0,2,7] },
-            "C#sus2": { posicoes: [
-                { label:"Pos 1", g_frets:[null,4,1,1,2,4], g_fingers:[null,4,1,1,2,3], barra:{casa:1,de:1,ate:5} }
-              ], piano:[1,3,8] },
-            "Dsus2": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,0,2,3,0], g_fingers:[null,null,null,1,2,null] }
-              ], piano:[2,4,9] },
-            "D#sus2": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,1,3,4,1], g_fingers:[null,null,1,3,4,2] }
-              ], piano:[3,5,10] },
-            "Esus2": { posicoes: [
-                { label:"Pos 1", g_frets:[0,2,2,4,0,0], g_fingers:[null,1,1,2,null,null] }
-              ], piano:[4,6,11] },
-            "Fsus2": { posicoes: [
-                { label:"Pos 1", g_frets:[1,3,3,0,1,1], g_fingers:[1,3,4,null,1,1], barra:{casa:1,de:0,ate:5} }
-              ], piano:[5,7,0] },
-            "F#sus2": { posicoes: [
-                { label:"Pos 1", g_frets:[2,4,4,1,2,2], g_fingers:[1,3,4,null,1,1], barra:{casa:2,de:0,ate:5} }
-              ], piano:[6,8,1] },
-            "Gsus2": { posicoes: [
-                { label:"Pos 1", g_frets:[3,null,0,0,3,3], g_fingers:[2,null,null,null,3,4] }
-              ], piano:[7,9,2] },
-            "G#sus2": { posicoes: [
-                { label:"Pos 1", g_frets:[4,1,1,1,4,4], g_fingers:[4,1,1,1,3,4], barra:{casa:1,de:1,ate:5} }
-              ], piano:[8,10,3] },
-            "Asus2": { posicoes: [
-                { label:"Pos 1", g_frets:[null,0,2,2,0,0], g_fingers:[null,null,2,3,null,null] }
-              ], piano:[9,11,4] },
-            "A#sus2": { posicoes: [
-                { label:"Pos 1", g_frets:[null,1,3,3,1,1], g_fingers:[null,1,3,4,1,1], barra:{casa:1,de:1,ate:5} }
-              ], piano:[10,0,5] },
-            "Bsus2": { posicoes: [
-                { label:"Pos 1", g_frets:[null,2,4,4,2,2], g_fingers:[null,1,3,4,1,1], barra:{casa:2,de:1,ate:5} }
-              ], piano:[11,1,6] },
-            "C#dim": { posicoes: [
-                { label:"Pos 1", g_frets:[null,4,2,3,2,null], g_fingers:[null,4,1,3,2,null] }
-              ], piano:[1,4,7] },
-            "D#dim": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,1,2,0,2], g_fingers:[null,null,1,3,null,4] }
-              ], piano:[3,6,9] },
-            "F#dim": { posicoes: [
-                { label:"Pos 1", g_frets:[null,null,4,2,3,2], g_fingers:[null,null,4,1,3,2] }
-              ], piano:[6,9,0] },
-            "A#dim": { posicoes: [
-                { label:"Pos 1", g_frets:[null,1,null,2,1,2], g_fingers:[null,1,null,3,2,4] }
-              ], piano:[10,1,4] },
-
-
     "A#m7": { posicoes: [
                 { label:"Barra 1ª", barra:{casa:1,de:0,ate:4}, g_frets:[null,1,3,1,2,1], g_fingers:[null,1,3,1,2,1] },
               ], piano:[10,13,17,20] },
@@ -975,7 +592,28 @@ const dicionarioShapes = {
 let acordeAtualSelecionado = "";
 let visaoDiagramaAtual = "guitarra";
 
-// gerarBotoesDeVariacao: definição completa abaixo
+function gerarBotoesDeVariacao(nomeDoTom) {
+    const container = document.getElementById('variacoes-container-inner') || document.getElementById('variacoes-container');
+    const grade = document.getElementById('gradeVariacoes');
+    if (!grade) return;
+    grade.innerHTML = '';
+    const lista = bancoDeAcordes[nomeDoTom];
+    if (!lista) { if(container) container.style.display = 'none'; return; }
+    if(container) container.style.display = 'block';
+    lista.forEach((acorde, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'botao-variacao';
+        btn.innerText = acorde;
+        btn.onclick = () => {
+            document.querySelectorAll('.botao-variacao').forEach(b => b.classList.remove('ativo'));
+            btn.classList.add('ativo');
+            acordeAtualSelecionado = acorde;
+            renderizarVisualizacao();
+        };
+        grade.appendChild(btn);
+        if (idx === 0) { btn.classList.add('ativo'); acordeAtualSelecionado = acorde; renderizarVisualizacao(); }
+    });
+}
 
 function mudarVisaoDiagrama(visao) {
     visaoDiagramaAtual = visao;
@@ -1102,13 +740,6 @@ let escalaBracoAtual = 'penta_maior';
 let posicaoBracoAtual = 0; // 0 = todas
 let tonicaBracoAtual = 'C';
 let modoBracoAtual = 'maior';
-
-// Estado INDEPENDENTE da aba Acorde — não é sobrescrito pela aba Tom
-let acorde_escalaBraco = 'penta_maior';
-let acorde_posicaoBraco = 0;
-let acorde_tonicaBraco  = 'C';
-let acorde_modoBraco    = 'maior';
-let acorde_notasEscala  = [];
 
 const formulasEscalaBraco = {
     penta_maior:  [0,2,4,7,9],
@@ -1512,9 +1143,7 @@ function desenharTecladoEm(nomeAcorde, targetArea) {
     }
 
     // Layout fixo em pixels — 2 oitavas (C3 a B4)
-    // GAP é o espaço entre teclas brancas; a tecla preta deve ficar centrada na divisa
     const WB = 28, WP = 16, HB = 110, HP = 68, GAP = 2;
-    const PASSO = WB + GAP; // 30px por tecla branca
 
     // Mapeamento exato de cada tecla branca com seu índice e preta à direita
     const brancas = [
@@ -1534,19 +1163,17 @@ function desenharTecladoEm(nomeAcorde, targetArea) {
         {idx:23, nome:'B',  preta:null},
     ];
 
-    // totalW: soma de todos os passos (28px tecla + 2px gap), sem gap após a última
-    const totalW = brancas.length * PASSO - GAP;
+    const totalW = brancas.length * (WB + GAP);
 
     const wrapper = document.createElement('div');
-    wrapper.style.cssText = 'overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;width:100%;';
+    wrapper.style.cssText = 'overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;';
 
     const teclado = document.createElement('div');
     teclado.style.cssText = `position:relative;width:${totalW}px;height:${HB}px;` +
         'background:#111;border:2px solid #333;border-radius:4px;box-sizing:border-box;flex-shrink:0;';
 
     brancas.forEach((b, i) => {
-        // x: posição absoluta do lado esquerdo da tecla branca
-        const x = i * PASSO;
+        const x = i * (WB + GAP);
 
         // Tecla branca
         const tw = document.createElement('div');
@@ -1567,10 +1194,9 @@ function desenharTecladoEm(nomeAcorde, targetArea) {
         tw.appendChild(lb);
         teclado.appendChild(tw);
 
-        // Tecla preta: centralizada na divisa entre esta tecla e a próxima
-        // Divisa = x + WB + GAP/2; a tecla preta se centra aí → left = divisa - WP/2
+        // Tecla preta
         if (b.preta) {
-            const xP = x + WB + GAP / 2 - WP / 2;
+            const xP = x + WB - WP / 2;
             const tp = document.createElement('div');
             const marcaP = piano.includes(b.preta.idx);
             tp.style.cssText = `position:absolute;left:${xP}px;top:0;width:${WP}px;height:${HP}px;` +
@@ -1747,7 +1373,23 @@ function selecionarTomCirculo(idx, tipo) {
         ? gerarCampoHarmonicoMaior(tonica)
         : gerarCampoHarmonicoMenor(tonica);
 
-    // Se estiver na aba Quintas/Explorar, usa explorarSelecionarTom
+    // Quintas vizinhas
+    const idxAnterior = (idx + N_CIRCULO - 1) % N_CIRCULO;
+    const idxProximo  = (idx + 1) % N_CIRCULO;
+    const vizMaior = [circuloMaior[idxAnterior], circuloMaior[idxProximo]];
+
+    // Mostra campo harmônico e quintas vizinhas em TODAS as abas
+    const infoDiv = document.getElementById('circulo-info');
+    if (infoDiv) {
+        infoDiv.style.display = 'block';
+        infoDiv.innerHTML = `
+            <div class="circulo-info-tom">🎵 ${nomeDisplay}</div>
+            <b>Campo Harmônico:</b> ${campo.join(" — ")}<br>
+            <b>Quintas vizinhas:</b> ${vizMaior[0]} ◀ ${circuloMaior[idx]} ▶ ${vizMaior[1]}
+        `;
+    }
+
+    // Se estiver na aba Explorar, também atualiza os painéis
     if (telaAtiva === 'explorar') {
         explorarSelecionarTom(tonica, modo);
         const inp = document.getElementById('explorInputTom');
@@ -1755,84 +1397,7 @@ function selecionarTomCirculo(idx, tipo) {
         return;
     }
 
-    // Quintas vizinhas
-    const idxAnterior = (idx + N_CIRCULO - 1) % N_CIRCULO;
-    const idxProximo  = (idx + 1) % N_CIRCULO;
-    const vizMaior = [circuloMaior[idxAnterior], circuloMaior[idxProximo]];
-    const vizMenor = [circuloMenor[idxAnterior], circuloMenor[idxProximo]];
-
-    const infoDiv = document.getElementById('circulo-info');
-    if (infoDiv) {
-        infoDiv.style.display = 'block';
-        infoDiv.innerHTML = '';
-
-        // Título do tom selecionado
-        const titulo = document.createElement('div');
-        titulo.className = 'circulo-info-tom';
-        titulo.textContent = '🎵 ' + nomeDisplay;
-        infoDiv.appendChild(titulo);
-
-        // Label campo harmônico
-        const lblCampo = document.createElement('div');
-        lblCampo.className = 'circulo-info-label';
-        lblCampo.textContent = 'Campo Harmônico';
-        infoDiv.appendChild(lblCampo);
-
-        // Acordes do campo clicáveis
-        const campoDiv = document.createElement('div');
-        campoDiv.className = 'circulo-info-campo';
-        campo.forEach((ac, i) => {
-            const chip = document.createElement('button');
-            chip.className = 'circulo-info-acorde' + (i === 0 ? ' tonica-destaque' : '');
-            chip.textContent = ac;
-            chip.onclick = () => {
-                // Navega para aba Acorde e mostra o acorde
-                mudarTela('acorde');
-                document.getElementById('inputBuscarAcorde').value = ac;
-                mostrarAcordeBusca(ac);
-            };
-            campoDiv.appendChild(chip);
-        });
-        infoDiv.appendChild(campoDiv);
-
-        // Label quintas vizinhas
-        const lblViz = document.createElement('div');
-        lblViz.className = 'circulo-info-label';
-        lblViz.style.marginTop = '8px';
-        lblViz.textContent = 'Quintas Vizinhas';
-        infoDiv.appendChild(lblViz);
-
-        // Chips das quintas vizinhas
-        const vizDiv = document.createElement('div');
-        vizDiv.className = 'circulo-info-vizinhas';
-
-        [vizMaior[0], circuloMaior[idx], vizMaior[1]].forEach((v, i) => {
-            if (i === 1) {
-                const sep = document.createElement('span');
-                sep.textContent = '◀';
-                sep.style.cssText = 'color:var(--accent);font-size:14px;';
-                vizDiv.appendChild(sep);
-            }
-            const chip = document.createElement('button');
-            chip.className = 'circulo-viz-chip' + (i === 1 ? ' tonica-destaque' : '');
-            chip.textContent = v;
-            chip.onclick = () => {
-                // Clica no círculo para selecionar aquela quinta
-                const newIdx = circuloMaior.indexOf(v);
-                if (newIdx !== -1) selecionarTomCirculo(newIdx, 'maior');
-            };
-            vizDiv.appendChild(chip);
-            if (i === 1) {
-                const sep2 = document.createElement('span');
-                sep2.textContent = '▶';
-                sep2.style.cssText = 'color:var(--accent);font-size:14px;';
-                vizDiv.appendChild(sep2);
-            }
-        });
-        infoDiv.appendChild(vizDiv);
-    }
-
-    // Preenche o input do identificador de tom
+    // Preenche o input do identificador (aba Tom)
     const inp = document.getElementById('inputAcordes');
     if (inp) inp.value = campo.slice(0,4).join(", ");
 }
@@ -2086,31 +1651,31 @@ function getPosicaoRange(posicao, tonicaIdx) {
     return { inicio: casaInicio, fim: casaInicio + 4 };
 }
 
-// Funções do braço da aba Acorde — usam estado independente (acorde_*)
 function selecionarEscala(escala, btn) {
-    acorde_escalaBraco = escala;
+    escalaBracoAtual = escala;
+    // Update only the clicked button's group (not all escala-btns across tabs)
     const parent = btn.closest('.escala-selector-row');
     if (parent) parent.querySelectorAll('.escala-btn').forEach(b => b.classList.remove('ativo'));
     btn.classList.add('ativo');
-    atualizarBracoAcorde();
+    atualizarBracoComEscala();
 }
 
 function selecionarPosicao(posicao, btn) {
-    acorde_posicaoBraco = posicao;
-    document.querySelectorAll('#tela-acorde .posicao-braco-btn').forEach(b => b.classList.remove('ativo'));
+    posicaoBracoAtual = posicao;
+    document.querySelectorAll('.posicao-braco-btn').forEach(b => b.classList.remove('ativo'));
     btn.classList.add('ativo');
-    atualizarBracoAcorde();
+    atualizarBracoComEscala();
 }
 
-function atualizarBracoAcorde() {
-    const formula = formulasEscalaBraco[acorde_escalaBraco] || formulasEscalaBraco.penta_maior;
-    const tonicaIdx = notasCromaticas.indexOf(acorde_tonicaBraco);
+function atualizarBracoComEscala() {
+    const formula = formulasEscalaBraco[escalaBracoAtual] || formulasEscalaBraco.penta_maior;
+    const tonicaIdx = notasCromaticas.indexOf(tonicaBracoAtual);
     if (tonicaIdx === -1) return;
-    acorde_notasEscala = formula.map(s => notasCromaticas[(tonicaIdx + s) % 12]);
-    desenharBracoAcorde();
+    notasEscalaAtual = formula.map(s => notasCromaticas[(tonicaIdx + s) % 12]);
+    desenharBracoMelhorado();
 }
 
-function desenharBracoAcorde() {
+function desenharBracoMelhorado() {
     const fretboard = document.getElementById('fretboard');
     const instrumento = document.getElementById('seletorInstrumento').value;
     fretboard.innerHTML = '';
@@ -2122,12 +1687,16 @@ function desenharBracoAcorde() {
         ? [1,1.5,2,2.5,3,3.5]
         : [1.5,2,2.5,3];
 
-    const tonicaIdx = notasCromaticas.indexOf(acorde_tonicaBraco);
+    const tonicaIdx = notasCromaticas.indexOf(tonicaBracoAtual);
 
+    // Define range de casas se posição específica selecionada
     let casaMin = 0, casaMax = 12;
-    if (acorde_posicaoBraco > 0) {
+    if (posicaoBracoAtual > 0) {
+        // Posições clássicas: 1=casa0-4, 2=casa2-6, 3=casa4-8, 4=casa6-10, 5=casa9-12
         const posRanges = [[0,4],[2,6],[4,8],[6,10],[9,12]];
-        const range = posRanges[acorde_posicaoBraco - 1];
+        const range = posRanges[posicaoBracoAtual - 1];
+        // Ajusta baseado na tônica
+        const offset = tonicaIdx;
         casaMin = range[0];
         casaMax = range[1];
     }
@@ -2151,6 +1720,7 @@ function desenharBracoAcorde() {
             }
             if (t === 1) trasteDiv.classList.add('pestana');
 
+            // Inlays
             if (t > 0 && [3,5,7,9,12].includes(t)) {
                 const cordaMeio = Math.floor((afinacao.length - 1) / 2);
                 if (c === cordaMeio) {
@@ -2160,14 +1730,16 @@ function desenharBracoAcorde() {
                 }
             }
 
-            if (acorde_posicaoBraco > 0 && t >= casaMin && t <= casaMax && t > 0) {
+            // Highlight de posição
+            if (posicaoBracoAtual > 0 && t >= casaMin && t <= casaMax && t > 0) {
                 trasteDiv.classList.add('posicao-highlight');
             }
 
             const nota = notasCromaticas[(ni + t) % 12];
-            const ehTonica = nota === acorde_tonicaBraco;
-            const ehDaEscala = acorde_notasEscala.includes(nota);
-            const dentroDoRange = acorde_posicaoBraco === 0 || (t >= casaMin && t <= casaMax);
+            const ehTonica = nota === tonicaBracoAtual;
+            const ehDaEscala = notasEscalaAtual.includes(nota);
+            // Na posição específica, só mostra notas dentro do range
+            const dentroDoRange = posicaoBracoAtual === 0 || (t >= casaMin && t <= casaMax);
 
             if (ehDaEscala && dentroDoRange) {
                 const bolinha = document.createElement('div');
@@ -2182,6 +1754,7 @@ function desenharBracoAcorde() {
         fretboard.appendChild(cordaDiv);
     }
 
+    // Régua
     const regua = document.createElement('div');
     regua.className = 'regua-casas';
     for (let t = 0; t <= 12; t++) {
@@ -2669,8 +2242,7 @@ function tipoAcorde(nome) {
     if (/maj7|7M/.test(nome)) return 'tipo-maj7';
     if (/m7/.test(nome)) return 'tipo-min7';
     if (/^[A-G][#b]?7/.test(nome)) return 'tipo-dom7';
-    if (/9|add9/.test(nome)) return 'tipo-nona';
-    if (/aug|sus[24]|[mb]?6$|7b5/.test(nome)) return 'tipo-maior';
+    if (/9/.test(nome)) return 'tipo-nona';
     if (/m/.test(nome)) return 'tipo-menor';
     return 'tipo-maior';
 }
@@ -2684,7 +2256,8 @@ function corTipo(tipo) {
 }
 
 // Aplica classes de tipo aos botões de variação
-gerarBotoesDeVariacao = function(nomeDoTom) {
+const _gerarBotoesOrig = gerarBotoesDeVariacao;
+function gerarBotoesDeVariacao(nomeDoTom) {
     const container = document.getElementById('variacoes-container-inner') || document.getElementById('variacoes-container');
     const grade = document.getElementById('gradeVariacoes');
     if (!grade) return;
@@ -2722,14 +2295,10 @@ gerarBotoesDeVariacao = function(nomeDoTom) {
             renderizarVisualizacao();
         };
         grade.appendChild(btn);
-        // Só auto-seleciona e renderiza se estivermos NA aba Acorde.
-        // Quando chamada da aba Tom, não interfere no estado da aba Acorde.
         if (idx === 0) {
             btn.classList.add('ativo');
-            if (telaAtiva === 'acorde') {
-                acordeAtualSelecionado = acorde;
-                renderizarVisualizacao();
-            }
+            acordeAtualSelecionado = acorde;
+            renderizarVisualizacao();
         }
     });
 }
@@ -2917,8 +2486,94 @@ function getIntervaloNota(nomeAcorde, idxTeclado) {
     return 'outra';
 }
 
-// Override removido — desenharTecladoEm original já gerencia corretamente
-// notas, posicionamento e legenda para 2 oitavas com layout em pixels fixos.
+// Override desenharTecladoEm to add colors and legend
+const _desenharTecladoEmOrig = desenharTecladoEm;
+desenharTecladoEm = function(nomeAcorde, targetArea) {
+    const piano = getPiano(nomeAcorde);
+    if (!piano) {
+        const p = document.createElement('p');
+        p.className = 'diagrama-indisponivel';
+        p.innerHTML = `Sem dados de teclado para <b>${nomeAcorde}</b>.`;
+        targetArea.appendChild(p);
+        return;
+    }
+    const notasAtivas = piano;
+    const nomesBrancas = ["C","D","E","F","G","A","B","C","D","E","F","G","A","B"];
+    const nomesPretas = {1:"C#",3:"D#",6:"F#",8:"G#",10:"A#",13:"C#",15:"D#",18:"F#",20:"G#",22:"A#"};
+    const offsetPretas = [1,3,null,6,8,10,null,13,15,null,18,20,22,null];
+    const total = 14;
+    let counter = 0, posX = 0;
+    const largura = 100/total;
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'teclado-wrapper';
+    const teclado = document.createElement('div');
+    teclado.className = 'teclado-container';
+
+    for (let i=0; i<total; i++) {
+        const branca = document.createElement('div');
+        branca.className = 'tecla-branca';
+        if (notasAtivas.includes(counter)) {
+            const marca = document.createElement('div');
+            const intervalo = getIntervaloNota(nomeAcorde, counter);
+            marca.className = `marca-tecla ${intervalo}`;
+            branca.appendChild(marca);
+        }
+        const lb = document.createElement('div');
+        lb.className = 'nota-tecla-label';
+        lb.textContent = nomesBrancas[i] || '';
+        branca.appendChild(lb);
+        teclado.appendChild(branca);
+
+        if (offsetPretas[i] !== null && offsetPretas[i] !== undefined) {
+            const preta = document.createElement('div');
+            preta.className = 'tecla-preta';
+            preta.style.left = `calc(${posX+largura}% - 8px)`;
+            if (notasAtivas.includes(offsetPretas[i])) {
+                const marca = document.createElement('div');
+                const intervalo = getIntervaloNota(nomeAcorde, offsetPretas[i]);
+                marca.className = `marca-tecla ${intervalo}`;
+                preta.appendChild(marca);
+            }
+            const lp = document.createElement('div');
+            lp.className = 'nota-tecla-label';
+            lp.textContent = nomesPretas[offsetPretas[i]] || '';
+            preta.appendChild(lp);
+            teclado.appendChild(preta);
+            counter += 2;
+        } else { counter += 1; }
+        posX += largura;
+    }
+
+    wrapper.appendChild(teclado);
+    targetArea.appendChild(wrapper);
+
+    // Legenda de cores
+    const legenda = document.createElement('div');
+    legenda.className = 'teclado-legenda';
+    const items = [
+        {cls:'tonica',nome:'Tônica',cor:'#e74c3c'},
+        {cls:'terca',nome:'Terça',cor:'#3498db'},
+        {cls:'quinta',nome:'Quinta',cor:'#2ecc71'},
+        {cls:'setima',nome:'7ª',cor:'#f39c12'},
+        {cls:'nona',nome:'9ª',cor:'#9b59b6'},
+    ];
+    // Mostra só os que existem no acorde
+    const semitonsAcorde = piano.map(p => p % 12);
+    items.filter(it => {
+        if (it.cls === 'tonica') return true;
+        if (it.cls === 'terca') return semitonsAcorde.some(s => s===3||s===4);
+        if (it.cls === 'quinta') return semitonsAcorde.includes(7);
+        if (it.cls === 'setima') return semitonsAcorde.some(s => s===10||s===11);
+        if (it.cls === 'nona') return semitonsAcorde.some(s => s===2||s===14%12);
+        return false;
+    }).forEach(it => {
+        legenda.innerHTML += `<span class="teclado-legenda-item">
+            <span class="teclado-legenda-cor" style="background:${it.cor}"></span>${it.nome}
+        </span>`;
+    });
+    targetArea.appendChild(legenda);
+};
 
 // ==========================================
 // SUGESTÃO DE SOLO / IMPROVISAÇÃO
@@ -2981,7 +2636,6 @@ function mostrarSugestoesSolo(tonica, modo) {
         escalasDiv.appendChild(row);
     });
 
-    container.dataset.visivel = '1';
     container.style.display = 'block';
 }
 
@@ -3410,6 +3064,7 @@ function identificarAcordeDeNotas(notas) {
 // ==========================================
 // NAVEGAÇÃO POR ABAS
 // ==========================================
+let telaAtiva = 'explorar';
 
 function mudarTela(tela) {
     // Esconde todas as telas
@@ -3432,121 +3087,40 @@ function mudarTela(tela) {
 // TELA ACORDE — BUSCA INDEPENDENTE
 // ==========================================
 // Acordes organizados por grupo
-// Categorias de acordes com abas — layout compacto e não poluído
-const acordesCategorias = [
-    {
-        id: 'basicos', label: '♩ Básicos', ativo: true,
-        grupos: [
-            { label: 'Maiores',  acordes: ['C','D','E','F','G','A','B','C#','D#','F#','G#','A#'] },
-            { label: 'Menores',  acordes: ['Cm','Dm','Em','Fm','Gm','Am','Bm','C#m','D#m','F#m','G#m','A#m'] },
-        ]
-    },
-    {
-        id: 'setimas', label: '♭7 Sétimas', ativo: false,
-        grupos: [
-            { label: 'Dom 7',  acordes: ['C7','D7','E7','F7','G7','A7','B7','C#7','D#7','F#7','G#7','A#7'] },
-            { label: 'Maj 7',  acordes: ['C7M','D7M','E7M','F7M','G7M','A7M','B7M','C#7M','D#7M','F#7M','G#7M','A#7M'] },
-            { label: 'Men 7',  acordes: ['Cm7','Dm7','Em7','Fm7','Gm7','Am7','Bm7','C#m7','D#m7','F#m7','G#m7','A#m7'] },
-        ]
-    },
-    {
-        id: 'extendidos', label: '9+ Ext.', ativo: false,
-        grupos: [
-            { label: '9ª',    acordes: ['C9','D9','E9','F9','G9','A9','B9','C#9','D#9','F#9','G#9','A#9'] },
-            { label: 'add9',  acordes: ['Cadd9','Dadd9','Eadd9','Fadd9','Gadd9','Aadd9','Badd9','C#add9','D#add9','F#add9','G#add9','A#add9'] },
-            { label: 'm9',    acordes: ['Cm9','Dm9','Em9','Fm9','Gm9','Am9','Bm9','C#m9','D#m9','F#m9','G#m9','A#m9'] },
-        ]
-    },
-    {
-        id: 'especiais', label: '✦ Especiais', ativo: false,
-        grupos: [
-            { label: 'Sus2',  acordes: ['Csus2','Dsus2','Esus2','Fsus2','Gsus2','Asus2','Bsus2','C#sus2','D#sus2','F#sus2','G#sus2','A#sus2'] },
-            { label: 'Sus4',  acordes: ['Csus4','Dsus4','Esus4','Fsus4','Gsus4','Asus4','Bsus4','C#sus4','D#sus4','F#sus4','G#sus4','A#sus4'] },
-            { label: 'Aug',   acordes: ['Caug','Daug','Eaug','Faug','Gaug','Aaug','Baug','C#aug','D#aug','F#aug','G#aug','A#aug'] },
-            { label: '6ª',    acordes: ['C6','D6','E6','F6','G6','A6','B6','C#6','D#6','F#6','G#6','A#6'] },
-            { label: 'm6',    acordes: ['Cm6','Dm6','Em6','Fm6','Gm6','Am6','Bm6','C#m6','D#m6','F#m6','G#m6','A#m6'] },
-        ]
-    },
-    {
-        id: 'diminutos', label: '° Dim', ativo: false,
-        grupos: [
-            { label: 'Dim',   acordes: ['Cdim','Ddim','Edim','Fdim','Gdim','Adim','Bdim','C#dim','D#dim','F#dim','G#dim','A#dim'] },
-            { label: 'Dim7',  acordes: ['Cdim7','Ddim7','Edim7','Fdim7','Gdim7','Adim7','Bdim7','C#dim7','D#dim7','F#dim7','G#dim7','A#dim7'] },
-            { label: '7b5',   acordes: ['C7b5','D7b5','E7b5','F7b5','G7b5','A7b5','B7b5','C#7b5','D#7b5','F#7b5','G#7b5','A#7b5'] },
-        ]
-    },
+const acordesGrupos = [
+    { label: 'Maiores',  acordes: ['C','D','E','F','G','A','B'] },
+    { label: 'Menores',  acordes: ['Am','Bm','Cm','Dm','Em','Fm','Gm'] },
+    { label: 'Dom 7',    acordes: ['C7','D7','E7','F7','G7','A7','B7'] },
+    { label: 'Maj 7',    acordes: ['C7M','D7M','E7M','F7M','G7M','A7M','B7M'] },
+    { label: 'Men 7',    acordes: ['Am7','Bm7','Cm7','Dm7','Em7','F#m7','Gm7'] },
+    { label: 'C# / #',  acordes: ['C#','D#','F#','G#','A#','C#m','F#m','G#m','A#m'] },
 ];
-const acordesMaisUsados = acordesCategorias.flatMap(c => c.grupos.flatMap(g => g.acordes));
-
-let _categoriaAtivaAcorde = 'basicos';
+const acordesMaisUsados = acordesGrupos.flatMap(g => g.acordes);
 
 function gerarSugestoesAcorde() {
     const cont = document.getElementById('sugestoesAcorde');
-    if (!cont) return;
-    cont.innerHTML = '';
-
-    // Barra de abas de categoria
-    const tabBar = document.createElement('div');
-    tabBar.id = 'acorde-cat-tabs';
-    tabBar.style.cssText = 'display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px;';
-
-    acordesCategorias.forEach(cat => {
-        const tab = document.createElement('button');
-        tab.className = 'acorde-cat-tab' + (cat.id === _categoriaAtivaAcorde ? ' ativa' : '');
-        tab.textContent = cat.label;
-        tab.dataset.catId = cat.id;
-        tab.onclick = () => {
-            _categoriaAtivaAcorde = cat.id;
-            document.querySelectorAll('.acorde-cat-tab').forEach(t => t.classList.remove('ativa'));
-            tab.classList.add('ativa');
-            renderGruposAcorde(cont, cat);
-        };
-        tabBar.appendChild(tab);
-    });
-    cont.appendChild(tabBar);
-
-    // Área dos grupos (abaixo das abas)
-    const gruposArea = document.createElement('div');
-    gruposArea.id = 'acorde-grupos-area';
-    cont.appendChild(gruposArea);
-
-    // Renderizar a categoria ativa
-    const catAtiva = acordesCategorias.find(c => c.id === _categoriaAtivaAcorde) || acordesCategorias[0];
-    renderGruposAcorde(cont, catAtiva);
-}
-
-function renderGruposAcorde(cont, cat) {
-    let area = cont.querySelector('#acorde-grupos-area');
-    if (!area) return;
-    area.innerHTML = '';
-
-    cat.grupos.forEach(grupo => {
-        const wrap = document.createElement('div');
-        wrap.style.cssText = 'margin-bottom:8px;';
-
+    if (!cont || cont.children.length > 0) return;
+    acordesGrupos.forEach(grupo => {
+        // Label do grupo
         const lbl = document.createElement('div');
-        lbl.style.cssText = 'font-size:9px;font-weight:bold;color:var(--text-muted);margin-bottom:4px;letter-spacing:1.2px;text-transform:uppercase;';
+        lbl.style.cssText = 'width:100%;font-size:10px;font-weight:bold;color:var(--text-muted);margin:6px 0 2px;letter-spacing:1px;text-transform:uppercase;';
         lbl.textContent = grupo.label;
-        wrap.appendChild(lbl);
-
+        cont.appendChild(lbl);
+        // Botões do grupo
         const row = document.createElement('div');
-        row.style.cssText = 'display:flex;flex-wrap:wrap;gap:3px;';
-
+        row.style.cssText = 'display:flex;flex-wrap:wrap;gap:5px;width:100%;';
         grupo.acordes.forEach(ac => {
             const btn = document.createElement('button');
-            btn.className = 'acorde-chip ' + tipoAcorde(ac);
+            btn.className = 'botao-variacao ' + tipoAcorde(ac);
             btn.textContent = ac;
+            btn.style.cssText = 'margin:0;';
             btn.onclick = () => {
                 document.getElementById('inputBuscarAcorde').value = ac;
                 mostrarAcordeBusca(ac);
-                // highlight
-                area.querySelectorAll('.acorde-chip.ativo').forEach(b => b.classList.remove('ativo'));
-                btn.classList.add('ativo');
             };
             row.appendChild(btn);
         });
-        wrap.appendChild(row);
-        area.appendChild(wrap);
+        cont.appendChild(row);
     });
 }
 
@@ -3584,20 +3158,20 @@ function mostrarAcordeBusca(nomeAcorde) {
     posicaoAtual = 0;
     _renderDiagramaComPosicao(nomeAcorde, 0);
 
-    // Deduz tom para o braço da aba Acorde — usa estado INDEPENDENTE (acorde_*)
+    // Deduz tom para o braço
     const match = nomeAcorde.match(/^([A-G][#b]?)/);
     if (match) {
         const tonica = match[1];
         const sufixo = nomeAcorde.slice(tonica.length);
         const ehMenor = /^m(?!a)/.test(sufixo) || /dim/.test(sufixo);
-        acorde_tonicaBraco  = tonica;
-        acorde_modoBraco    = ehMenor ? 'menor' : 'maior';
-        acorde_escalaBraco  = ehMenor ? 'penta_menor' : 'penta_maior';
-        acorde_notasEscala  = formulasEscalaBraco[acorde_escalaBraco].map(
+        const modo = ehMenor ? 'menor' : 'maior';
+        tonicaBracoAtual = tonica;
+        modoBracoAtual = modo;
+        escalaBracoAtual = ehMenor ? 'penta_menor' : 'penta_maior';
+        notasEscalaAtual = formulasEscalaBraco[escalaBracoAtual].map(
             s => notasCromaticas[(notasCromaticas.indexOf(tonica)+s)%12]
         );
-        acorde_posicaoBraco = 0;
-        desenharBracoAcorde();
+        desenharBracoMelhorado();
 
         // Mostra o container do braço
         const fc = document.getElementById('fretboard-container');
@@ -4003,8 +3577,7 @@ function explorarMostrarSolo(tonica, modo) {
 
 function explorarEscala(escala, btn) {
     explorEscalaAtual = escala;
-    const parent = btn.closest('.escala-selector-row');
-    if (parent) parent.querySelectorAll('.escala-btn').forEach(b => b.classList.remove('ativo'));
+    document.querySelectorAll('#modoExploracao .escala-btn').forEach(b => b.classList.remove('ativo'));
     btn.classList.add('ativo');
     if (explorTonicaAtual) {
         explorNotasAtual = formulasEscalaBraco[escala].map(s => notasCromaticas[(notasCromaticas.indexOf(explorTonicaAtual)+s)%12]);

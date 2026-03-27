@@ -522,7 +522,6 @@ button.tab-btn.ativo { background: #444; color: var(--text); border-color: var(-
     box-shadow: 0 8px 25px var(--shadow);
     margin-bottom: 16px;
     overflow: hidden;
-    overflow-x: auto;
 }
 /* SVG do violão centralizado dentro do card */
 #chord-visual-area svg {
@@ -817,76 +816,6 @@ button.botao-variacao.tipo-min7.ativo  { background:#8e44ad22; border-color:#8e4
 button.botao-variacao.tipo-dim.ativo   { background:#e74c3c22; border-color:#e74c3c; }
 button.botao-variacao.tipo-nona.ativo  { background:#1abc9c22; border-color:#1abc9c; }
 
-/* ============================================
-   NOVO SISTEMA DE BUSCA DE ACORDES — CATEGORIAS
-   ============================================ */
-
-/* Abas de categoria */
-.acorde-cat-tab {
-    width: auto; margin: 0;
-    padding: 5px 11px;
-    border-radius: 20px;
-    font-size: 11px; font-weight: 700;
-    background: var(--bg-input-dark);
-    border: 1px solid var(--border-light);
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: all 0.15s;
-    letter-spacing: 0.3px;
-}
-.acorde-cat-tab:hover {
-    color: var(--text);
-    border-color: var(--accent);
-}
-.acorde-cat-tab.ativa {
-    background: var(--accent);
-    color: #1a1a1a;
-    border-color: var(--accent);
-    font-weight: 800;
-}
-
-/* Chips compactos de acorde */
-button.acorde-chip {
-    width: auto; margin: 0;
-    padding: 4px 9px;
-    border-radius: 5px;
-    font-size: 12px; font-weight: 700;
-    background: var(--bg-input-dark);
-    border: 1px solid var(--border);
-    color: var(--text);
-    cursor: pointer;
-    transition: all 0.15s;
-    line-height: 1.2;
-}
-button.acorde-chip:hover {
-    background: var(--bg-input);
-    border-color: var(--accent);
-    color: var(--accent);
-    transform: translateY(-1px);
-}
-button.acorde-chip.ativo {
-    background: var(--accent);
-    color: #1a1a1a;
-    border-color: var(--accent);
-}
-
-/* Bordas coloridas por tipo nos chips */
-button.acorde-chip.tipo-maior  { border-left: 2px solid #3498db; }
-button.acorde-chip.tipo-menor  { border-left: 2px solid #9b59b6; }
-button.acorde-chip.tipo-dom7   { border-left: 2px solid #e67e22; }
-button.acorde-chip.tipo-maj7   { border-left: 2px solid #2ecc71; }
-button.acorde-chip.tipo-min7   { border-left: 2px solid #8e44ad; }
-button.acorde-chip.tipo-dim    { border-left: 2px solid #e74c3c; }
-button.acorde-chip.tipo-nona   { border-left: 2px solid #1abc9c; }
-
-button.acorde-chip.tipo-maior.ativo { background:#3498db; border-color:#3498db; color:#fff; }
-button.acorde-chip.tipo-menor.ativo { background:#9b59b6; border-color:#9b59b6; color:#fff; }
-button.acorde-chip.tipo-dom7.ativo  { background:#e67e22; border-color:#e67e22; color:#fff; }
-button.acorde-chip.tipo-maj7.ativo  { background:#2ecc71; border-color:#2ecc71; color:#1a1a1a; }
-button.acorde-chip.tipo-min7.ativo  { background:#8e44ad; border-color:#8e44ad; color:#fff; }
-button.acorde-chip.tipo-dim.ativo   { background:#e74c3c; border-color:#e74c3c; color:#fff; }
-button.acorde-chip.tipo-nona.ativo  { background:#1abc9c; border-color:#1abc9c; color:#1a1a1a; }
-
 /* Legenda dos tipos */
 .legenda-tipos {
     display: flex;
@@ -1019,8 +948,6 @@ button.acorde-chip.tipo-nona.ativo  { background:#1abc9c; border-color:#1abc9c; 
     width: 100%;
     box-sizing: border-box;
     box-shadow: 0 4px 15px var(--shadow);
-    overflow: hidden;
-    overflow-x: auto;
 }
 
 /* Seletor de posições inline */
@@ -1825,14 +1752,6 @@ button.metro-compasso-btn.ativo {
     .tela { height: 100%; }
 
     /* Grid 3 colunas — Explorar */
-    /* Grid de Ferramentas desktop — 3 colunas balanceadas */
-    .tela-ferramentas-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 16px;
-        align-items: start;
-    }
-
     .tela-explorar .explor-grid-desktop {
         display: grid;
         grid-template-columns: 320px 1fr 1fr;
@@ -1896,84 +1815,3 @@ button.metro-compasso-btn.ativo {
     margin: 0;
     padding: 10px 16px;
 }
-
-/* ============================================
-   PAINEL DE INFO DO CÍRCULO DE QUINTAS
-   ============================================ */
-.circulo-info {
-    display: none;
-    margin-top: 12px;
-    background: var(--bg-input-dark);
-    border: 1px solid var(--border-light);
-    border-radius: 10px;
-    padding: 14px;
-    animation: fadeIn 0.2s ease;
-}
-.circulo-info-tom {
-    font-size: 16px;
-    font-weight: bold;
-    color: var(--accent);
-    margin-bottom: 10px;
-}
-.circulo-info-campo {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    margin-bottom: 10px;
-}
-.circulo-info-acorde {
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: bold;
-    background: var(--bg-input);
-    border: 1px solid var(--border-light);
-    color: var(--text);
-    cursor: pointer;
-    transition: 0.15s;
-}
-.circulo-info-acorde:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-}
-.circulo-info-acorde.tonica-destaque {
-    background: var(--accent);
-    color: #1a1a1a;
-    border-color: var(--accent);
-}
-.circulo-info-vizinhas {
-    font-size: 12px;
-    color: var(--text-muted);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-}
-.circulo-viz-chip {
-    padding: 3px 8px;
-    border-radius: 5px;
-    background: var(--bg-input);
-    border: 1px solid var(--border);
-    font-size: 12px;
-    font-weight: bold;
-    color: var(--text);
-    cursor: pointer;
-    transition: 0.15s;
-}
-.circulo-viz-chip:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-}
-.circulo-info-label {
-    font-size: 10px;
-    font-weight: bold;
-    color: var(--text-muted);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-}
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-4px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
