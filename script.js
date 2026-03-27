@@ -550,6 +550,392 @@ const dicionarioShapes = {
     "G#m7": { posicoes: [
                 { label:"Barra 4ª", barra:{casa:4,de:0,ate:4}, g_frets:[4,6,4,4,4,4], g_fingers:[1,3,1,1,1,1] },
               ], piano:[8,11,15,18] },
+            "G#dim": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,5,3,4,3], g_fingers:[null,null,4,1,3,2] }
+              ], piano:[8,11,2] },
+            "Ddim": { posicoes: [
+                { label:"Aberta", g_frets:[null,null,0,1,3,1], g_fingers:[null,null,null,1,3,2] }
+              ], piano:[2,5,8] },
+            "Fdim": { posicoes: [
+                { label:"Pos 3", g_frets:[null,null,3,1,3,1], g_fingers:[null,null,3,1,4,2] }
+              ], piano:[5,8,11] },
+            "Gdim": { posicoes: [
+                { label:"Pos 5", g_frets:[null,null,5,3,5,3], g_fingers:[null,null,3,1,4,2] }
+              ], piano:[7,10,1] },
+            "Adim": { posicoes: [
+                { label:"Aberta", g_frets:[null,0,null,3,4,3], g_fingers:[null,null,null,1,3,2] }
+              ], piano:[9,0,3] },
+            "Cdim": { posicoes: [
+                { label:"Pos 3", g_frets:[null,null,3,4,1,4], g_fingers:[null,null,2,3,1,4] }
+              ], piano:[0,3,6] },
+            "Csus4": { posicoes: [
+                { label:"Pos 1", g_frets:[null,3,3,0,1,1], g_fingers:[null,3,4,null,1,1], barra:{casa:1,de:2,ate:5} }
+              ], piano:[0,5,7] },
+            "C#sus4": { posicoes: [
+                { label:"Pos 1", g_frets:[null,4,4,1,2,2], g_fingers:[null,3,4,null,1,1], barra:{casa:1,de:0,ate:5} }
+              ], piano:[1,6,8] },
+            "Dsus4": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,0,2,3,3], g_fingers:[null,null,null,1,2,3] }
+              ], piano:[2,7,9] },
+            "D#sus4": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,1,3,4,4], g_fingers:[null,null,1,3,4,4], barra:{casa:1,de:2,ate:5} }
+              ], piano:[3,8,10] },
+            "Esus4": { posicoes: [
+                { label:"Pos 1", g_frets:[0,2,2,2,0,0], g_fingers:[null,1,2,3,null,null] }
+              ], piano:[4,9,11] },
+            "Fsus4": { posicoes: [
+                { label:"Pos 1", g_frets:[1,1,3,3,1,1], g_fingers:[1,1,3,4,1,1], barra:{casa:1,de:0,ate:5} }
+              ], piano:[5,10,0] },
+            "F#sus4": { posicoes: [
+                { label:"Pos 1", g_frets:[2,2,4,4,2,2], g_fingers:[1,1,3,4,1,1], barra:{casa:2,de:0,ate:5} }
+              ], piano:[6,11,1] },
+            "Gsus4": { posicoes: [
+                { label:"Pos 1", g_frets:[3,3,0,0,3,3], g_fingers:[2,3,null,null,null,4] }
+              ], piano:[7,0,2] },
+            "G#sus4": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,1,1,2,4], g_fingers:[null,null,1,1,2,4], barra:{casa:1,de:2,ate:3} }
+              ], piano:[8,1,3] },
+            "Asus4": { posicoes: [
+                { label:"Pos 1", g_frets:[null,0,2,2,3,0], g_fingers:[null,null,1,2,3,null] }
+              ], piano:[9,2,4] },
+            "A#sus4": { posicoes: [
+                { label:"Pos 1", g_frets:[null,1,3,3,4,1], g_fingers:[null,1,3,4,4,1], barra:{casa:1,de:1,ate:5} }
+              ], piano:[10,3,5] },
+            "Bsus4": { posicoes: [
+                { label:"Pos 1", g_frets:[null,2,4,4,5,2], g_fingers:[null,1,3,4,4,1], barra:{casa:2,de:1,ate:5} }
+              ], piano:[11,4,6] },
+            "Caug": { posicoes: [
+                { label:"Pos 1", g_frets:[null,3,2,1,1,null], g_fingers:[null,4,3,1,2,null] }
+              ], piano:[0,4,8] },
+            "C#aug": { posicoes: [
+                { label:"Pos 1", g_frets:[null,4,3,2,2,null], g_fingers:[null,4,3,1,2,null] }
+              ], piano:[1,5,9] },
+            "Daug": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,0,3,3,2], g_fingers:[null,null,null,2,3,1] }
+              ], piano:[2,6,10] },
+            "D#aug": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,1,4,4,3], g_fingers:[null,null,1,3,4,2] }
+              ], piano:[3,7,11] },
+            "Eaug": { posicoes: [
+                { label:"Pos 1", g_frets:[0,3,2,1,1,0], g_fingers:[null,4,3,1,2,null] }
+              ], piano:[4,8,0] },
+            "Faug": { posicoes: [
+                { label:"Pos 1", g_frets:[null,0,3,2,2,1], g_fingers:[null,null,4,2,3,1] }
+              ], piano:[5,9,1] },
+            "F#aug": { posicoes: [
+                { label:"Pos 1", g_frets:[2,1,0,3,3,2], g_fingers:[2,1,null,4,3,2] }
+              ], piano:[6,10,2] },
+            "Gaug": { posicoes: [
+                { label:"Pos 1", g_frets:[3,2,1,0,0,3], g_fingers:[3,2,1,null,null,4] }
+              ], piano:[7,11,3] },
+            "G#aug": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,2,1,1,4], g_fingers:[null,null,2,1,1,4] }
+              ], piano:[8,0,4] },
+            "Aaug": { posicoes: [
+                { label:"Pos 1", g_frets:[null,0,3,2,2,1], g_fingers:[null,null,4,2,3,1] }
+              ], piano:[9,1,5] },
+            "A#aug": { posicoes: [
+                { label:"Pos 1", g_frets:[null,1,0,3,3,2], g_fingers:[null,1,null,4,3,2] }
+              ], piano:[10,2,6] },
+            "Baug": { posicoes: [
+                { label:"Pos 1", g_frets:[null,2,1,0,0,3], g_fingers:[null,2,1,null,null,4] }
+              ], piano:[11,3,7] },
+            "C#9": { posicoes: [
+                { label:"Pos 1", g_frets:[null,4,3,4,2,null], g_fingers:[null,3,2,4,1,null] }
+              ], piano:[1,5,8,11,3] },
+            "D9": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,0,2,1,2], g_fingers:[null,null,null,2,1,3] }
+              ], piano:[2,6,9,0,4] },
+            "D#9": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,1,3,2,3], g_fingers:[null,null,1,3,2,4] }
+              ], piano:[3,7,10,1,5] },
+            "E9": { posicoes: [
+                { label:"Pos 1", g_frets:[0,2,0,1,0,2], g_fingers:[null,2,null,1,null,3] }
+              ], piano:[4,8,11,2,6] },
+            "F9": { posicoes: [
+                { label:"Pos 1", g_frets:[1,null,1,2,1,3], g_fingers:[1,null,1,2,1,4], barra:{casa:1,de:0,ate:4} }
+              ], piano:[5,9,0,3,7] },
+            "F#9": { posicoes: [
+                { label:"Pos 1", g_frets:[2,null,2,3,2,4], g_fingers:[1,null,1,2,1,4], barra:{casa:2,de:0,ate:4} }
+              ], piano:[6,10,1,4,8] },
+            "G#9": { posicoes: [
+                { label:"Pos 1", g_frets:[4,null,4,5,4,6], g_fingers:[1,null,1,2,1,4], barra:{casa:4,de:0,ate:4} }
+              ], piano:[8,0,3,6,10] },
+            "A9": { posicoes: [
+                { label:"Pos 1", g_frets:[null,0,2,0,2,0], g_fingers:[null,null,2,null,3,null] }
+              ], piano:[9,1,4,7,11] },
+            "A#9": { posicoes: [
+                { label:"Pos 1", g_frets:[null,1,0,1,1,3], g_fingers:[null,1,null,2,2,4] }
+              ], piano:[10,2,5,8,0] },
+            "B9": { posicoes: [
+                { label:"Pos 1", g_frets:[null,2,1,2,0,2], g_fingers:[null,2,1,3,null,4] }
+              ], piano:[11,3,6,9,1] },
+            "Cm9": { posicoes: [
+                { label:"Pos 1", g_frets:[null,3,1,3,1,3], g_fingers:[null,4,1,3,1,4], barra:{casa:1,de:0,ate:5} }
+              ], piano:[0,3,7,10,2] },
+            "C#m9": { posicoes: [
+                { label:"Pos 1", g_frets:[null,4,2,4,2,4], g_fingers:[null,4,1,3,1,4], barra:{casa:2,de:0,ate:5} }
+              ], piano:[1,4,8,11,3] },
+            "Dm9": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,0,2,1,1], g_fingers:[null,null,null,3,1,2] }
+              ], piano:[2,5,9,0,4] },
+            "D#m9": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,1,3,2,2], g_fingers:[null,null,1,3,2,2] }
+              ], piano:[3,6,10,1,5] },
+            "Em9": { posicoes: [
+                { label:"Pos 1", g_frets:[0,2,0,0,0,0], g_fingers:[null,1,null,null,null,null] }
+              ], piano:[4,7,11,2,6] },
+            "Fm9": { posicoes: [
+                { label:"Pos 1", g_frets:[1,3,1,1,1,1], g_fingers:[1,3,1,1,1,1], barra:{casa:1,de:0,ate:5} }
+              ], piano:[5,8,0,3,7] },
+            "F#m9": { posicoes: [
+                { label:"Pos 1", g_frets:[2,4,2,2,2,2], g_fingers:[1,3,1,1,1,1], barra:{casa:2,de:0,ate:5} }
+              ], piano:[6,9,1,4,8] },
+            "Gm9": { posicoes: [
+                { label:"Pos 1", g_frets:[3,1,0,0,3,3], g_fingers:[3,1,null,null,4,4] }
+              ], piano:[7,10,2,5,9] },
+            "G#m9": { posicoes: [
+                { label:"Pos 1", g_frets:[4,2,1,1,4,4], g_fingers:[4,2,1,1,3,3] }
+              ], piano:[8,11,3,6,10] },
+            "Am9": { posicoes: [
+                { label:"Pos 1", g_frets:[null,0,2,0,1,0], g_fingers:[null,null,3,null,1,null] }
+              ], piano:[9,0,4,7,11] },
+            "A#m9": { posicoes: [
+                { label:"Pos 1", g_frets:[null,1,3,1,2,1], g_fingers:[null,1,3,1,2,1], barra:{casa:1,de:1,ate:5} }
+              ], piano:[10,1,5,8,0] },
+            "Bm9": { posicoes: [
+                { label:"Pos 1", g_frets:[null,2,4,2,3,2], g_fingers:[null,1,3,1,2,1], barra:{casa:2,de:1,ate:5} }
+              ], piano:[11,2,6,9,1] },
+            "Cadd9": { posicoes: [
+                { label:"Pos 1", g_frets:[null,3,2,0,3,0], g_fingers:[null,2,1,null,3,null] }
+              ], piano:[0,4,7,2] },
+            "C#add9": { posicoes: [
+                { label:"Pos 1", g_frets:[null,4,3,1,4,1], g_fingers:[null,3,2,1,4,1], barra:{casa:1,de:3,ate:5} }
+              ], piano:[1,5,8,3] },
+            "Dadd9": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,0,2,3,2], g_fingers:[null,null,null,1,3,2] }
+              ], piano:[2,6,9,4] },
+            "D#add9": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,1,3,4,3], g_fingers:[null,null,1,3,4,2] }
+              ], piano:[3,7,10,5] },
+            "Eadd9": { posicoes: [
+                { label:"Pos 1", g_frets:[0,2,2,1,0,2], g_fingers:[null,2,3,1,null,4] }
+              ], piano:[4,8,11,6] },
+            "Fadd9": { posicoes: [
+                { label:"Pos 1", g_frets:[1,null,3,2,1,3], g_fingers:[1,null,3,2,1,4], barra:{casa:1,de:0,ate:4} }
+              ], piano:[5,9,0,7] },
+            "F#add9": { posicoes: [
+                { label:"Pos 1", g_frets:[2,null,4,3,2,4], g_fingers:[1,null,3,2,1,4], barra:{casa:2,de:0,ate:4} }
+              ], piano:[6,10,1,8] },
+            "Gadd9": { posicoes: [
+                { label:"Pos 1", g_frets:[3,2,0,2,0,3], g_fingers:[2,1,null,3,null,4] }
+              ], piano:[7,11,2,9] },
+            "G#add9": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,1,3,4,4], g_fingers:[null,null,1,3,4,4], barra:{casa:1,de:2,ate:5} }
+              ], piano:[8,0,3,10] },
+            "Aadd9": { posicoes: [
+                { label:"Pos 1", g_frets:[null,0,2,2,0,2], g_fingers:[null,null,1,2,null,3] }
+              ], piano:[9,1,4,11] },
+            "A#add9": { posicoes: [
+                { label:"Pos 1", g_frets:[null,1,3,3,1,3], g_fingers:[null,1,3,4,1,4], barra:{casa:1,de:1,ate:4} }
+              ], piano:[10,2,5,0] },
+            "Badd9": { posicoes: [
+                { label:"Pos 1", g_frets:[null,2,4,4,2,4], g_fingers:[null,1,3,4,1,4], barra:{casa:2,de:1,ate:4} }
+              ], piano:[11,3,6,1] },
+            "C6": { posicoes: [
+                { label:"Pos 1", g_frets:[null,3,2,2,1,0], g_fingers:[null,3,2,2,1,null] }
+              ], piano:[0,4,7,9] },
+            "C#6": { posicoes: [
+                { label:"Pos 1", g_frets:[null,4,3,3,2,1], g_fingers:[null,4,3,3,2,1], barra:{casa:1,de:0,ate:5} }
+              ], piano:[1,5,8,10] },
+            "D6": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,0,2,0,2], g_fingers:[null,null,null,1,null,2] }
+              ], piano:[2,6,9,11] },
+            "D#6": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,1,3,1,3], g_fingers:[null,null,1,3,1,4], barra:{casa:1,de:2,ate:4} }
+              ], piano:[3,7,10,0] },
+            "E6": { posicoes: [
+                { label:"Pos 1", g_frets:[0,2,2,1,2,0], g_fingers:[null,2,3,1,4,null] }
+              ], piano:[4,8,11,1] },
+            "F6": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,3,2,1,1], g_fingers:[null,null,4,3,1,2] }
+              ], piano:[5,9,0,2] },
+            "F#6": { posicoes: [
+                { label:"Pos 1", g_frets:[2,4,4,3,4,2], g_fingers:[1,3,4,2,4,1], barra:{casa:2,de:0,ate:5} }
+              ], piano:[6,10,1,3] },
+            "G6": { posicoes: [
+                { label:"Pos 1", g_frets:[3,null,2,2,0,0], g_fingers:[3,null,1,2,null,null] }
+              ], piano:[7,11,2,4] },
+            "G#6": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,1,3,1,4], g_fingers:[null,null,1,3,1,4] }
+              ], piano:[8,0,3,5] },
+            "A6": { posicoes: [
+                { label:"Pos 1", g_frets:[null,0,2,2,2,2], g_fingers:[null,null,1,1,1,1], barra:{casa:2,de:2,ate:5} }
+              ], piano:[9,1,4,6] },
+            "A#6": { posicoes: [
+                { label:"Pos 1", g_frets:[null,1,3,3,3,3], g_fingers:[null,1,3,3,3,3], barra:{casa:3,de:2,ate:5} }
+              ], piano:[10,2,5,7] },
+            "B6": { posicoes: [
+                { label:"Pos 1", g_frets:[null,2,4,4,4,4], g_fingers:[null,1,3,3,3,3], barra:{casa:4,de:2,ate:5} }
+              ], piano:[11,3,6,8] },
+            "Cm6": { posicoes: [
+                { label:"Pos 1", g_frets:[null,3,1,2,1,0], g_fingers:[null,4,1,3,2,null] }
+              ], piano:[0,3,7,9] },
+            "C#m6": { posicoes: [
+                { label:"Pos 1", g_frets:[null,4,2,3,2,1], g_fingers:[null,4,2,3,2,1], barra:{casa:1,de:0,ate:5} }
+              ], piano:[1,4,8,10] },
+            "Dm6": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,0,2,0,1], g_fingers:[null,null,null,2,null,1] }
+              ], piano:[2,5,9,11] },
+            "D#m6": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,1,3,1,2], g_fingers:[null,null,1,4,1,2] }
+              ], piano:[3,6,10,0] },
+            "Em6": { posicoes: [
+                { label:"Pos 1", g_frets:[0,2,2,0,2,0], g_fingers:[null,1,2,null,3,null] }
+              ], piano:[4,7,11,2] },
+            "Fm6": { posicoes: [
+                { label:"Pos 1", g_frets:[1,3,3,1,1,1], g_fingers:[1,3,4,1,1,1], barra:{casa:1,de:0,ate:5} }
+              ], piano:[5,8,0,3] },
+            "F#m6": { posicoes: [
+                { label:"Pos 1", g_frets:[2,4,4,2,2,2], g_fingers:[1,3,4,1,1,1], barra:{casa:2,de:0,ate:5} }
+              ], piano:[6,9,1,4] },
+            "Gm6": { posicoes: [
+                { label:"Pos 1", g_frets:[3,1,0,0,3,3], g_fingers:[3,1,null,null,4,4] }
+              ], piano:[7,10,2,4] },
+            "G#m6": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,1,1,0,1], g_fingers:[null,null,2,3,null,1] }
+              ], piano:[8,11,3,5] },
+            "Am6": { posicoes: [
+                { label:"Pos 1", g_frets:[null,0,2,2,1,2], g_fingers:[null,null,2,3,1,4] }
+              ], piano:[9,0,4,6] },
+            "A#m6": { posicoes: [
+                { label:"Pos 1", g_frets:[null,1,3,3,2,3], g_fingers:[null,1,3,4,2,4], barra:{casa:1,de:1,ate:5} }
+              ], piano:[10,1,5,7] },
+            "Bm6": { posicoes: [
+                { label:"Pos 1", g_frets:[null,2,4,4,3,4], g_fingers:[null,1,3,4,2,4], barra:{casa:2,de:1,ate:5} }
+              ], piano:[11,2,6,8] },
+            "C7b5": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,1,2,1,2], g_fingers:[null,null,1,3,2,4] }
+              ], piano:[0,4,6,10] },
+            "C#7b5": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,2,3,2,3], g_fingers:[null,null,1,3,2,4] }
+              ], piano:[1,5,7,11] },
+            "D7b5": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,0,1,1,2], g_fingers:[null,null,null,1,1,2] }
+              ], piano:[2,6,8,0] },
+            "D#7b5": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,1,2,2,3], g_fingers:[null,null,1,2,2,3] }
+              ], piano:[3,7,9,1] },
+            "E7b5": { posicoes: [
+                { label:"Pos 1", g_frets:[0,null,0,1,0,2], g_fingers:[null,null,null,1,null,2] }
+              ], piano:[4,8,10,2] },
+            "F7b5": { posicoes: [
+                { label:"Pos 1", g_frets:[1,null,1,2,1,3], g_fingers:[1,null,1,2,1,4] }
+              ], piano:[5,9,11,3] },
+            "F#7b5": { posicoes: [
+                { label:"Pos 1", g_frets:[2,null,2,3,2,4], g_fingers:[1,null,1,2,1,4] }
+              ], piano:[6,10,0,4] },
+            "G7b5": { posicoes: [
+                { label:"Pos 1", g_frets:[3,null,3,4,3,5], g_fingers:[1,null,1,2,1,4] }
+              ], piano:[7,11,1,5] },
+            "G#7b5": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,1,2,2,3], g_fingers:[null,null,1,2,2,3] }
+              ], piano:[8,0,2,6] },
+            "A7b5": { posicoes: [
+                { label:"Pos 1", g_frets:[null,0,null,1,1,2], g_fingers:[null,null,null,1,1,2] }
+              ], piano:[9,1,3,7] },
+            "A#7b5": { posicoes: [
+                { label:"Pos 1", g_frets:[null,1,null,2,2,3], g_fingers:[null,1,null,2,2,3] }
+              ], piano:[10,2,4,8] },
+            "B7b5": { posicoes: [
+                { label:"Pos 1", g_frets:[null,2,null,3,3,4], g_fingers:[null,1,null,2,2,3] }
+              ], piano:[11,3,5,9] },
+            "Cdim7": { posicoes: [
+                { label:"Pos 1", g_frets:[null,3,1,3,2,0], g_fingers:[null,4,1,3,2,null] }
+              ], piano:[0,3,6,9] },
+            "C#dim7": { posicoes: [
+                { label:"Pos 1", g_frets:[null,4,2,4,3,1], g_fingers:[null,4,1,3,2,null] }
+              ], piano:[1,4,7,10] },
+            "Ddim7": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,0,1,0,1], g_fingers:[null,null,null,1,null,2] }
+              ], piano:[2,5,8,11] },
+            "D#dim7": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,1,2,1,2], g_fingers:[null,null,1,3,2,4] }
+              ], piano:[3,6,9,0] },
+            "Edim7": { posicoes: [
+                { label:"Pos 1", g_frets:[0,null,2,3,2,3], g_fingers:[null,null,1,3,2,4] }
+              ], piano:[4,7,10,1] },
+            "Fdim7": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,3,4,3,4], g_fingers:[null,null,1,3,2,4] }
+              ], piano:[5,8,11,2] },
+            "F#dim7": { posicoes: [
+                { label:"Pos 1", g_frets:[2,null,4,5,4,5], g_fingers:[1,null,2,4,3,4] }
+              ], piano:[6,9,0,3] },
+            "Gdim7": { posicoes: [
+                { label:"Pos 1", g_frets:[3,null,5,6,5,6], g_fingers:[1,null,2,4,3,4] }
+              ], piano:[7,10,1,4] },
+            "G#dim7": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,1,2,1,2], g_fingers:[null,null,1,3,2,4] }
+              ], piano:[8,11,2,5] },
+            "Adim7": { posicoes: [
+                { label:"Pos 1", g_frets:[null,0,null,1,0,1], g_fingers:[null,null,null,2,1,3] }
+              ], piano:[9,0,3,6] },
+            "A#dim7": { posicoes: [
+                { label:"Pos 1", g_frets:[null,1,null,2,1,2], g_fingers:[null,1,null,3,2,4] }
+              ], piano:[10,1,4,7] },
+            "Bdim7": { posicoes: [
+                { label:"Pos 1", g_frets:[null,2,null,3,2,3], g_fingers:[null,1,null,3,2,4] }
+              ], piano:[11,2,5,8] },
+            "Csus2": { posicoes: [
+                { label:"Pos 1", g_frets:[null,3,0,0,1,3], g_fingers:[null,3,null,null,1,4] }
+              ], piano:[0,2,7] },
+            "C#sus2": { posicoes: [
+                { label:"Pos 1", g_frets:[null,4,1,1,2,4], g_fingers:[null,4,1,1,2,3], barra:{casa:1,de:1,ate:5} }
+              ], piano:[1,3,8] },
+            "Dsus2": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,0,2,3,0], g_fingers:[null,null,null,1,2,null] }
+              ], piano:[2,4,9] },
+            "D#sus2": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,1,3,4,1], g_fingers:[null,null,1,3,4,2] }
+              ], piano:[3,5,10] },
+            "Esus2": { posicoes: [
+                { label:"Pos 1", g_frets:[0,2,2,4,0,0], g_fingers:[null,1,1,2,null,null] }
+              ], piano:[4,6,11] },
+            "Fsus2": { posicoes: [
+                { label:"Pos 1", g_frets:[1,3,3,0,1,1], g_fingers:[1,3,4,null,1,1], barra:{casa:1,de:0,ate:5} }
+              ], piano:[5,7,0] },
+            "F#sus2": { posicoes: [
+                { label:"Pos 1", g_frets:[2,4,4,1,2,2], g_fingers:[1,3,4,null,1,1], barra:{casa:2,de:0,ate:5} }
+              ], piano:[6,8,1] },
+            "Gsus2": { posicoes: [
+                { label:"Pos 1", g_frets:[3,null,0,0,3,3], g_fingers:[2,null,null,null,3,4] }
+              ], piano:[7,9,2] },
+            "G#sus2": { posicoes: [
+                { label:"Pos 1", g_frets:[4,1,1,1,4,4], g_fingers:[4,1,1,1,3,4], barra:{casa:1,de:1,ate:5} }
+              ], piano:[8,10,3] },
+            "Asus2": { posicoes: [
+                { label:"Pos 1", g_frets:[null,0,2,2,0,0], g_fingers:[null,null,2,3,null,null] }
+              ], piano:[9,11,4] },
+            "A#sus2": { posicoes: [
+                { label:"Pos 1", g_frets:[null,1,3,3,1,1], g_fingers:[null,1,3,4,1,1], barra:{casa:1,de:1,ate:5} }
+              ], piano:[10,0,5] },
+            "Bsus2": { posicoes: [
+                { label:"Pos 1", g_frets:[null,2,4,4,2,2], g_fingers:[null,1,3,4,1,1], barra:{casa:2,de:1,ate:5} }
+              ], piano:[11,1,6] },
+            "C#dim": { posicoes: [
+                { label:"Pos 1", g_frets:[null,4,2,3,2,null], g_fingers:[null,4,1,3,2,null] }
+              ], piano:[1,4,7] },
+            "D#dim": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,1,2,0,2], g_fingers:[null,null,1,3,null,4] }
+              ], piano:[3,6,9] },
+            "F#dim": { posicoes: [
+                { label:"Pos 1", g_frets:[null,null,4,2,3,2], g_fingers:[null,null,4,1,3,2] }
+              ], piano:[6,9,0] },
+            "A#dim": { posicoes: [
+                { label:"Pos 1", g_frets:[null,1,null,2,1,2], g_fingers:[null,1,null,3,2,4] }
+              ], piano:[10,1,4] },
+
+
     "A#m7": { posicoes: [
                 { label:"Barra 1ª", barra:{casa:1,de:0,ate:4}, g_frets:[null,1,3,1,2,1], g_fingers:[null,1,3,1,2,1] },
               ], piano:[10,13,17,20] },
