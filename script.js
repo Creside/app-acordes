@@ -3190,8 +3190,23 @@ function mostrarAcordeBusca(nomeAcorde) {
 function explorarPorTom() {
     const val = document.getElementById('explorInputTom')?.value.trim();
     if (!val) return;
-    // Tenta identificar o tom a partir dos acordes digitados
+
+    // Normaliza bemóis para sustenidos (ex: Bb -> A#, Eb -> D#)
+    const eq = { 'Db': 'C#', 'Eb': 'D#', 'Gb': 'F#', 'Ab': 'G#', 'Bb': 'A#' };
+
+    // Tenta interpretar como tom direto (ex: "C", "Am", "F#", "Bbm", "Eb")
+    const valNorm = val.charAt(0).toUpperCase() + val.slice(1);
+    const ehMenorDireto = valNorm.endsWith('m') && valNorm.length > 1;
+    const tonicaBruta = ehMenorDireto ? valNorm.slice(0, -1) : valNorm;
+    const tonicaDirecta = eq[tonicaBruta] || tonicaBruta;
+    if (getNotaIndex(tonicaDirecta) !== -1) {
+        explorarSelecionarTom(tonicaDirecta, ehMenorDireto ? 'menor' : 'maior');
+        return;
+    }
+
+    // Fallback: tenta identificar o tom a partir de lista de acordes (ex: "Am, C, G")
     const acordes = val.split(',').map(a => a.trim()).filter(Boolean);
+    if (acordes.length < 2) return; // entrada única não reconhecida como nota, ignora
     // Testa maior
     for (let i = 0; i < 12; i++) {
         const tonica = notasCromaticas[i];
